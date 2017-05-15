@@ -1,0 +1,70 @@
+
+% Use documentclass[wide]{IIBproject} to have narrower margins
+\documentclass{IIBproject}
+
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{subfiles}
+\usepackage{cleveref}
+\usepackage{ifthen}
+
+
+\newboolean{printBibInSubfiles}
+\setboolean{printBibInSubfiles}{true} 
+\def\bib{\ifthenelse{\boolean{printBibInSubfiles}}
+        {\bibliographystyle{apacite}\bibliography{ThesisRef}}
+        {}
+    }
+
+\bibliographystyle{plain}
+\bibliography{main.bib}{}
+
+\graphicspath{figures}
+
+\pagestyle{empty}
+% The next line sets 1.5 spacing
+\onehalfspacing
+
+\begin{document}
+
+
+% Title Page
+\author{Eric Wieser}
+\supervisor{Prof. Carl Rasmussen}
+\title{Machine learning for a miniature robotic unicycle}
+\maketitle
+\thispagestyle{empty}
+
+
+
+% Summary
+\begin{abstract}
+No more than 100 words.
+\end{abstract}
+\pagestyle{plain}
+\tableofcontents
+\newpage
+
+\section{Introduction}
+Just a test Just a test Just a test Just a test Just a test Just a test 
+Just a test Just a test Just a test Just a test Just a test Just a test 
+ust a test Just a test Just a test Just a test Just a test Just a test 
+Just a test Just a test Just a test Just a test Just a test Just a test 
+
+\subsection{Previous work}
+
+\section{Embedded software}
+
+
+
+\section{Conclusions}
+Just a test Just a test Just a test Just a test Just a test Just a test 
+Just a test Just a test Just a test Just a test Just a test Just a test 
+
+\bibliography{test}
+
+\appendix
+
+\section{Extra Stuff}
+
+\end{document}
