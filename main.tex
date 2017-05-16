@@ -1,31 +1,30 @@
-
 % Use documentclass[wide]{IIBproject} to have narrower margins
-\documentclass{IIBproject}
+\documentclass[12pt,a4paper]{IIBproject}
 
-\usepackage{setspace}
 \usepackage{amsmath}
 \usepackage{subfiles}
 \usepackage{cleveref}
 \usepackage{ifthen}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber,bibencoding=utf8]{biblatex}
+\usepackage[onehalfspacing]{setspace}
 
+\providecommand{\path}{.}
+
+\addbibresource{\path/main.bib}
 
 \newboolean{printBibInSubfiles}
-\setboolean{printBibInSubfiles}{true} 
+\setboolean{printBibInSubfiles}{true}
 \def\bib{\ifthenelse{\boolean{printBibInSubfiles}}
-        {\bibliographystyle{apacite}\bibliography{ThesisRef}}
+        {\printbibliography}
         {}
     }
 
-\bibliographystyle{plain}
-\bibliography{main.bib}{}
-
-\graphicspath{figures}
-
 \pagestyle{empty}
-% The next line sets 1.5 spacing
-\onehalfspacing
 
 \begin{document}
+\setboolean{printBibInSubfiles}{false}
 
 
 % Title Page
@@ -49,7 +48,7 @@ No more than 100 words.
 Just a test Just a test Just a test Just a test Just a test Just a test 
 Just a test Just a test Just a test Just a test Just a test Just a test 
 ust a test Just a test Just a test Just a test Just a test Just a test 
-Just a test Just a test Just a test Just a test Just a test Just a test 
+Just a test Just a test Just a test Just a test Just a test Just a test \cite{bbc-samsung-explosion}
 
 \subsection{Previous work}
 
@@ -61,7 +60,7 @@ Just a test Just a test Just a test Just a test Just a test Just a test
 Just a test Just a test Just a test Just a test Just a test Just a test 
 Just a test Just a test Just a test Just a test Just a test Just a test 
 
-\bibliography{test}
+\printbibliography
 
 \appendix
 
