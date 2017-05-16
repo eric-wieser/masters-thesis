@@ -1,7 +1,6 @@
-\providecommand{\path}{..}
-
+\providecommand{\thebibpath}{..}
 \makeatletter
-\def\input@path{{\path/}{.}}
+\def\input@path{{../}{.}}
 \makeatother
 
 \documentclass[main.tex]{subfiles}
@@ -12,35 +11,71 @@
 
 	The inherited embedded software required a toolchain called MPIDE (a fork of an early version of the Arduino IDE), which to quote the authors \enquote{is no longer being maintained, and is quickly falling behind} \cite{mpide}, as of January 2016. This is troublesome, as at some point in future, it may become impossible to download the software, which would make our embedded code unusable - better to deal with this technical debt now. The replacement software is an extension (\texttt{chipkit-core}) for the standard Arduino IDE.
 
-	Unfortunately, this change in tools also comes with a change in hardware libraries. Due to license incompatibilities, the \texttt{plib} library bundled with MPIDE, which we were making use of to operate hardware registers, is not available in the Arduino IDE. This meant that large amounts of code that interfaced with hardware had to change. Many of these changes involves switching to the stardard Arduino constructs for setting interrupts and writing pins. The rest required the use of features of the \texttt{chipkit-core} library.
+	Unfortunately, this change in tools also comes with a change in hardware libraries.
+	Due to license incompatibilities, the \texttt{plib} library bundled with MPIDE, which we were making use of to operate hardware registers, is not available in the Arduino IDE.
+	This meant that large amounts of code that interfaced with hardware had to change. Many of these changes involves switching to the stardard Arduino constructs for setting interrupts and writing pins.
+	The rest required the use of features of the \texttt{chipkit-core} library.
 
-	To verify that the transition was made correctly, some simple tests were performed with the motors, encoder, and accelerometer readings, all of which are easy to verify a log stream against by eye. One such mistake this picked up was that the encoders were no longer changing sign correcty. This was due to confusion\footnotemark between interrupt \emph{numbers} (referred to as \texttt{IRQ}s in the library) and interrupt \emph{vectors}.
+	To verify that the transition was made correctly, some simple tests were performed with the motors, encoder, and accelerometer readings, all of which are easy to verify a log stream against by eye. One such mistake this picked up was that the encoders were no longer changing sign correcty.
+	This was due to confusion\footnotemark between interrupt \emph{numbers} (referred to as \texttt{IRQ}s in the library) and interrupt \emph{vectors}.
 
 	\footnotetext{A type of mistake that well-typed code written in C++, rather than C, would have prevented from happening in the first place. Alas, C is here to stay in the realm of embedded software libraries.}
 
-	While the Arduino IDE family has the benefits of being widely-used, active, and open source, it has a bad approach to dependency management, which in practice makes it difficult to create small reusable components. To give an example, the following dependency structure is difficult for an Arduino project to handle:
+	While the Arduino IDE family has the benefits of being widely-used, active, and open source, it has a bad approach to dependency management, which in practice makes it difficult to create small reusable components.
+	To give an example, the following dependency structure is difficult for an Arduino project to handle:
 	\begin{itemize}
 		\item The application depends on library \texttt{A} and \texttt{B}
 		\item Library \texttt{B} depends on \texttt{C}
 	\end{itemize}
 	Worse yet, even if we remove the dependency on \texttt{C}, it is very difficult to distribute \texttt{A} alongside our application.
 
-	There is a open source project that acknowledges and provides a solution to these shortcomings, PlatformIO \cite{platformio}. This keeps the excellent cross-platform support that the arduino libraries provide, and pairs them with a package manager, and a command line tool. One particularly useful feature is the ability to run unit tests on the arduino, to verify the correctness of software.
+	There is a open source project that acknowledges and provides a solution to these shortcomings, PlatformIO \cite{platformio}.
+	This keeps the excellent cross-platform support that the arduino libraries provide, and pairs them with a package manager, and a command line tool.
+	One particularly useful feature is the ability to run unit tests on the arduino, to verify the correctness of software.
+
+\subsection{Automation of Robot $\leftrightarrow$ PC communication}
+	As part of the learning process, the PILCO code outputs a trial controller, which needs to be run on the hardware.
+	PILCO then requires observations of the state trajectory that that controller produced.
+	In the past, this required a manual process, consisting of:
+	\begin{enumerate}
+		\item Copying the controller parameters into the right place within the C++ code
+		\item Recompiling the C++ code
+		\item Uploading the binary to the microcontroller
+		\item Opening a serial terminal
+		\item Manually copying the plaintext output
+		\item Saving the copied text into a csv file, which is read by Matlab
+	\end{enumerate}
+	Of these, steps 2 and 3 are slow, and 1, 5, and 6 are prone to human error.
+	 Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark.
+
+	\footnotetext{For instance, if a byte is dropped due to a serial buffer overflow, the number \texttt{10.23} can be read as \texttt{0.23}}
+
 
 \subsection{Building a messaging interface}
 
-	To automate this, a set of protocols need to be defined for communicating structured messages over the serial link. This breaks down into two parts:
-	\begin{itemsize}
+	To automate this, a set of protocols need to be defined for communicating structured messages over the serial link.
+	This breaks down into two parts:
+	\begin{itemize}
 		\item Serialization – converting a structured object into a series of bytes, and back again
 		\item Framing – distinguishing where one message begins and another ends
 	\end{itemize}
 	Both of these can be hard problems to get right, and so reinventing the wheel should be avoided.
+
 	The serialization problem can be solved by Google’s \enquote{Protocol Buffers}\cite{protobuf} (or simply \enquote{protobuf}), which are used extensively within Google, and have cross-language support. An implementation of this for embedded C, with small code size and no heap allocation, exists as the Nanopb project [5], which thanks to our switch to PlatformIO, is easy to include on our robot.
-	The framing problem is best solved by COBS [6], which to quote the paper, ”allows new listeners to join a broadcast stream at any time and without fail receive and decode the very next error free packet” – ideal for the scenario where the serial USB connection is plugged and unplugged (§2.4).
-	Sadly, no suitable  implementation of COBS was available for the Arduino. Messaging over serial is an essential part of many Arduino projects, and so the inability to assemble a robust messaging stack from library code is cause for alarm. In the interest of giving back to the community, I published PacketIO [7], a package to solve the framing problem.
-	This package included unit tests and online documentation , in order to help verify its correctness and encourage its use.
 
+	The framing problem is best solved by COBS\cite{cobs}, which to quote the paper, \enquote{allows new listeners to join a broadcast stream at any time and without fail receive and decode the very next error free packet} – ideal for the scenario where the serial USB connection is plugged and unplugged (\cref{sec:untethered}).
 
-\printbibliography
+	Sadly, no suitable\footnotemark implementation of COBS was available for the Arduino.
+	Messaging over serial is an essential part of many Arduino projects, and so the inability to assemble a robust messaging stack from library code is cause for alarm.
+	In the interest of giving back to the community, I published PacketIO \cite{packetio}, a package to solve the framing problem.
+	This package included unit tests and online documentation, in order to help verify its correctness and encourage its use.
+
+	\footnotetext{
+		A package implementing COBS for Arduino does exist, PacketSerial\cite{packetserial}.
+		However, this requires message size to be known ahead of time, which the design of Nanopb deliberately avoids.
+		For best compatibility with Nanopb, we desire a streaming protocol, which can write arbitrarily large messages piece by piece.
+	}
+
+\bib
 
 \end{document}

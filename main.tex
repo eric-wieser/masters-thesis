@@ -3,16 +3,19 @@
 
 \usepackage{amsmath}
 \usepackage{subfiles}
-\usepackage{cleveref}
 \usepackage{ifthen}
+
+\usepackage{xr-hyper}
 \usepackage{hyperref}
+\usepackage{cleveref}
+
 \usepackage[utf8]{inputenc}
-\usepackage[backend=biber,bibencoding=utf8]{biblatex}
+\usepackage[sorting=none,backend=biber,bibencoding=utf8]{biblatex}
 \usepackage[onehalfspacing]{setspace}
 
-\providecommand{\path}{.}
+\providecommand{\thebibpath}{.}
 
-\addbibresource{\path/main.bib}
+\addbibresource{\thebibpath/main.bib}
 
 \newboolean{printBibInSubfiles}
 \setboolean{printBibInSubfiles}{true}
@@ -24,46 +27,47 @@
 \pagestyle{empty}
 
 \begin{document}
-\setboolean{printBibInSubfiles}{false}
+	\setboolean{printBibInSubfiles}{false}
 
 
-% Title Page
-\author{Eric Wieser}
-\supervisor{Prof. Carl Rasmussen}
-\title{Machine learning for a miniature robotic unicycle}
-\maketitle
-\thispagestyle{empty}
-
-
-
-% Summary
-\begin{abstract}
-No more than 100 words.
-\end{abstract}
-\pagestyle{plain}
-\tableofcontents
-\newpage
-
-\section{Introduction}
-Just a test Just a test Just a test Just a test Just a test Just a test 
-Just a test Just a test Just a test Just a test Just a test Just a test 
-ust a test Just a test Just a test Just a test Just a test Just a test 
-Just a test Just a test Just a test Just a test Just a test Just a test \cite{bbc-samsung-explosion}
-
-\subsection{Previous work}
-
-\section{Embedded software}
+	% Title Page
+	\author{Eric Wieser}
+	\supervisor{Prof. Carl Rasmussen}
+	\title{Machine learning for a miniature robotic unicycle}
+	\maketitle
+	\thispagestyle{empty}
 
 
 
-\section{Conclusions}
-Just a test Just a test Just a test Just a test Just a test Just a test 
-Just a test Just a test Just a test Just a test Just a test Just a test 
+	% Summary
+	\begin{abstract}
+	No more than 100 words.
+	\end{abstract}
+	\pagestyle{plain}
+	\tableofcontents
+	\newpage
 
-\printbibliography
+	\clearpage
+	\subfile{sections/previous}
 
-\appendix
 
-\section{Extra Stuff}
+	\clearpage
+	\subfile{sections/electrical}
+
+	\clearpage
+	\subfile{sections/embedded}
+
+	\clearpage
+	\subfile{sections/matlab}
+
+
+
+	\section{Conclusions}
+
+	\printbibliography
+
+	\appendix
+
+	\section{Extra Stuff}
 
 \end{document}
