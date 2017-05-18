@@ -13,10 +13,10 @@
     {\ClassError{IIBproject}{Option `titlepage' not supported}{}}
 \DeclareOption{wide}
     {\@cuedwidetrue\typeout{Wide option selected}}
-\PassOptionsToClass{12pt,a4paper}{article}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\PassOptionsToClass{12pt,a4paper}{report}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions
-\LoadClass{article}
+\LoadClass{report}
 \usepackage{textpos}
 \usepackage{graphicx}
 \usepackage{geometry}
