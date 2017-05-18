@@ -24,6 +24,8 @@
 		\label{table:mechanical}
 	\end{table}
 
+	% Another suggestion from previous work was to redesign the frame to \enquote{reduce the effect of the roll limitation}\cite[p.~35]{aleksi} TODO
+
 
 \section{Electrical design}
 
@@ -33,14 +35,40 @@
 
 	Atop the controller board sits a hand-soldered protoboard. This provided places to connect: a gyro and accelometer, via I2C; custom electronics to convert the quadrature encoder pulses into a single pulse train and a direction signal; and an external motor driver board, interfaced to PWM outputs.
 
-	This project was inherited with no documentation on which physical pins were used for which external devices, so such a table was compiled and embedded in the source code. See \cref{TODO} for more details.
+	This project was inherited with no documentation on which physical pins were used for which external devices, so such a table was compiled and embedded in the source code.
+	See \cref{TODO} for more details.
 
 \section{Software design}
 
 	\subsection{Version control}
 
-	\subsection{Embedded C++}
+	A crucial part of modern software development, both in industry and the open source community, is the use of version control software. 
+	This software tracks changes over time in the form of \enquote{commit}s, recording who made them, and allowing the programmer to describe why they made that change.
+	One particularly useful feature of this type of software is to \enquote{blame} a file, showing which commit each line was last modified in -- useful for distinguishing an important bugfix from obsolete code.
+	Two of the most common version control tools are Git and SVN, both of which are actively developed.
+
+	The PILCO codebase used SVN when this project started. After a short trial period near the beginning of the project, operating a Git mirror of the SVN repository, the decision was made to switch to Git. It's worth noting that an objective comparison of the two is difficult, but for this project, it presented some key advantages:
+	\begin{itemize}
+		\item
+			Git is decentralized. This means that even without internet access, it is possible to create commits.
+
+		\item
+			The SVN repository was not set up to allow branching. Branching allows features to be developed independently, without interfering with other developers.
+
+		\item
+			A widely used web service supporting only Git, GitHub, provides a valuable code review tool, allowing easy discussion of code changes.
+	\end{itemize}
+
+	Unfortunately, the embedded code inherited for this project was not under any version control -- so the very first action taken was to make sure it was.
+	Of course, this meant that no version history was available for the original files. Thankfully, in the absence of a digital record of the rationale behind the changes, the developer of these files was contactable directly!
 
 	\subsection{Matlab toolbox}
+
+	The PILCO 
+
+	\subsection{Embedded C++}
+
+
+
 
 \end{document}
