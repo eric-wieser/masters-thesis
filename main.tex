@@ -29,21 +29,21 @@
 
 % bibliography stuff
 \usepackage[sorting=none,backend=biber,bibencoding=utf8]{biblatex}
-\usepackage[nottoc]{tocbibind}
 \providecommand{\thebibpath}{.}
 \addbibresource{\thebibpath/main.bib}
 \newcommand{\printbibsectioned}{
 	\printbibliography[
 		notkeyword={hardware}, notkeyword={software},
-		title={References}]
+		title={References},
+		heading=bibintoc]
 	\printbibliography[
 		notkeyword={hardware}, keyword={software},
 		title={Software packages},
-		heading=subbibliography]
+		heading=subbibintoc]
 	\printbibliography[
 		keyword={hardware},
 		title={Hardware datasheets},
-		heading=subbibliography]
+		heading=subbibintoc]
 }
 \newboolean{printBibInSubfiles}
 \setboolean{printBibInSubfiles}{true}
