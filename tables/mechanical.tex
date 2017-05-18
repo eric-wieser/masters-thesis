@@ -1,0 +1,120 @@
+{
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{\linewidth}{
+	@{}
+	r
+	>{\raggedright}p{0.25\linewidth}
+	S[
+		scientific-notation = engineering,
+		table-format=-3e-1,
+		table-auto-round
+	]
+	s
+	X
+	@{}
+}
+\toprule
+ & Description & \multicolumn{2}{c}{Value} & Determined by \\
+\midrule
+	\texttt{mt}
+		& Mass of turntable
+		& 0.2110 & \kilogram
+		& estimation using $\rho_\mathrm{steel} = 8000\si{\kilogram\per\cubic\meter}$.
+	\\
+	\texttt{mw}
+		& Mass of wheel and axle
+		& 0.1090 & \kilogram
+		& direct measurement, by detaching the axle bearings, and suspending the robot frame such that it does not exert any reaction force on the axle.
+	\\
+	\texttt{mf}
+		& Mass of frame
+		& 0.6600 & \kilogram
+		& subtracting from the total mass of \SI{0.98}{\kilogram}.
+	\\
+\midrule
+	\texttt{rw}
+		& Radius of wheel
+		& 0.0353 & \meter
+		& measuring the wheel circumference as \SI{22.2}{\centi\meter}.
+	\\
+	\texttt{rf}
+		& Distance from frame COM to wheel
+		& 0.0800 & \meter
+		&\tikzmark{bra1}\multirow{3}{\hsize}{%
+			finding the balancing point of the robot, by suspending from a string.
+		}
+	\\
+	\texttt{rt}
+		& Distance from frame COM to turntable
+		& 0.0070 & \meter
+		& \tikzmark{brb1}
+	\\
+\midrule
+	\texttt{Cw}
+		& MOI of wheel $\parallel$ to axle
+		& 3.0536e-07 & \kilogram \square\meter
+		&\tikzmark{bra2}\multirow{2}{\hsize}{%
+			computing $m_\mathrm{wheel} = \mathtt{mw} - \rho_\mathrm{steel} \pi \allowbreak(lr^2)_\textrm{axle}$, and then assuming a uniform laminar disc.
+		}
+	\\
+	\texttt{Aw}
+		& MOI of wheel $\bot$ to axle
+		& 1.2739e-04 & \kilogram \square\meter
+		& \tikzmark{brb2}
+	\\
+	\texttt{Cf}
+		& MOI of frame
+		& 5.1116e-04 & \kilogram \square\meter
+		&\tikzmark{bra3}\multirow{3}{\hsize}{%
+			estimation by dimensional analysis, assuming that $I \propto \mathtt{mf} \mathtt{rf}^2$, and using known values for the large unicycle.
+		}
+	\\
+	\texttt{Bf}
+		& MOI of frame
+		& 2.8406e-04 & \kilogram \square\meter
+		&
+	\\
+	\texttt{Af}
+		& MOI of frame
+		& 2.618e-04 & \kilogram \square\meter
+		& \tikzmark{brb3}
+	\\
+	\texttt{Ct}
+		& MOI of tt. $\parallel$ to axle
+		& 1.611e-04 & \kilogram \square\meter
+		&\tikzmark{bra4}\multirow{2}{\hsize}{%
+			decomposition into cylinders, and using $\rho_\mathrm{steel}$.
+		}
+	\\
+	\texttt{At}
+		& MOI of tt. $\bot$ to axle
+		& 8.102e-05 & \kilogram \square\meter
+		& \tikzmark{brb4}
+	\\
+\midrule
+	\texttt{maxU}
+		& Maximum input torques
+		& {
+			\renewcommand{\arraystretch}{1}
+			$\begin{bmatrix}0.205 \\ 0.513\end{bmatrix}$
+		} & \newton \meter
+		& applying the gearing ratios\cite{gearbox} to the torque limits quoted on the datasheet\cite{motor}.
+	\\
+\bottomrule
+\end{tabularx}
+\begin{tikzpicture}[overlay, remember picture]
+	\draw [decoration={brace,amplitude=0.5em},decorate,thick,black]
+		let \p1=(bra1.mid), \p2=(brb1.mid) in
+			({\x1 - 0.8em}, {\y1 +0.5em}) -- node[right=0.6em] {} ({\x1 - 0.8em}, {\y2 - 0.5em});
+	\draw [decoration={brace,amplitude=0.5em},decorate,thick,black]
+		let \p1=(bra2.mid), \p2=(brb2.mid) in
+			({\x1 - 0.8em}, {\y1 +0.5em}) -- node[right=0.6em] {} ({\x1 - 0.8em}, {\y2 - 0.5em});
+	\draw [decoration={brace,amplitude=0.5em},decorate,thick,black]
+		let \p1=(bra3.mid), \p2=(brb3.mid) in
+			({\x1 - 0.8em}, {\y1 +0.5em}) -- node[right=0.6em] {} ({\x1 - 0.8em}, {\y2 - 0.5em});
+	\draw [decoration={brace,amplitude=0.5em},decorate,thick,black]
+		let \p1=(bra4.mid), \p2=(brb4.mid) in
+			({\x1 - 0.8em}, {\y1 +0.5em}) -- node[right=0.6em] {} ({\x1 - 0.8em}, {\y2 - 0.5em});
+\end{tikzpicture}
+}
