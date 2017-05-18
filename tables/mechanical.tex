@@ -18,7 +18,7 @@
  & Description & \multicolumn{2}{c}{Value} & Determined by \\
 \midrule
 	\texttt{mt}
-		& Mass of turntable
+		& Mass of turntable (tt.)
 		& 0.2110 & \kilogram
 		& estimation using $\rho_\mathrm{steel} = 8000\si{\kilogram\per\cubic\meter}$.
 	\\
@@ -39,56 +39,56 @@
 		& measuring the wheel circumference as \SI{22.2}{\centi\meter}.
 	\\
 	\texttt{rf}
-		& Distance from frame COM to wheel
+		& Distance from COM of frame to wheel
 		& 0.0800 & \meter
 		&\tikzmark{bra1}\multirow{3}{\hsize}{%
 			finding the balancing point of the robot, by suspending from a string.
 		}
 	\\
 	\texttt{rt}
-		& Distance from frame COM to turntable
+		& Distance from COM of frame to turntable
 		& 0.0070 & \meter
 		& \tikzmark{brb1}
 	\\
 \midrule
 	\texttt{Cw}
-		& MOI of wheel $\parallel$ to axle
+		& MoI of wheel $\parallel$ to axle
 		& 3.0536e-07 & \kilogram \square\meter
 		&\tikzmark{bra2}\multirow{2}{\hsize}{%
 			computing $m_\mathrm{wheel} = \mathtt{mw} - \rho_\mathrm{steel} \pi \allowbreak(lr^2)_\textrm{axle}$, and then assuming a uniform laminar disc.
 		}
 	\\
 	\texttt{Aw}
-		& MOI of wheel $\bot$ to axle
+		& MoI of wheel $\bot$ to axle
 		& 1.2739e-04 & \kilogram \square\meter
 		& \tikzmark{brb2}
 	\\
 	\texttt{Cf}
-		& MOI of frame
+		& MoI of frame
 		& 5.1116e-04 & \kilogram \square\meter
 		&\tikzmark{bra3}\multirow{3}{\hsize}{%
-			estimation by dimensional analysis, assuming that $I \propto \mathtt{mf} \mathtt{rf}^2$, and using known values for the large unicycle.
+			estimation by dimensional analysis, assuming that $I \propto \mathtt{mf}\,\mathtt{rf}^2$, and using known values for the large unicycle.
 		}
 	\\
 	\texttt{Bf}
-		& MOI of frame
+		& MoI of frame
 		& 2.8406e-04 & \kilogram \square\meter
 		&
 	\\
 	\texttt{Af}
-		& MOI of frame
+		& MoI of frame
 		& 2.618e-04 & \kilogram \square\meter
 		& \tikzmark{brb3}
 	\\
 	\texttt{Ct}
-		& MOI of tt. $\parallel$ to axle
+		& MoI of tt. $\parallel$ to axle
 		& 1.611e-04 & \kilogram \square\meter
 		&\tikzmark{bra4}\multirow{2}{\hsize}{%
 			decomposition into cylinders, and using $\rho_\mathrm{steel}$.
 		}
 	\\
 	\texttt{At}
-		& MOI of tt. $\bot$ to axle
+		& MoI of tt. $\bot$ to axle
 		& 8.102e-05 & \kilogram \square\meter
 		& \tikzmark{brb4}
 	\\
@@ -118,3 +118,16 @@
 			({\x1 - 0.8em}, {\y1 +0.5em}) -- node[right=0.6em] {} ({\x1 - 0.8em}, {\y2 - 0.5em});
 \end{tikzpicture}
 }
+
+\caption{Mechanical properties of the small unicycle}
+\medskip
+\small
+MoI and COM abbreviate Moment of Intertia and Center of Mass, respectively.
+The first column indicates the property name of the \texttt{UnicyclePlant} class in the Matlab source code.
+Many properties proved impossible to measure due to the inability to dissasemble the robot, such as \texttt{mt}, requiring estimation techniques instead.
+
+\medskip
+Of these properties, only \texttt{rw} is needed by the embedded software.
+To learn a controller on the real robot, only \texttt{rw}, \texttt{rf}, and \texttt{rt} are needed, as these factor into the cost function (\cref{TODO}).
+The full set of properties is only need for complete robot simulation.
+

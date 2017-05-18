@@ -15,15 +15,25 @@
 	Atop this shielding, lies the control board on the front side of the robot, and the battery duct-taped to the rear.
 
 	Previous work concluded \cite[p.~54]{aleksi} that a better simulation model of the unicycle was desirable, to help determine whether poor learning progress was due to implementation errors in software, or simply due to the small unicycle having a more challenging set of dynamics than the previously-simulated large unicycle.
-	Noting that one of the goals of PILCO is \emph{not} to require a detailed system model, some properties were assumed using dimensional analyis.
+
+	As part of my project, model parameters were found for the small unicycle, shown alongside the method used to obtain them in \cref{table:mechanical}.
+	Noting that since one of the goals of PILCO is \emph{not} to require a detailed system model, some properties were simply estimated.
 
 	\begin{table}
 		\input{tables/mechanical.tex}
-		\caption{Measured properties}
+		\label{table:mechanical}
 	\end{table}
 
 
 \section{Electrical design}
+
+	Power comes from a \SI{7.4}{\volt}, \SI{1}{\ampere\hour}  LiPo battery, rated for discharging at up to \SI{30}{\ampere}.
+
+	Controlling the robot is a ChipKIT Max32 microcontroller board. This and has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board.
+
+	Atop the controller board sits a hand-soldered protoboard. This provided places to connect: a gyro and accelometer, via I2C; custom electronics to convert the quadrature encoder pulses into a single pulse train and a direction signal; and an external motor driver board, interfaced to PWM outputs.
+
+	This project was inherited with no documentation on which physical pins were used for which external devices, so such a table was compiled and embedded in the source code. See \cref{TODO} for more details.
 
 \section{Software design}
 
