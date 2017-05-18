@@ -1,17 +1,34 @@
 % Use documentclass[wide]{IIBproject} to have narrower margins
 \documentclass[12pt,a4paper]{IIBproject}
 
-\usepackage{amsmath}
+% vital stuff
+\usepackage[utf8]{inputenc}
 \usepackage{subfiles}
 \usepackage{ifthen}
 
-\usepackage{xr-hyper}
-\usepackage{hyperref}
-\usepackage{cleveref}
+% tools used
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{multirow,bigdelim}
 
-\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathreplacing}
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
+
+
+% related to links and references
+\usepackage{xr-hyper}
+\usepackage[bookmarks,bookmarksopen]{hyperref}
+\usepackage{cleveref}
 \usepackage[sorting=none,backend=biber,bibencoding=utf8]{biblatex}
+\usepackage[nottoc]{tocbibind}
+
+
 \usepackage[onehalfspacing]{setspace}
+
 
 \providecommand{\thebibpath}{.}
 
@@ -47,27 +64,48 @@
 	\tableofcontents
 	\newpage
 
-	\clearpage
-	\subfile{sections/previous}
+	\chapter{Introduction}
+	\subfile{sections/intro}
 
+	\chapter{Review of the current system design}
+	\subfile{sections/review}
 
-	\clearpage
-	\subfile{sections/electrical}
+	\chapter{Design changes and new features}
 
-	\clearpage
-	\subfile{sections/embedded}
+		\section{Electrical design}
+		\subfile{sections/electrical}
 
-	\clearpage
-	\subfile{sections/matlab}
+		\section{Embedded software}
+		\subfile{sections/embedded}
 
+		\section{Matlab toolbox}
+		\subfile{sections/matlab}
 
+	\chapter{System verification}
+	\subfile{sections/verification}
 
-	\section{Conclusions}
+	\chapter{Machine learning experiments}
+
+		\section{Simulation}
+
+			\subsection{Small unicycle}
+
+			\subsection{Uniform cost function}
+
+			\subsection{Roll limits}
+
+		\section{Reality}
+
+	\chapter{Conclusions}
 
 	\printbibliography
 
 	\appendix
 
-	\section{Extra Stuff}
+	\chapter{Source code repositories}
+
+	\chapter{A primer on quaternions}
+
+	\chapter{Zero-overhead bug-free pin assignments in C++}
 
 \end{document}

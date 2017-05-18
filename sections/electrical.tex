@@ -1,12 +1,7 @@
-\providecommand{\path}{..}
-
-\makeatletter
-\def\input@path{{\path/}{.}}
-\makeatother
-
+\providecommand{\thebibpath}{..}
+\makeatletter\def\input@path{{\thebibpath/}{.}}\makeatother
 \documentclass[main.tex]{subfiles}
 \begin{document}
-\section{Electrical improvements}
 
 In the process of setting up and running experiments, various electrical concerns were found - some pre-emptively, and others post-hoc. The robot uses a Lithium Polymer battery, a type for which electrical mistakes can be catastrophic\footnote{An example being the newsworthy \cite{bbc-samsung-explosion} issues with the Galaxy Note 7} - making it important to avoid mistakes, and if they are made, preventing them being repeated. In line with the risk assessment, a fire-safe battery storage bag was purchased for the project.
 
