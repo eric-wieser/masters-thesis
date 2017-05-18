@@ -12,6 +12,8 @@
 \usepackage{tabularx}
 \usepackage{siunitx}
 \usepackage{multirow,bigdelim}
+\usepackage[onehalfspacing]{setspace}
+
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -23,24 +25,33 @@
 \usepackage{xr-hyper}
 \usepackage[bookmarks,bookmarksopen]{hyperref}
 \usepackage{cleveref}
+
+
+% bibliography stuff
 \usepackage[sorting=none,backend=biber,bibencoding=utf8]{biblatex}
 \usepackage[nottoc]{tocbibind}
-
-
-\usepackage[onehalfspacing]{setspace}
-
-\DefineBibliographyStrings{english}{%
-  bibliography = {References},
-}
 \providecommand{\thebibpath}{.}
 \addbibresource{\thebibpath/main.bib}
-
+\newcommand{\printbibsectioned}{
+	\printbibliography[
+		notkeyword={hardware}, notkeyword={software},
+		title={References}]
+	\printbibliography[
+		notkeyword={hardware}, keyword={software},
+		title={Software packages},
+		heading=subbibliography]
+	\printbibliography[
+		keyword={hardware},
+		title={Hardware datasheets},
+		heading=subbibliography]
+}
 \newboolean{printBibInSubfiles}
 \setboolean{printBibInSubfiles}{true}
 \def\bib{\ifthenelse{\boolean{printBibInSubfiles}}
-        {\printbibliography}
+        {\printbibsectioned}
         {}
     }
+
 
 \pagestyle{empty}
 
@@ -99,9 +110,10 @@
 
 	\chapter{Conclusions}
 
-	\printbibliography
+	\printbibsectioned
 
 	\appendix
+
 
 	\chapter{Source code repositories}
 
