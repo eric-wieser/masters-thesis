@@ -5,7 +5,7 @@
 
 \subsection{Changing platform}
 
-	The inherited embedded software required a toolchain called MPIDE (a fork of an early version of the Arduino IDE), which to quote the authors \enquote{is no longer being maintained, and is quickly falling behind} \cite{mpide}, as of January 2016. This is troublesome, as at some point in future, it may become impossible to download the software, which would make our embedded code unusable - better to deal with this technical debt now. The replacement software is an extension (\texttt{chipkit-core}) for the standard Arduino IDE.
+	The inherited embedded software required a toolchain called MPIDE (a fork of an early version of the Arduino IDE), which to quote the authors \enquote{is no longer being maintained, and is quickly falling behind} \cite{ mpide}, as of January 2016. This is troublesome, as at some point in future, it may become impossible to download the software, which would make our embedded code unusable - better to deal with this technical debt now. The replacement software is an extension (\texttt{chipkit-core}) for the standard Arduino IDE.
 
 	Unfortunately, this change in tools also comes with a change in hardware libraries.
 	Due to license incompatibilities, the \texttt{plib} library bundled with MPIDE, which we were making use of to operate hardware registers, is not available in the Arduino IDE.
@@ -29,22 +29,6 @@
 	This keeps the excellent cross-platform support that the arduino libraries provide, and pairs them with a package manager, and a command line tool.
 	One particularly useful feature is the ability to run unit tests on the arduino, to verify the correctness of software.
 
-\subsection{Automation of Robot $\leftrightarrow$ PC communication}
-	As part of the learning process, the PILCO code outputs a trial controller, which needs to be run on the hardware.
-	PILCO then requires observations of the state trajectory that that controller produced.
-	In the past, this required a manual process, consisting of:
-	\begin{enumerate}
-		\item Copying the controller parameters into the right place within the C++ code
-		\item Recompiling the C++ code
-		\item Uploading the binary to the microcontroller
-		\item Opening a serial terminal
-		\item Manually copying the plaintext output
-		\item Saving the copied text into a csv file, which is read by Matlab
-	\end{enumerate}
-	Of these, steps 2 and 3 are slow, and 1, 5, and 6 are prone to human error.
-	 Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark.
-
-	\footnotetext{For instance, if a byte is dropped due to a serial buffer overflow, the number \texttt{10.23} can be read as \texttt{0.23}}
 
 
 \subsection{Building a messaging interface}

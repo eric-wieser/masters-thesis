@@ -29,11 +29,16 @@
 
 \section{Electrical design}
 
+	Controlling the robot is a ChipKIT Max32 microcontroller board\cite{max32}. This and has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board. Atop the controller board sits a hand-soldered protoboard. This provided places to connect the sensors and actuators, which are as follows:
+	\begin{itemize}[noitemsep]
+		\item
+			A combined gyro and accelometer board \cite{imu}, connected via I\textsuperscript{2}C.
+		\item
+			A pair of rotary encoders \cite{encoder}, connected via custom electronics which convers the quadrature encoder pulses into a single pulse train and a direction signal.
+		\item
+			An external H-bridge driver board to operate the motors, interfaced to the microcontroller PWM outputs.
+	\end{itemize}
 	Power comes from a \SI{7.4}{\volt}, \SI{1}{\ampere\hour}  LiPo battery, rated for discharging at up to \SI{30}{\ampere}.
-
-	Controlling the robot is a ChipKIT Max32 microcontroller board. This and has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board.
-
-	Atop the controller board sits a hand-soldered protoboard. This provided places to connect: a gyro and accelometer, via I2C; custom electronics to convert the quadrature encoder pulses into a single pulse train and a direction signal; and an external motor driver board, interfaced to PWM outputs.
 
 	This project was inherited with no documentation on which physical pins were used for which external devices, so such a table was compiled and embedded in the source code.
 	See \cref{TODO} for more details.
@@ -64,9 +69,100 @@
 
 	\subsection{Matlab toolbox}
 
-	The PILCO 
+	The PILCO toolbox is a large collection of matlab scripts, functions, and classes that collectively implement the code required to run the PILCO algorithm. The user of the software creates a collection of scenario files, describing:
+	\begin{enumerate}[noitemsep]
+		\item The state and control variables of the system
+		\item The system dynamics, and noise model
+		\item A cost function to optimize
+		\item A routine to draw the physical robot, used in animations
+		\item The form of the controller. For simplicity of implementation on hardware, we only investigate affine controllers in this report.
+	\end{enumerate}
+
+	Having done this, the user then copies and pastes a routine block of code to run the pilco algorithm in their fully set up workspace.
+	When running this code, the result is a series of state plots showing simulated and predicted trajectories, after each iteration.
+	Additionally, log files are saved containing the state rollouts, controllers, and plots themselves.
 
 	\subsection{Embedded C++}
+
+	The embedded code has the following tasks:
+	\begin{enumerate}[noitemsep]
+		\item Read data from the sensors.
+		\item
+			Update the internal estimates of orientation from the gyro reading.
+			This is done using quaternions as the representation.
+		\item Assemble the full state vector from the readings.
+		\item Apply the linear control policy.
+		\item Store the policy outputs and state data in memory, ready to send back when requested.
+	\end{enumerate}
+	When being used in conjunction with the Matlab toolbox, the control policy must be updated on each learning iteration, and the output and state data extracted from the robot.
+	The process to do this is manual, and consists of the following steps:
+	\begin{enumerate}[noitemsep]
+		\item Copying the controller parameters into the right place within the C++ code
+		\item Recompiling the C++ code
+		\item Uploading the binary to the microcontroller
+		\item Opening a serial terminal
+		\item Manually copying the plaintext output
+		\item Saving the copied text into a csv file, which is read by Matlab
+	\end{enumerate}
+	Of these, steps 2 and 3 are slow, and 1, 5, and 6 are prone to human error.
+	Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark.
+
+	\footnotetext{For instance, if a byte is dropped due to a serial buffer overflow, the number \texttt{10.23} can be read as \texttt{0.23}}
+
+	% TODO
+
+	% From a software design perspective, the code suffered from numerous bad practices:
+	% \begin{itemize}
+	% 	\item
+	% 		\enquote{Magic numbers} -- unnamed numbers in the source code. These ranged from pin numbers, miscellaneous hardware register values, to conversion factors between representations.
+	% 		This type of code is impossible to understand without a datasheet for each component in hand.
+
+	% 		The better approach is to use code like \lstinline[language=c++]{constexpr double GEARBOX_RATIO = 225/16;} at the top of a file, and use that longer name, rather than repeat \lstinline{225/16} in multiple place.
+
+	% 	\item
+	% 		Global variables. This is bad for two reasons: it leaks global state, meaning that attempting to run the program a second time without a full reset is difficult; and it makes it unknowable which variables are used in which locations.
+
+	% 		Generally speaking, variables should be placed in the deepest scope possible. If they must be global, then wrapping related variables up into a \texttt{struct} helps keep things clear
+	% \end{itemize}
+
+
+	\subsection{The importance of DRY code}
+	An important principle in software design is DRY, or \enquote{Don't Repeat Yourself}.
+	More specifically, this advocates that \enquote{Every piece of knowledge must have a single, unambiguous, authoritative representation within a system}\cite{dry}.
+	
+	To see the value in holding this principle, consider a case where there are two representations. If the piece of knownledge changes, such as the mass of the robot decreasing, now two places need updating. If one of them is missed, then the result is an incorrect system. This principle applies not only to data, but also procedures.
+
+	There are various places in which this principle is violated, across both codebases:
+	\begin{multicols}{2}
+		\raggedcolumns
+		In the Matlab code:
+
+		\begin{itemize}[noitemsep]
+			\item computation of dynamics, rendering, and loss for the unicycle contain their own copies of physical unicycle parameters.
+			\item augmentation (\ref{sec:intro:augmentation}) of gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
+			\item ordering of states -- while the user's scenario files specify exactly which states should participate in which part of the algorithm, not all of these speifications are respected.
+			\item mapping of state numbers to state names -- many files contain code along the lines of \lstinline{theta = x(9)}, which causes problems if a new state is inserted
+		\end{itemize}
+
+		\columnbreak
+
+		In the C++ code:
+
+		\begin{itemize}[noitemsep]
+			\item handling of encoder signs -- once for each encoder.
+			\item conversion from imu sensor coordinates to robot coordinates -- once for each of the gyro and accelometer
+			\item representation of pin numbers -- sometimes encoded as register offsets, sometimes as actual pin numbers.
+			\item conversion from raw sensor reading to SI units -- conversion constants are duplicated throughout.
+		\end{itemize}
+	\end{multicols}
+	Some of these DRY violations were indeed hiding bugs, as we shall see in \cref{sec:improvements:software}.
+
+
+
+
+
+
+
 
 
 
