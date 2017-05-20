@@ -11,13 +11,19 @@
 \usepackage{multicol}
 \usepackage{listings}
 \usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{siunitx}
 \usepackage{multirow,bigdelim}
 \usepackage[onehalfspacing]{setspace}
 
-\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true}
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	breaklines=true,
+	keywordstyle=\color{blue}\ttfamily}
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -122,6 +128,7 @@
 	\chapter{Source code repositories}
 
 	\chapter{A primer on quaternions}
+	\subfile{sections/quaternions}
 
 	\chapter{Zero-overhead bug-free pin assignments in C++}
 
