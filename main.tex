@@ -3,6 +3,7 @@
 
 % vital stuff
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{subfiles}
 \usepackage{ifthen}
 
@@ -18,12 +19,16 @@
 \usepackage{tabularx}
 \usepackage{siunitx}
 \usepackage{multirow,bigdelim}
+
+% style only
+\usepackage[scaled=0.85]{beramono}
 \usepackage[onehalfspacing]{setspace}
 
 \lstset{
 	basicstyle=\ttfamily\footnotesize,
 	breaklines=true,
-	keywordstyle=\color{blue}\ttfamily}
+	keywordstyle=\color{blue}\ttfamily,
+	tabsize=2}
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
