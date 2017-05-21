@@ -50,6 +50,17 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 
 	\footnotetext{The RS232 protocol includes two flow control lines -- \texttt{DTR}, and \texttt{CTS}. The arduino bootloader uses both of these to allow reprogramming over USB. Unfortunately, \texttt{DTR} is unconditionally asserted by the RS232 over serial operating system driver, causing the unwanted reset. Were \texttt{CTS} used instead, there would be no problem.}
 
+\subsection{Improving the release procedure}
+
+	The previous approach to starting the test runs was to wait a short amount of time, and then turn on an LED.
+	The operator had to time their release of the robot to match this LED, which introduces a short period of artificial stability at the start of each test run due to human reaction time (as high as \SI{300}{\milli\second}, based on a self test).
+
+	An initial attempt was made to use an audio signal instead produced by the turntable motor, noting that human reaction time to audio is \SI{15}{\percent} faster than that to visual \cite{reaction}.
+	Furthermore, by sending out a rhythmic sequence, this can be much further reduced by taking advantage of our ability to anticipate the next beat in a sequence.
+
+	While this proved somewhat successful, a simpler approach was settled: using a limit switch, shown in \cref{fig:robot-back}.
+	This is placed such that the switch is naturally pressed while holding the robot, and so the act of releasing the robot also release the switch.
+	This is also used as a stop button, to terminate a rollout early once it has fallen over, or if something goes wrong.
 
 \subsection{Electrical failure}
 
