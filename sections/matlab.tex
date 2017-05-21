@@ -5,12 +5,51 @@
 
 \documentclass[main.tex]{subfiles}
 \begin{document}
-\section{Improving the PILCO toolbox}
-
 
 \subsection{Encouraging encapsulation}
 
 \subsection{Interactive visualization}
+
+A great tool for checking the validity of data is human vision, if presented with data in the right form.
+Armed with this principle, the following improvements were made to the visualizer:
+\begin{multicols}{2}
+	\raggedcolumns
+	\noindent
+	The 3d animation of the rollout now
+	\begin{itemize}[nosep]
+		\item can have its camera rotated while it is playing
+		\item renders the top-down shadow of the unicycle, to resolve depth ambiguity
+		\item shows the path traced by the wheel on the ground, for easy comparison against real trajectories
+	\end{itemize}
+	\columnbreak
+	\noindent
+	The state and loss plots now
+	\begin{itemize}[nosep]
+		\item show the time axis in real units
+		\item show the posterior prediction to complement the existing prior
+		\item show data for the initial rollouts before the controller is trained
+		\item plot data incrementally, showing data from each trial rollout as it is collected
+		\item are zoomed simultaneously on the time axis
+		\item upon mouseover, highlight lines on other subplots that correspond to the same dataset
+		\item have a context menu entry to restart the animation for a given rollout
+	\end{itemize}
+\end{multicols}
+
+A substantial amount of work was required before any of these changes could be made, to try and separate the concerns of plotting data and applying parts of the PILCO method into separate files
+One all the code to do a task is in one place, it becomes far easier to augment that task with new behaviour.
+Similarly, unifying the representations of probabilistic and recorded trajectories greatly simplified the plotting code.
+
+The mouseover feature was simultaneously the most challenging to implement, and the most useful.
+Matlab does not expose a event for the mouse moving over or away from an object, instead only providing a general mouse movement event, \texttt{figure.WindowButtonMotionFcn}.
+A custom event dispatcher was written which listens for this event, and the dispatches \texttt{MouseEnter}, \texttt{MouseLeave}, and \texttt{MouseMove} events\footnotemark on individual elements.
+The key tricks to implementing this were discovering the undocumented \texttt{hittest} function\cite{matlab-hittest}, and that the \texttt{java.util} collection APIs can be called from Matlab.
+
+\footnotetext{Which are named after and intended to behave like the HTML5 mouse pointer events\cite{html5-mouse}.}
+
+Overall, these changes were tremendously helpful for identifying mistakes.
+Future work could go on to add a time slider, to allow replaying a short section of an animation.
+
+% TODO: worrydream talk?
 
 
 \end{document}

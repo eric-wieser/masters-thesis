@@ -77,10 +77,13 @@
 		\item A routine to draw the physical robot, used in animations
 		\item The form of the controller. For simplicity of implementation on hardware, we only investigate affine controllers in this report.
 	\end{enumerate}
-
 	Having done this, the user then copies and pastes a routine block of code to run the pilco algorithm in their fully set up workspace.
-	When running this code, the result is a series of state plots showing simulated and predicted trajectories, after each iteration.
-	Additionally, log files are saved containing the state rollouts, controllers, and plots themselves.
+
+	When running this code, the result is a series of state, action, and loss plots, showing simulated and predicted trajectories after each iteration.
+	An animation is also played of the trajectory used to train the next iteration of the algorithm.
+	Log files are saved containing the state rollouts, controllers, and plots themselves -- making it easy to run the main script on a powerful remote computer, but view the results locally.
+
+	\Cref{TODO} shows an example of the plots.
 
 	\subsection{Embedded C++}
 
@@ -135,6 +138,7 @@
 	There are various places in which this principle is violated, across both codebases:
 	\begin{multicols}{2}
 		\raggedcolumns
+		\noindent
 		In the Matlab code:
 
 		\begin{itemize}[noitemsep]
@@ -146,6 +150,7 @@
 
 		\columnbreak
 
+		\noindent
 		In the C++ code:
 
 		\begin{itemize}[noitemsep]
