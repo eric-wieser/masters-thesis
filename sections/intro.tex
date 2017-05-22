@@ -32,13 +32,20 @@
 	More formally, we replace \cref{eq:transition} with a description of the probability distribution $\bm{x}_{i+1}|\bm{x}_i,\bm{u}_{i}$.
 	PILCO chooses to model these distributions as Gaussians.
 
-	Gaussian processes come into play as the tool used to produce these distributions, as a gaussian process evaluated at a particular point $(\bm{x}_i,\bm{u}_i)$ produces a Gaussian distribution as its result, interpreted as the distribution of $\bm{x}_{i+1}$. Approximations are needed to chain together multiple state transitions, which are described in more detail in the eponymous paper\cite{pilco}.
-
-
-
 	\footnotetext{
 		To make the optimization well-defined, $J$ needs to be chosen to collapse the distribution back down into a scalar. A simple choice is to define $J'(...) = \mathbb{E}_{...}[J(...)]$, but more powerful options exist, such as penalizing uncertainty in the cost.
 	}
+
+	Gaussian processes come into play as the tool used to produce these distributions, as a gaussian process evaluated at a particular point $(\bm{x}_i,\bm{u}_i)$ produces a Gaussian distribution as its result, interpreted as the distribution of $\bm{x}_{i+1}$. Approximations are needed to chain together multiple state transitions, which are described in more detail in the eponymous paper\cite{pilco}.
+
+	The learning process consists of the following steps, repeated cyclically until a sufficient controller is obtained:
+	\begin{enumerate}[nosep]
+		\item Choose an initial control policy
+		\item Apply the latest policy to the robot (perform a \enquote{rollout}), recording state and action trajectories \label{list:pilco:rollout}
+		\item Train the probabilistic dynamics model from all past data
+		\item Choose the policy that minimizes the cost $J$ when applied to a system with the newly-learnt dynamics, and return to step \ref{list:pilco:rollout}
+	\end{enumerate}
+	In practice, the first time that step \ref{list:pilco:rollout} is executed, multiple rollouts will be done, in order to provide enough data to sensibly train the dynamics model.
 
 
 
