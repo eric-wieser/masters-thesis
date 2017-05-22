@@ -60,7 +60,10 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 
 	While this proved somewhat successful, a simpler approach was settled: using a limit switch, shown in \cref{fig:robot-back}.
 	This is placed such that the switch is naturally pressed while holding the robot, and so the act of releasing the robot also release the switch.
-	This is also used as a stop button, to terminate a rollout early once it has fallen over, or if something goes wrong.
+	This is also used as a stop button, to terminate a rollout early once it has fallen over, or if something goes wrong\footnotemark.
+	An important consideration here was preventing switch bounce, which would cause a stop immediately after a start.
+
+	\footnotetext{Amusingly, this is often an impact point for the tumbling robot, causing an automatic motor shut-off after a fall.}
 
 \subsection{Electrical failure}
 
