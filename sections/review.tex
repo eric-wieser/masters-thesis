@@ -17,7 +17,7 @@
 	Previous work concluded \cite[p.~54]{aleksi} that a better simulation model of the unicycle was desirable, to help determine whether poor learning progress was due to implementation errors in software, or simply due to the small unicycle having a more challenging set of dynamics than the previously-simulated large unicycle.
 
 	As part of my project, model parameters were found for the small unicycle, shown alongside the method used to obtain them in \cref{table:mechanical}.
-	Noting that since one of the goals of PILCO is \emph{not} to require a detailed system model, some properties were simply estimated.
+	Noting that since one of the goals of \textsc{Pilco} is \emph{not} to require a detailed system model, some properties were simply estimated.
 
 	\begin{table}
 		\input{tables/mechanical.tex}
@@ -52,7 +52,7 @@
 	One particularly useful feature of this type of software is to \enquote{blame} a file, showing which commit each line was last modified in -- useful for distinguishing an important bugfix from obsolete code.
 	Two of the most common version control tools are Git and SVN, both of which are actively developed.
 
-	The PILCO codebase used SVN when this project started. After a short trial period near the beginning of the project, operating a Git mirror of the SVN repository, the decision was made to switch to Git. It's worth noting that an objective comparison of the two is difficult, but for this project, it presented some key advantages:
+	The \textsc{Pilco} codebase used SVN when this project started. After a short trial period near the beginning of the project, operating a Git mirror of the SVN repository, the decision was made to switch to Git. It's worth noting that an objective comparison of the two is difficult, but for this project, it presented some key advantages:
 	\begin{itemize}
 		\item
 			Git is decentralized. This means that even without internet access, it is possible to create commits.
@@ -69,7 +69,7 @@
 
 	\subsection{Matlab toolbox}
 
-	The PILCO toolbox is a large collection of matlab scripts, functions, and classes that collectively implement the code required to run the PILCO algorithm. The user of the software creates a collection of scenario files, describing:
+	The \textsc{Pilco} toolbox is a large collection of matlab scripts, functions, and classes that collectively implement the code required to run the \textsc{Pilco} algorithm. The user of the software creates a collection of scenario files, describing:
 	\begin{enumerate}[noitemsep]
 		\item The state and control variables of the system
 		\item The system dynamics, and noise model

@@ -44,11 +44,11 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 \subsection{Enabling untethered operation}
 	\label{sec:untethered}
 
-	Previous data collection from the small robot required the USB cable to be connected while the robot is in motion. Cables are stiff, and thus the force from flexing them can have a considerable effect on the dynamics of an small and unstable robot -- especially with an unpredicable human holding the other end. This unpredictability is the key issue - since this cable is in a different place each time, and that information is not available to the controller, PILCO is not able to learn to handle it.
+	Previous data collection from the small robot required the USB cable to be connected while the robot is in motion. Cables are stiff, and thus the force from flexing them can have a considerable effect on the dynamics of an small and unstable robot -- especially with an unpredictable human holding the other end. This unpredictability is the key issue - since this cable is in a different place each time, and that information is not available to the controller, \textsc{Pilco} is not able to learn to handle it.
 
 	This was not a deliberate choice -- the design of the microcontroller board makes it impossible to reattach a USB cable without resetting the microchip, as the RS232 \texttt{DTR} line is connected to the microcontroller reset\footnotemark. The solution was to cut a jumper pad on the microcontroller to break this connection, preventing this restart. This allows the USB cable to be reconnected after a test, and data to be recovered.
 
-	\footnotetext{The RS232 protocol includes two flow control lines -- \texttt{DTR}, and \texttt{CTS}. The arduino bootloader uses both of these to allow reprogramming over USB. Unfortunately, \texttt{DTR} is unconditionally asserted by the RS232 over serial operating system driver, causing the unwanted reset. Were \texttt{CTS} used instead, there would be no problem.}
+	\footnotetext{The RS232 protocol includes two flow control lines -- \texttt{DTR}, and \texttt{CTS}. The Arduino bootloader uses both of these to allow reprogramming over USB. Unfortunately, \texttt{DTR} is unconditionally asserted by the RS232 over serial operating system driver, causing the unwanted reset. Were \texttt{CTS} used instead, there would be no problem.}
 
 \subsection{Improving the release procedure}
 
@@ -69,11 +69,11 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 
 	During one test of the hardware, the robot began to emit smoke from a then-unidentifiable location. The priority of course was to disconnect the battery as soon as possible to prevent a fireball, but even this proved difficult, with the melting power cables giving minor burns to a finger.
 
-	Methodical investigation followed, with the battery kept within its firesafe bag, and the entire system in a non-flammable enviroment. The process consisted of removing as much of the electronics as possible, and plugging in components one-by-one until a short was detected. This time, wire-cutters were used to break the battery connection quickly and safely when the issue arose.
+	Methodical investigation followed, with the battery kept within its fire-safe bag, and the entire system in a non-flammable environment. The process consisted of removing as much of the electronics as possible, and plugging in components one-by-one until a short was detected. This time, wire-cutters were used to break the battery connection quickly and safely when the issue arose.
 
-	The cause is shown in \cref{TODO}. On the bottom of the microcontroller board, there is a small metal stub fastening the pin headers to the top. These stubs were being used as resting points, with one pulled against a cable tie, and the other against a painted motor. With time, the paint wore through, causing a direct short between the Vin and GND pins -- those connected directly to the battery.
+	The cause is shown in \cref{TODO}. On the bottom of the microcontroller board, there is a small metal stub fastening the pin headers to the top. These stubs were being used as resting points, with one pulled against a cable tie, and the other against a painted motor. With time, the paint wore through, causing a direct short between the \texttt{Vin} and \texttt{GND} pins -- those connected directly to the battery.
 
-	The upshot here, of course, is that the short happened through a few components as possible, with damage found only in the wiring. To prevent this issue recurring, the metal screws connecting the microcontroller to the frame were replaced with nylon standoffs (\cref{fig:clearance}) -- such that the board is now properly insulated from the frame, and furthermore has a far more rigid attachement.
+	The upshot here, of course, is that the short happened through a few components as possible, with damage found only in the wiring. To prevent this issue recurring, the metal screws connecting the microcontroller to the frame were replaced with nylon standoffs (\cref{fig:clearance}) -- such that the board is now properly insulated from the frame, and furthermore has a far more rigid attachment.
 
 	As a precaution, a 3.15A fuse was inserted into the system, such that if a short happens in future, it does so without causing damage. The rating of the fuse was chosen to be in line with the stall current of the motors \cite{motor}, making sure it did not exceed that of the 22AWG wires connecting it (roughly 5A).
 

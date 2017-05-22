@@ -9,10 +9,10 @@
 
 	Unfortunately, this change in tools also comes with a change in hardware libraries.
 	Due to license incompatibilities, the \texttt{plib} library bundled with MPIDE, which we were making use of to operate hardware registers, is not available in the Arduino IDE.
-	This meant that large amounts of code that interfaced with hardware had to change. Many of these changes involves switching to the stardard Arduino constructs for setting interrupts and writing pins.
+	This meant that large amounts of code that interfaced with hardware had to change. Many of these changes involves switching to the standard Arduino constructs for setting interrupts and writing pins.
 	The rest required the use of features of the \texttt{chipkit-core} library.
 
-	To verify that the transition was made correctly, some simple tests were performed with the motors, encoder, and accelerometer readings, all of which are easy to verify a log stream against by eye. One such mistake this picked up was that the encoders were no longer changing sign correcty.
+	To verify that the transition was made correctly, some simple tests were performed with the motors, encoder, and accelerometer readings, all of which are easy to verify a log stream against by eye. One such mistake this picked up was that the encoders were no longer changing sign correctly.
 	This was due to confusion\footnotemark between interrupt \emph{numbers} (referred to as \texttt{IRQ}s in the library) and interrupt \emph{vectors}.
 
 	\footnotetext{A type of mistake that well-typed code written in C++, rather than C, would have prevented from happening in the first place. Alas, C is here to stay in the realm of embedded software libraries.}
@@ -26,13 +26,13 @@
 	Worse yet, even if we remove the dependency on \texttt{C}, it is very difficult to distribute \texttt{A} alongside our application.
 
 	There is a open source project that acknowledges and provides a solution to these shortcomings, PlatformIO \cite{platformio}.
-	This keeps the excellent cross-platform support that the arduino libraries provide, and pairs them with a package manager, and a command line tool.
-	One particularly useful feature is the ability to run unit tests on the arduino, to verify the correctness of software.
+	This keeps the excellent cross-platform support that the Arduino libraries provide, and pairs them with a package manager, and a command line tool.
+	One particularly useful feature is the ability to run unit tests on the Arduino, to verify the correctness of software.
 
 \subsection{Building a communication interface}
 
 	In the review of the current system, we noted that the current system to configure the robot is manual and error prone.
-	Echoing Aleki's \cite[p.~34]{aleksi} remarks, a worthwhile next step would be \enquote{automatically writing the policy parameters to the microcontroller program from Matlab as well as [adding] a direct serial communication between Matlab and the unicycle for data exchange}.
+	Echoing remarks by \citeauthor{aleksi} \cite[p.~34]{aleksi}, a worthwhile next step would be \enquote{automatically writing the policy parameters to the microcontroller program from Matlab as well as [adding] a direct serial communication between Matlab and the unicycle for data exchange}.
 
 	The approach taken here unifies the above two suggestions.
 	The goal is to have the program on the robot be static, and have it be reconfigurable over the serial link, as well as using that link to send back structured data.
@@ -68,7 +68,7 @@
 
 		\footnotetext{
 			The API of protobuf has changed significantly in the 5 years since this package was last modified.
-			As such, if using protobuf from matlab is desired in future, I would recommend starting the implementation from scratch as a protobuf python plugin, using the latest google developer examples.
+			As such, if using protobuf from Matlab is desired in future, I would recommend starting the implementation from scratch as a protobuf python plugin, using the latest Google developer examples.
 		}
 
 	\subsubsection{Framing}
@@ -82,7 +82,7 @@
 				This only delays the problem though -- this queue can become full, and subsequent bytes will be lost.
 			\item
 				Unlike I\textsuperscript{2}C, the channel provides no mechanism to group a set of bytes together.
-				Every byte is sent separately, and in practice, implementations do not record at what time each byte was recieved (ruling out using a time delay to indicate \enquote{end-of-group}).
+				Every byte is sent separately, and in practice, implementations do not record at what time each byte was received (ruling out using a time delay to indicate \enquote{end-of-group}).
 		\end{itemize}
 
 		The problem of \enquote{framing}, then is build on this abstraction to provide a mechanism to group bytes together into packets. Consider the sequence of packets
@@ -131,11 +131,11 @@
 		Of particular note is that any diagnostic messages from the robot also appear in this interface, as they too go through the messaging interface. Example commands include:
 		\begin{description}
 			\item[\texttt{go} $\langle$n$\rangle$]
-				Prepares for an n-timestep rollout. Once run, the robot can be detached, and the rollout begun. Upon reattaching the robot, the command line extracts the state logs, dumping them into a \texttt{.mat} file for the PILCO Matlab code to read.
+				Prepares for an n-timestep rollout. Once run, the robot can be detached, and the rollout begun. Upon reattaching the robot, the command line extracts the state logs, dumping them into a \texttt{.mat} file for the \textsc{Pilco} Matlab code to read.
 			\item[\texttt{policy}  $\langle$filename$\rangle$]
 				Loads a policy from the provided \texttt{.mat} file onto the robot.
 			\item[\texttt{calibate}]
-				Performs gyro recalibration -- this needs to be manually triggerable, so that the operator can ensure the robot is at rest.
+				Performs gyroscope recalibration -- this needs to be manually triggerable, so that the operator can ensure the robot is at rest.
 		\end{description}
 
 \bib
