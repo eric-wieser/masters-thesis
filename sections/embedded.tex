@@ -128,12 +128,15 @@
 		For simplicity, the tool was created as an interactive command-line application, rather than a GUI.
 		A screenshot of the interface is shown in \cref{TODO}.
 		From this command line, commands can be sent to and data collected from the robot.
-		Of particular note is that any diagnostic messages from the robot also appear in this interface, as they too go through the messaging interface.
-
-		The key command in this program is \texttt{go 50}, which sets up a 50-timestep rollout.
-		Once run, the robot can be detached, and the rollout begun.
-		The command-line application waits for the robot to be reattached, and then extracts the state logs, dumping them into a \texttt{.mat} file for the PILCO Matlab code to read.
-
+		Of particular note is that any diagnostic messages from the robot also appear in this interface, as they too go through the messaging interface. Example commands include:
+		\begin{description}
+			\item[\texttt{go} $\langle$n$\rangle$]
+				Prepares for an n-timestep rollout. Once run, the robot can be detached, and the rollout begun. Upon reattaching the robot, the command line extracts the state logs, dumping them into a \texttt{.mat} file for the PILCO Matlab code to read.
+			\item[\texttt{policy}  $\langle$filename$\rangle$]
+				Loads a policy from the provided \texttt{.mat} file onto the robot.
+			\item[\texttt{calibate}]
+				Performs gyro recalibration -- this needs to be manually triggerable, so that the operator can ensure the robot is at rest.
+		\end{description}
 
 \bib
 
