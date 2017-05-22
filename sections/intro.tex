@@ -7,6 +7,81 @@
 
 \section{The PILCO approach}
 
+	PILCO \cite{pilco}, or probabilistic inference for learning control, is a technique described by \citeauthor{pilco} for applying Gaussian processes to learn dynamics and control.
+
+	One way to model dynamical systems is with discrete-time equations, which for a sufficiently small timestep, are close approximations to their continuous-time counterparts.
+	For a suitable choice of state vector $\bm{x}$ and timestep $\delta t$, discrete-time systems can be described in terms of the transition dynamics,
+	\begin{align}
+		\bm{x}_{i + 1} = f(\bm{x}_{i}, \bm{u}_{i}) \quad \text{where} \quad \bm{x}_{i} := x(t_0 + i\cdot\delta t)\,. \label{eq:transition}
+	\end{align}
+	From this, the optimal control problem in discrete time can be stated as
+	\begin{alignat}{2}
+		\text{find}&& \quad
+			\pi^*(\bm{x}) &= \argmin_{\pi(\bm{x})}
+				J(\bm{x}_{...}, \bm{u}_{...})
+				\quad \text{where} \quad
+				J(\bm{x}_{...}, \bm{u}_{...}) = \sum_{i=0}^{i=N} c(\bm{x}_t, \bm{u}_t)\quad \\
+		\text{st.}&& \quad
+			\bm{x}_{i+1} &= f(\bm{x}_{i}, \bm{u}_{i}) \\
+		&&
+			\bm{u}_i &= \pi(\bm{x}_i)\,
+	\end{alignat}
+	where $\pi(\bm{x})$ is a policy that computes the desired actions for a given state, and $c(\bm{x}, \bm{u})$ attributes a cost to a set of states and actions at a single timestep.
+
+	One of the defining features of PILCO is the use of probabilistic dynamics models, in order to capture model uncertainty, as well as process and observation noise. As such, $\bm{x}$ and $\bm{u}$ become distributions over states and outputs, not simply values\footnotemark.
+	More formally, we replace \cref{eq:transition} with a description of the probability distribution $\bm{x}_{i+1}|\bm{x}_i,\bm{u}_{i}$.
+	PILCO chooses to model these distributions as Gaussians.
+
+	Gaussian processes come into play as the tool used to produce these distributions, as a gaussian process evaluated at a particular point $(\bm{x}_i,\bm{u}_i)$ produces a Gaussian distribution as its result, interpreted as the distribution of $\bm{x}_{i+1}$. Approximations are needed to chain together multiple state transitions, which are described in more detail in the eponymous paper\cite{pilco}.
+
+
+
+	\footnotetext{
+		To make the optimization well-defined, $J$ needs to be chosen to collapse the distribution back down into a scalar. A simple choice is to define $J'(...) = \mathbb{E}_{...}[J(...)]$, but more powerful options exist, such as penalizing uncertainty in the cost.
+	}
+
+
+
 \section{Unicycle robots}
+
+	Unicycles provide a challenging control problem to human riders, so intuitively provide a good testing ground for new control techniques.
+	A reasonable approximation for how a human rider operates a unicycle is that they have two degrees of freedom -- one through the pedals, and the other by adjusting their angular rotation through the vertical axis.
+	This is mirrored in the design of the robotic unicycle, which has one motor attached to the drive wheel, and the other attached to a vertical flywheel\footnotemark (henceforth referred to as the turntable).
+	The state space of such a unicycle is $\mathbb{R}^{12}$ \cite{forster}, so this system is heavily underactuated, explaining the difficulty in controlling it.
+
+	\footnotetext{While it may seem unfair that flywheel can rotate freely, while a human is limited to about \SI{180}{\degree} of motion, this intuition doesn't tell the whole story -- human riders are able to change their moment of inertia by extending and contracting their arms.}
+
+
+	There is a history of unicycle robots in the Engineering Department dating back to 2005, which is described in more detail by \citeauthor{quiero} \cite{quiero}.
+	Alongside work on these, the PILCO method has been successfully applied to computer models of these unicycles  \cite[section~3.3]{pilco}.
+	Based on the work in 2011, the decision was made to move from the large and dangerous platform described there to a much smaller and safer model.
+	Since then, work by \citeauthor{aleksi} \cite{aleksi} went on to write the embedded software for the system, and performed experiments to try and reproduce the results of PILCO in simulation in hardware.
+
+	This work met mixed success -- many problems in the hardware were identified and fixed, and there was some evidence of learning, with the controller marginally improving over time.
+	However, various concerns were raised with the testing procedure, and the computer model of the unicycle was never updated to match the hardware -- making it difficult to judge whether problems lay in the hardware or in simply a more difficult control task than on the larger unicycle, and raising concerns about whether other parts of the software stack were still configured for the large robot.
+
+	\subsection{Application of PILCO to the unicycle}
+		For the purposes of PILCO, our action and reduced (ie., the components used for learning)  state vectors are
+		\begin{align}
+			\bm{x} &= \begin{bmatrix}
+				\dot\theta & \dot\phi &\dot\psi_w & \dot\psi & \dot\psi_t &
+				x_c & y_c &
+				\theta &
+				\phi & \psi
+			\end{bmatrix}^T &
+			\bm{u} &= \begin{bmatrix}
+				\tau_t & \tau_w
+			\end{bmatrix}^T\,,
+		\end{align}
+		where $\theta$ is the roll angle, $\phi$ is yaw, $\psi_w$ wheel angle,
+		$\psi$ pitch angle, $\psi_t$ the turntable angle, and $x_c, y_c$ are the position of the world-origin in the coordinate space of the robot.
+		$\tau_t$ and $\tau_w$ are the control torques on the turntable and wheel, respectively.
+		In simulation, some extra states ($\dot{x}_c, \dot{y}_c, \psi_w, \psi_t$) are needed in order to implement the dynamics derived by \citeauthor{forster} \cite{forster}.
+
+		In this report, we restrict our search for optimal controllers to affine controllers of the form
+		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
+		$c(\bm{x}, \bm{u}) = \mathbb{E}_{\bm{x}, \bm{u}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
+
+\bib
 
 \end{document}
