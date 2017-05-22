@@ -14,11 +14,20 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{bm}
-\newcommand*\diff{\mathop{}\!\mathrm{d}}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{siunitx}
 \usepackage{multirow,bigdelim}
+
+% others
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+
+% for the braces
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathreplacing}
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
 
 % style only
 \usepackage[scaled=0.85]{beramono}
@@ -30,10 +39,6 @@
 	keywordstyle=\color{blue}\ttfamily,
 	tabsize=2}
 
-\usepackage{tikz}
-\usetikzlibrary{calc}
-\usetikzlibrary{decorations.pathreplacing}
-\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
 
 
 % related to links and references
