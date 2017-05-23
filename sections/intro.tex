@@ -3,40 +3,86 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\section{Gaussian Processes}
-
-\section{The \textsc{Pilco} approach}
-
-	\textsc{Pilco} \cite{pilco}, or probabilistic inference for learning control, is a technique described by \citeauthor{pilco} for applying Gaussian processes to learn dynamics and control.
-
+\section{Optimal Control of Discrete systems}
 	One way to model dynamical systems is with discrete-time equations, which for a sufficiently small timestep, are close approximations to their continuous-time counterparts.
 	For a suitable choice of state vector $\bm{x}$ and timestep $\delta t$, discrete-time systems can be described in terms of the transition dynamics,
 	\begin{align}
-		\bm{x}_{i + 1} = f(\bm{x}_{i}, \bm{u}_{i}) \quad \text{where} \quad \bm{x}_{i} := x(t_0 + i\cdot\delta t)\,. \label{eq:transition}
+		\bm{x}\tind{i + 1} = f(\bm{x}\tind{i}, \bm{u}\tind{i}) \quad \text{where} \quad \bm{x}\tind{i} := x(t_0 + i\cdot\delta t)\,. \label{eq:transition}
 	\end{align}
 	From this, the optimal control problem in discrete time can be stated as
 	\begin{alignat}{2}
 		\text{find}&& \quad
 			\pi^*(\bm{x}) &= \argmin_{\pi(\bm{x})}
-				J(\bm{x}_{...}, \bm{u}_{...})
+				J(\bm{x}\tind\cdot, \bm{u}\tind\cdot)
 				\quad \text{where} \quad
-				J(\bm{x}_{...}, \bm{u}_{...}) = \sum_{i=0}^{i=N} c(\bm{x}_t, \bm{u}_t)\quad \\
+				J(\bm{x}\tind\cdot, \bm{u}\tind\cdot) = \sum_{i=0}^{i=N} c(\bm{x}\tind{i}, \bm{u}\tind{i})\quad \\ \label{eq:optimal}
 		\text{st.}&& \quad
-			\bm{x}_{i+1} &= f(\bm{x}_{i}, \bm{u}_{i}) \\
+			\bm{x}\tind{i+1} &= f(\bm{x}\tind{i}, \bm{u}\tind{i}) \\ \nonumber
 		&&
-			\bm{u}_i &= \pi(\bm{x}_i)\,
+			\bm{u}\tind{i} &= \pi(\bm{x}\tind{i})\, \nonumber
 	\end{alignat}
 	where $\pi(\bm{x})$ is a policy that computes the desired actions for a given state, and $c(\bm{x}, \bm{u})$ attributes a cost to a set of states and actions at a single timestep.
 
-	One of the defining features of \textsc{Pilco} is the use of probabilistic dynamics models, in order to capture model uncertainty, as well as process and observation noise. As such, $\bm{x}$ and $\bm{u}$ become distributions over states and outputs, not simply values\footnotemark.
-	More formally, we replace \cref{eq:transition} with a description of the probability distribution $\bm{x}_{i+1}|\bm{x}_i,\bm{u}_{i}$.
-	\textsc{Pilco} chooses to model these distributions as Gaussians.
+\section{Gaussian Processes}
+
+	A Gaussian (or \enquote{normal}) distribution is described by a mean $\mu$ and a variance $\sigma^2$, and satisfies
+	\begin{align}
+		x &\sim \mathcal{N}(\mu, \sigma) &\implies
+		p(x; \mu, \sigma^2) &= \frac{1}{\sqrt{2\pi\sigma^2}} \exp{\left[
+			-\frac{1}{2} \frac{(x - \mu)^2}{\sigma^2}
+		\right]}\,.
+	\intertext{
+	This describes only a single variable.
+	It can be extended to the multivariate Gaussian distribution over $\bm{x} \in \mathbb{R}^d$, which is described by a mean \emph{vector} $\bm{\mu}$ and a \emph{co}variance \emph{matrix} $\Sigma$, satisfying
+	}
+		\bm{x} &\sim \mathcal{N}(\bm{\mu}, \Sigma) &\implies
+		p(\bm{x}; \bm{\mu}, \Sigma)
+			&= \frac{1}{\sqrt{(2\pi)^d|\Sigma|}} \exp{\left[
+				-\frac{1}{2} (\bm{x} - \bm{\mu})^T \Sigma^{-1} (\bm{x} - \bm{\mu})
+			\right]}\,.
+	\end{align}
+	This is able to describe correlations between the finite set of variables $x_i, i\in [1,d]$.
+
+	Gaussian processes are a generalization of multivariate Gaussians to infinitely many variables.
+	This is done by noting that the vector $\mathbf{x} \in \mathbb{R}^k$ can be re-expressed as a discrete function of the index $x\colon [1,d] \to \mathbb{R}$, where $x_i = x(i)$.
+	From there, the domain can be expanded to the reals to produce a continuous scalar function, such that $x\colon \mathbb{R} \to \mathbb{R}$.
+	Gaussian processes are described by a mean \emph{function} $m(i)$ and a covariance \emph{function} $K(i, j)$, satisfying
+	\begin{align}
+		x(\cdot) &\sim \mathrm{GP}(m(\cdot), K(\cdot,\cdot)) \\\implies
+		p(x(\cdot); m(\cdot), K(\cdot,\cdot))
+			&\propto \exp{\left[
+				-\frac{1}{2}
+				\iint
+					\left(x(i) - m(i)\right)
+					{K(i,j)}^{-1}
+					\left(x(j) - m(j)\right)
+				\diff i \diff j
+			\right]}\,.
+	\end{align}
+
+	We can take our generalization one further still, by replacing the scalar function $x\colon \mathbb{R} \to \mathbb{R}$ with a scalar field $x\colon \mathbb{R}^m \to \mathbb{R}$.
+	With this modification, the only change to the above equation is that the scalars $i,j$ become the vectors $\bm{i}$, $\bm{j}$.
+	By defining
+	\begin{align}
+		\bm{z}\tind{i} &= \begin{bmatrix}\bm{x}\tind{i} \\ \bm{u}\tind{i}\end{bmatrix} &
+		\Delta\bm{x}\tind{i} &= \bm{x}_{i + 1} - \bm{x}\tind{i}\,,
+	\end{align}
+	we can express \cref{eq:transition} in terms of a series of convenient $\mathbb{R}^m \to \mathbb{R}$ functions $f_j$ that can be modelled by such a distribution
+	\begin{align}
+		\Delta\bm{x}\tind{i}_j &= f_j(\bm{z}\tind{i}) & f_j &\sim \mathrm{GP}(m_j(\bm{z}), K_j(\bm{z}_1, \bm{z}_2))\,, \label{eq:transition-gp}
+	\end{align}
+	giving a probabilistic representation of discrete system dynamics.
+	Such a representation is able to capture model uncertainty, process noise, and observation noise.
+
+\section{The \textsc{Pilco} approach}
+
+	Armed with a probabilistic representation of dynamics, \citeauthor{pilco}'s \textsc{Pilco} \cite{pilco} (Probabilistic Inference for Learning Control) provides a technique to learn the parameters of this representation, and to select a probabilistically optimal controller.
+
+	As such, the optimization in \cref{eq:optimal} also becomes probabilistic\footnotemark, with $\bm{x}\tind{i}$ and $\bm{u}\tind{i}$ become distributions over states and outputs, not simply values. These distributions can be found by sequentially applying the probabilistic one-step transition equation described in \label{eq:transition-gp}.
 
 	\footnotetext{
 		To make the optimization well-defined, $J$ needs to be chosen to collapse the distribution back down into a scalar. A simple choice is to define $J'(...) = \mathbb{E}_{...}[J(...)]$, but more powerful options exist, such as penalizing uncertainty in the cost.
 	}
-
-	Gaussian processes come into play as the tool used to produce these distributions, as a Gaussian process evaluated at a particular point $(\bm{x}_i,\bm{u}_i)$ produces a Gaussian distribution as its result, interpreted as the distribution of $\bm{x}_{i+1}$. Approximations are needed to chain together multiple state transitions, which are described in more detail in the eponymous paper\cite{pilco}.
 
 	The learning process consists of the following steps, repeated cyclically until a sufficient controller is obtained:
 	\begin{enumerate}[nosep]
@@ -46,8 +92,6 @@
 		\item Choose the policy that minimizes the cost $J$ when applied to a system with the newly-learnt dynamics, and return to step \ref{list:pilco:rollout}
 	\end{enumerate}
 	In practice, the first time that step \ref{list:pilco:rollout} is executed, multiple rollouts will be done, in order to provide enough data to sensibly train the dynamics model.
-
-
 
 \section{Unicycle robots}
 
@@ -68,7 +112,7 @@
 	However, various concerns were raised with the testing procedure, and the computer model of the unicycle was never updated to match the hardware -- making it difficult to judge whether problems lay in the hardware or in simply a more difficult control task than on the larger unicycle, and raising concerns about whether other parts of the software stack were still configured for the large robot.
 
 	\subsection{Application of \textsc{Pilco} to the unicycle}
-		For the purposes of \textsc{Pilco}, our action and reduced (ie., the components used for learning)  state vectors are
+		For the purposes of \textsc{Pilco}, our action and reduced (ie., the components used for learning) state vectors are
 		\begin{align}
 			\bm{x} &= \begin{bmatrix}
 				\dot\theta & \dot\phi &\dot\psi_w & \dot\psi & \dot\psi_t &
