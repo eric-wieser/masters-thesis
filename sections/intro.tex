@@ -25,7 +25,32 @@
 
 \section{Gaussian Processes}
 
-	A Gaussian (or \enquote{normal}) distribution is described by a mean $\mu$ and a variance $\sigma^2$, and satisfies
+	\begin{figure}[b]
+		\centering
+		\begin{subfigure}[t]{0.3\linewidth}
+			\input{figures/gauss1d.tikz}
+			\caption{1D Gaussian distribution}
+			\label{fig:gaussian:1d}
+		\end{subfigure}%
+		\hfill
+		\begin{subfigure}[t]{0.3\linewidth}
+			\input{figures/gauss2d.tikz}
+			\caption{2D Gaussian distribution}
+			\label{fig:gaussian:2d}
+		\end{subfigure}%
+		\hfill
+		\begin{subfigure}[t]{0.3\linewidth}
+			\input{figures/gaussproc.tikz}
+			\caption{Gaussian process}
+			\label{fig:gaussian:proc}
+		\end{subfigure}%
+		\caption{Probabilistic applications of Gaussians}
+		\medskip
+		\small
+		The grey shaded region shows a \SI{90}{\percent} confidence interval, and red markers show samples taken from the distribution. Above 1D, plotting the probability density becomes impractical.
+	\end{figure}
+
+	A Gaussian (or \enquote{normal}) distribution (\cref{fig:gaussian:1d})is described by a mean $\mu$ and a variance $\sigma^2$, and satisfies
 	\begin{align}
 		x &\sim \mathcal{N}(\mu, \sigma) &\implies
 		p(x; \mu, \sigma^2) &= \frac{1}{\sqrt{2\pi\sigma^2}} \exp{\left[
@@ -33,7 +58,7 @@
 		\right]}\,.
 	\intertext{
 	This describes only a single variable.
-	It can be extended to the multivariate Gaussian distribution over $\bm{x} \in \mathbb{R}^d$, which is described by a mean \emph{vector} $\bm{\mu}$ and a \emph{co}variance \emph{matrix} $\Sigma$, satisfying
+	It can be extended to the multivariate Gaussian distribution over $\bm{x} \in \mathbb{R}^d$ (\cref{fig:gaussian:2d}), which is described by a mean \emph{vector} $\bm{\mu}$ and a \emph{co}variance \emph{matrix} $\Sigma$, satisfying
 	}
 		\bm{x} &\sim \mathcal{N}(\bm{\mu}, \Sigma) &\implies
 		p(\bm{x}; \bm{\mu}, \Sigma)
@@ -46,7 +71,7 @@
 	Gaussian processes are a generalization of multivariate Gaussians to infinitely many variables.
 	This is done by noting that the vector $\mathbf{x} \in \mathbb{R}^k$ can be re-expressed as a discrete function of the index $x\colon [1,d] \to \mathbb{R}$, where $x_i = x(i)$.
 	From there, the domain can be expanded to the reals to produce a continuous scalar function, such that $x\colon \mathbb{R} \to \mathbb{R}$.
-	Gaussian processes are described by a mean \emph{function} $m(i)$ and a covariance \emph{function} $K(i, j)$, satisfying
+	Gaussian processes (\cref{fig:gaussian:proc}) are described by a mean \emph{function} $m(i)$ and a covariance \emph{function} $K(i, j)$, satisfying
 	\begin{align}
 		x(\cdot) &\sim \mathrm{GP}(m(\cdot), K(\cdot,\cdot)) \\\implies
 		p(x(\cdot); m(\cdot), K(\cdot,\cdot))
@@ -78,7 +103,7 @@
 
 	Armed with a probabilistic representation of dynamics, \citeauthor{pilco}'s \textsc{Pilco} \cite{pilco} (Probabilistic Inference for Learning Control) provides a technique to learn the parameters of this representation, and to select a probabilistically optimal controller.
 
-	As such, the optimization in \cref{eq:optimal} also becomes probabilistic\footnotemark, with $\bm{x}\tind{i}$ and $\bm{u}\tind{i}$ become distributions over states and outputs, not simply values. These distributions can be found by sequentially applying the probabilistic one-step transition equation described in \label{eq:transition-gp}.
+	As such, the optimization in \cref{eq:optimal} also becomes probabilistic\footnotemark, with $\bm{x}\tind{i}$ and $\bm{u}\tind{i}$ become distributions over states and outputs, not simply values. These distributions can be found by sequentially applying the probabilistic one-step transition equation described in \cref{eq:transition-gp}.
 
 	\footnotetext{
 		To make the optimization well-defined, $J$ needs to be chosen to collapse the distribution back down into a scalar. A simple choice is to define $J'(...) = \mathbb{E}_{...}[J(...)]$, but more powerful options exist, such as penalizing uncertainty in the cost.
