@@ -103,7 +103,7 @@
 
 	Armed with a probabilistic representation of dynamics, \citeauthor{pilco}'s \textsc{Pilco} \cite{pilco} (Probabilistic Inference for Learning Control) provides a technique to learn the parameters of this representation, and to select a probabilistically optimal controller.
 
-	As such, the optimization in \cref{eq:optimal} also becomes probabilistic\footnotemark, with $\bm{x}\tind{i}$ and $\bm{u}\tind{i}$ become distributions over states and outputs, not simply values. These distributions can be found by sequentially applying the probabilistic one-step transition equation described in \cref{eq:transition-gp}.
+	As such, the optimization in \cref{eq:optimal} also becomes probabilistic\footnotemark, with $\bm{x}\tind{i}$ and $\bm{u}\tind{i}$ becoming distributions over, not simply values of, states and outputs. These distributions can be found by sequentially applying the probabilistic one-step transition equation described in \cref{eq:transition-gp}.
 
 	\footnotetext{
 		To make the optimization well-defined, $J$ needs to be chosen to collapse the distribution back down into a scalar. A simple choice is to define $J'(...) = \mathbb{E}_{...}[J(...)]$, but more powerful options exist, such as penalizing uncertainty in the cost.
