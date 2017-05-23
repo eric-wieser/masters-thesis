@@ -158,6 +158,22 @@
 		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
 		$c(\bm{x}, \bm{u}) = \mathbb{E}_{\bm{x}, \bm{u}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
 
+		Our GP dynamics model is parametrized by $m$, $K$ of the form
+		\begin{align}
+			m(\bm{z}) &= \bm{z} \cdot \bm{w} + b \\
+			K(\bm{z}_1, \bm{z}_2) &= \sigma_s^2 \exp \left(
+				-\frac{1}{2}
+				\bm{z}_1^T
+				\begin{bmatrix}
+					\bm{l}_1^2 && \\
+					& \ddots & \\
+					&& \bm{l}_n^2
+				\end{bmatrix}^{-1}
+				\bm{z}_2
+			\right) + \sigma_n^2 I \,,
+		\end{align}
+		where $\sigma_s^2$ and $\sigma_n^2$ estimate the signal and noise variances, $w$ (weight) and $b$ (bias) define a simple affine mean function, and $\bm{l}$ (length) defines a length-scale for the problem for each of the state variables.
+
 \bib
 
 \end{document}
