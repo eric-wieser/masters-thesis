@@ -6,7 +6,23 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\subsection{Encouraging encapsulation}
+\subsection{Interfacing to the hardware}
+
+Previous work deduced that the \matlab{applyController} needed to be duplicated to support collecting data from the hardware.
+This was a poor decision, as that meant that all the state-plotting code would be duplicated between the two places.
+Furthermore, it was not possible to collect data while the robot was running, as Matlab would not wait for the data to be collected.
+
+A better approach is taken in this work, to override the \matlab{rollout} function.
+This now presents a file-selection dialog to the user, which serves a dual purpose of waiting for the user to have collected the data.
+It is worth noting that this file resides with the embedded code, and so will not be found with the \textsc{Pilco} codebase.
+
+\subsection{Towards better data representations}
+
+\subsection{Better log files}
+
+The \textsc{Pilco} toolbox sensibly produces log files after each iteration, enabling easier debugging.
+Unfortunately, each time learning is restarted, all the old log files are overwritten.
+This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git commit hash identifying which version of \textsc{Pilco} was used to run it. An example under the new scheme is \texttt{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \texttt{unicycle/uninlds_007_H050.mat}.
 
 \subsection{Interactive visualization}
 
