@@ -4,8 +4,179 @@
 \begin{document}
 
 \section{Unit testing}
+	When writing software, and especially when refactoring software, it is very useful to have tests in place, to isolate and detect mistakes early.
+	The idea is that all the test can be run with one tool, making it easy to tell if old behaviour has been broken.
 
-\section{Preliminary hardware experiments}
-% \subfile{experiments}
+	Over 500 lines\footnotemark of tests were written just for the packet framing code \cite{packetio}, as when building a deep software stack, you really want to make sure the foundation is solid. These are intended to hit all the corner-cases.
+	Similar tests were written for the new \matlab{Frame} and \matlab{gaussian} classes, which caught some minor bugs whilst code was being written
+
+	\footnotetext{More than the number of lines in the implementation, 430!}
+
+\section{Hardware experiments}
+
+	\subsection{Motors}
+		A command was added to the communication protocol to enable directly setting the motor speeds, \texttt{go} $\langle$wheel$\rangle$ $\langle$turntable$\rangle$.
+		It was discovered that that a positive command to the turntable resulted in a clockwise rotation -- whereas our convention elsewhere was the reverse.
+		This was a trivial fix, and required a corresponding sign reverse in the sensor, as verified below.
+		It is worth noting that such a sign flip would not impede \textsc{Pilco}, but it would cause results from simulation and hardware to be incomparable.
+
+	\subsection{Sensors}
+		The aim of these tests is to verify that the state measurements on the robot are representative of reality, and consistent with the interpretation of those measurements as used by the animation routine in the matlab code\footnotemark.
+		\footnotetext{With the hope that the animation routine is consistent with the dynamics, as both have been used sufficiently much in the past. This turned out to be false, but not in a significant way.}
+
+		To perform them, a null controller was loaded onto the robot (equivalent to disconnecting the battery), the datalogger started, and then some motions performed by hand.
+		The verification step involved loading the log files into the animator, and checking that the animation resembled the true robot motion.
+		Since the motions are performed roughly by hand, checking for precise correspondences does not offer any useful information.
+		The tests are therefore designed to make any mistakes as obvious as possible
+
+
+		\begin{enumerate}
+			\item \label{sensor-test-wheel}
+				Roll the robot forwards one full wheel rotation, and then backwards -- with its wheel turning.
+
+				This tests that the sign convention of the wheel angle and value of its radius are correct.
+
+			\item \label{sensor-test-tt}
+				Spin the turntable clockwise, then anticlockwise.
+
+				This tests the same properties of the turntable.
+
+			\item \label{sensor-test-pitch}
+				Rotate the robot $135\deg$ forwards in pitch, and back up again.
+
+				This tests that the Euler angles do not hit a singularity, and that the gyro integration has the correct scale factor.
+				It also verifies the sign convention.
+
+			\item \label{sensor-test-roll}
+
+			    Rotate the robot $90\deg$ left in roll, and back up again.
+
+			    This is looking for the same class of mistake as above.
+
+			\item \label{sensor-test-yaw}
+				Rotate the robot in $90\deg$ increments in yaw, up to $360\deg$
+
+			    This is looking for the same class of mistake as above, with an easy way to check if the original position is restored.
+
+			\item \label{sensor-test-free}
+			    Rotate the robot arbitrarily in 3D, and restore it to its original position.
+
+			    This checks that the orientation integration is conservative -- it should not depend on the path taken.
+		\end{enumerate}
+
+		\subsubsection{Results and subsequent fixes}
+
+		Test \ref{sensor-test-wheel} revealed no mistakes.
+		However, later testing upon driving forward multiple wheel rotations discovered that the wheel position would overflow and wraparound to a negative number. Similarly, the wheel velocity would be afflicted with a very large spike.
+		It was determined that the first of these problems was one partially introduced by the author during the work in \cref{sec:platformio}, while the latter has been there since the beginning.
+
+		To understand the problem, some background is needed here on the workings of the encoders.
+		They are attached to 16-bit timers, which after some here-unimportant interrupt tricks are configured to count up and down with the encoder pulses. When they count up to their maximum value of \cpp{0xFFFF}, they overflow and resume counting at \cpp{0x0000}.
+		The trick to working around this is to sum the change in reading on each timestep. This change \emph{must} be calculated using \cpp{unsigned} subtraction of the values, where wraparound is well defined. This is actually hard to get right without invoking undefined behaviour, which the previous code did according to \cite[Paragraph~5/4]{cpp-standard}.
+		Using the principle that good code should turn things that are hard to get right into those which are hard to get wrong, the type in \cref{listing:wrapping} was defined.
+
+		\begin{listingfloat}
+			\begin{lstlisting}[language=c++,frame=single,gobble=8]
+				template<typename T, typename = enable_if<is_unsigned<T>::value>>
+				class wrapping {
+				private:
+				  T value;
+				public:
+				  typedef typename make_signed<T>::type diff_type;
+				  constexpr wrapping(T val=0) : val(val) {}
+				  constexpr diff_type operator -(wrapping<T> b) const {
+				    return value - b.value;
+				  }
+				};
+			\end{lstlisting}%
+			\begin{minipage}[t]{0.5\linewidth-1em}
+				\begin{lstlisting}[language=c++,frame=single,gobble=10]
+					wrapping<uint16_t> x1 = 0xFFFF;
+					wrapping<uint16_t> x2 = 0x0001;
+					auto fwd = x2 - x1; // = (int16_t)2
+					auto rev = x1 - x2; // = (int16_t)-2
+				\end{lstlisting}
+			\end{minipage}\hfill
+			\begin{minipage}[t]{0.5\linewidth-1em}
+				\begin{lstlisting}[language=c++,frame=single,gobble=10]
+					// all of the below do not compile
+					wrapping<int16_t> x3;
+					auto sum = x1 + x2;
+					int16_t unsafe = x1;
+				\end{lstlisting}
+			\end{minipage}\hfill
+			\caption{\cpp{wrapping<uint16_t>}, used to represent encoder readings}
+			\label{listing:wrapping}
+			\medskip
+			\small
+			This encapsulates the process of casting back-and-forth between \cpp{signed} and \cpp{unsigned} types, and makes various misuses illegal.
+		\end{listingfloat}
+
+		Test \ref{sensor-test-tt} revealed an incorrect sign on the turntable encoder -- made due to the motor being mounted upside-down.
+		This was to be expected, as the same mistake had already been found in the motor torque.
+
+		Test \ref{sensor-test-pitch} showed intended behaviour up to just short of $90\deg$, indicating a correct sign convention.
+		However, when slowly crossing this threshold, the rendering of the robot rotated rapidly around until it placed the entire drawing under the ground plane.
+		A few frames from the animation revealing this are shown in \cref{fig:bad-euler}.
+		The problem was diagnosed to be due to an incorrect choice of euler angle convention, seemingly picked by virtue of being the first on the list in \cite{diebel2006representing}.
+		In our circumstance, this is not appropriate, as our Euler angles (see \cref{app:euler-angles}) must be chosen such that pitch aligns with the rotation of the wheel axle.
+		Invoking DRY once again, part of the problem here was an ambiguous representation, of \cpp{float yaw, pitch, roll;}, which says nothing about the euler convention used.
+		In the new code, this is expressed as \cpp{euler_angles<213> orient;} -- and muddling this with \cpp{euler_angles<213>} is a compile-time error.
+
+		\begin{figure}
+				% \input{figures/euler-frames.tikz}
+			\caption{Evidence of problems with the Euler angle representation}
+			\label{fig:bad-euler}
+		\end{figure}
+
+		Test \ref{sensor-test-roll} revealed that there was a sign mistake, with the hardware and visualizer rolling in opposite directions.
+		This was hard to diagnose, as both the \matlab{draw} and \matlab{dynamics} functions for the unicycle contained fully-expanded matrix multiplications, which are very hard to check.
+		The contents of \matlab{draw} was reverse-engineered back into a chain of matrix multiplications, upon which it became apparent that the roll was being used in the left-handed sense.
+		The contents of \matlab{dynamics} was once-upon-a-time produced from some (now lost) symbolic algebra, so is completely incomprehensible to a human reader.
+		Due to the infeasibility of checking this code, it was assumed that the author of \matlab{dynamics} had made the sensible choice of a right-handed rotation sense, and the \matlab{draw} function was corrected accordingly.
+
+
+		\begin{figure}
+			\begin{subfigure}[t]{0.3\linewidth}
+				% \input{figures/yaw-wraparound.tikz}
+				\caption{In yaw (test \cref{sensor-test-yaw})}
+				\label{fig:bad-yaw}
+			\end{subfigure}
+			\begin{subfigure}[t]{0.3\linewidth}
+				% \input{figures/position-wraparound.tikz}
+				\caption{In position (test \cref{sensor-test-wheel})}
+				\label{fig:bad-wheel}
+			\end{subfigure}
+			\caption{Wraparound errors in the states}
+		\end{figure}
+
+
+		Test \cref{sensor-test-yaw} initially seemed to show correct behaviour, but caused a discontinuity once rotated past \SI{180}{\degree}, seen in \cref{fig:bad-yaw}.
+		While most rollouts fall over long before passing this yaw angle, it seemed wise to fix it, as it would not be modelled well by our GP dynamics.
+		The simple function added to fix this is shown in \cref{listing:unwrap}.
+
+		\begin{listingfloat}
+			\begin{lstlisting}[language={[11]C++}, gobble=8, frame=single]
+				float unwrap_angle(float next, float last) {
+					// remainder rounds to nearest, limiting to [-pi,pi]
+					return last + remainder(next - last, 2*M_PI);
+				}
+			\end{lstlisting}
+			\caption{A way to remove angular wraparound, given the old and proposed new value.}
+			\label{listing:unwrap}
+		\end{listingfloat}
+
+		Test \cref{sensor-test-free} showed significant drift from the starting position.
+		It was first hypothesized that the gyro calibration might be to blame.
+		This process would occur at startup, which was doubly problematic: the calibration requires the robot to be still, yet at startup a human is probably holding the robot; and the gyro is affected by temperature, which naturally rises when getting power for the first time.
+		A \texttt{calibrate} command was added to the communication protocol, which repeated the calibration process, and reported back the variance of the readings obtained -- high variance implies the robot was not still enough.
+
+		Further investigation revealed a suspicious method of integrating angular velocities, that did not match the literature \cite{boyle2016integration}.
+		Following the theme of the software in this project, this took the form of a fully-expanded expression, without any remarks as to its derivation.
+		After contact with the author, it was found that the method was indeed incorrect, making the mistake of interpreting $\bm{\omega}$ as rates in Euler angles, yet going to the effor of using quaternions as an internal representation -- the worst of both worlds! A new approach was needed, as described in \cref{app:quat}.
+
+		With both problems fixed, significantly improved perfomance was noticeable
+
+\bib
 
 \end{document}

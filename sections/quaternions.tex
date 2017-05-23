@@ -18,6 +18,7 @@ Under numerical error, orthonormality of the rotation matrices will be lost, lea
 
 
 \section{Euler angles}
+\label{app:euler-angles}
 
 Another option would be to parameterize the orientation with a set of angles.
 It turns out that three angles are needed, usually named $(\phi, \theta, \psi)$.
@@ -112,7 +113,7 @@ TODO
 
 	The accelerometer does not tell us any information about the yaw angle (corresponding to the degree of freedom in \cref{eq:quat-sqrt}), so we are free to change the yaw rotation of the result as we please.
 	Since our cost function penalizes yaw, it is sensible to choose $\psi = 0$
-	 We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded soruce code at \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
+	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded soruce code at \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
 
 	\footnotetext{
 		In the source code, we take a more direct approach, noting that we need only extract the yaw from the quaternion, and post-multiply by the a quaternion to remove that yaw.
