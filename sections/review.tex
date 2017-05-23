@@ -120,7 +120,7 @@
 	% 		\enquote{Magic numbers} -- unnamed numbers in the source code. These ranged from pin numbers, miscellaneous hardware register values, to conversion factors between representations.
 	% 		This type of code is impossible to understand without a datasheet for each component in hand.
 
-	% 		The better approach is to use code like \lstinline[language=c++]{constexpr double GEARBOX_RATIO = 225/16;} at the top of a file, and use that longer name, rather than repeat \lstinline{225/16} in multiple place.
+	% 		The better approach is to use code like \cpp{constexpr double GEARBOX_RATIO = 225/16;} at the top of a file, and use that longer name, rather than repeat \lstinline{225/16} in multiple place.
 
 	% 	\item
 	% 		Global variables. This is bad for two reasons: it leaks global state, meaning that attempting to run the program a second time without a full reset is difficult; and it makes it unknowable which variables are used in which locations.
@@ -145,7 +145,7 @@
 			\item computation of dynamics, rendering, and loss for the unicycle contain their own copies of physical unicycle parameters.
 			\item augmentation (\ref{sec:intro:augmentation}) of gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
 			\item ordering of states -- while the user's scenario files specify exactly which states should participate in which part of the algorithm, not all of these speifications are respected.
-			\item mapping of state numbers to state names -- many files contain code along the lines of \lstinline{theta = x(9)}, which causes problems if a new state is inserted
+			\item mapping of state numbers to state names -- many files contain code along the lines of \matlab{theta = x(9)}, which causes problems if a new state is inserted
 		\end{itemize}
 
 		\columnbreak
@@ -161,6 +161,9 @@
 		\end{itemize}
 	\end{multicols}
 	Some of these DRY violations were indeed hiding bugs, as we shall see in \cref{sec:improvements:software}.
+
+	% TODO: these are
+	%   wrong length scale in cost function
 
 
 
