@@ -38,17 +38,28 @@
 
 \lstset{
 	basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color[rgb]{0,0,1},
+    commentstyle=\color[rgb]{0.026,0.112,0.095},
+    stringstyle=\color[rgb]{0.627,0.126,0.941},
+    numberstyle=\color[rgb]{0.205, 0.142, 0.73},
 	breaklines=true,
-	keywordstyle=\color{blue}\ttfamily,
-	tabsize=2}
-
-
+	tabsize=2,
+	keepspaces=true,
+	columns=flexible
+}
 
 % related to links and references
 \usepackage{xr-hyper}
 \usepackage[bookmarks,bookmarksopen]{hyperref}
 \usepackage{cleveref}
 
+% custom listing float type
+\usepackage{newfloat}
+\DeclareFloatingEnvironment[
+   name=Listing
+]{listingfloat}
+\crefname{listingfloat}{listing}{listings}
+\Crefname{listingfloat}{Listing}{Listings}
 
 % bibliography stuff
 \usepackage[sorting=none,backend=biber,bibencoding=utf8]{biblatex}
@@ -146,7 +157,5 @@
 
 	\chapter{A primer on quaternions}
 	\subfile{sections/quaternions}
-
-	\chapter{Zero-overhead bug-free pin assignments in C++}
 
 \end{document}

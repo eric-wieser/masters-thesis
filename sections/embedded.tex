@@ -138,6 +138,75 @@
 				Performs gyroscope recalibration -- this needs to be manually triggerable, so that the operator can ensure the robot is at rest.
 		\end{description}
 
+\subsection{Recovering and documenting pin assignments}
+
+	When adding the switch in \cref{sec:switch}, it was found to that no documentation was present on which pins were free and which ones were in use. It was decided that this would be easier to determine through reading the source code, rather than dismantling the electronics, and following traces.
+	Unfortunately, the source code alone was not enough to reconstruct this, as some pins were not referred to by number, but by the hardware peripherals (timers, PWM, etc) they belong to, so the data sheet was needed too.
+
+	The DRY principle stands against these mixed representations, so a novel system was invented to specify the pins numbers in the source code, but translate them into peripherals \emph{at compile time}.
+	This is powerful, because it means that code which tries to use a pin for a peripheral it does not support \emph{will not compile}! The trick in the implementation is to exploit the \cpp{constexpr} keyword, and is shown in \cref{lst:constexpr}.
+	Once this is done, the pins in use can be made directly readable from the source code, as in \cref{lst:pins}.
+
+	\begin{listingfloat}
+		\begin{lstlisting}[language={[11]c++},gobble=6,frame=single]
+			template<typename T>
+			T failed(const char*) { while(1); }
+
+			constexpr p32_timer& timer_for(uint8_t pin) {
+				return pin == 4  ? tmr1 :
+				       pin == 22 ? tmr3 :
+				       pin == 23 ? tmr4 :
+				       pin == 11 ? tmr5 :
+				       failed<p32_timer&>("Timer does not exist");
+			}
+
+			constexpr p32_timer& ta = timer_for(4);  // ok, returns tmr1
+			constexpr p32_timer& tb = timer_for(3);  // compiler error!
+		\end{lstlisting}
+		\caption{Compile-time pin-checking}
+		\label{lst:constexpr}
+		\medskip
+		\small
+		The last line is a compiler error because \cpp{failed} is not marked \cpp{constexpr}, which \enquote{contaminates} the \cpp{constexpr}-ness of \cpp{timer_for}, forbidding its result from being placed in \cpp{tb}.
+	\end{listingfloat}
+
+	\begin{listingfloat}
+		\begin{lstlisting}[language={[11]c++},gobble=6,frame=single]
+			namespace pins
+			{
+				/** @name Encoders */
+				static const uint8_t TT_DIR = 39;
+				static const uint8_t W_DIR  = 47;
+				static const uint8_t TT_CLK = 22;
+				static const uint8_t W_CLK  = 23;
+				/** @} */
+
+				/** @name I2C Sensors */
+				static const uint8_t IMU_SCL = 21;
+				static const uint8_t IMU_SDA = 20;
+				/** @} */
+
+				/** @name Motors */
+				static const uint8_t TT_FWD = 3;
+				static const uint8_t TT_REV = 5;
+				static const uint8_t W_FWD  = 6;
+				static const uint8_t W_REV  = 9;
+				/** @} */
+
+				/** @name Human interaction */
+				static const uint8_t SWITCH = 43;
+				static const uint8_t LED    = PIN_LED1;
+				static const uint8_t USB_RX = 0;
+				static const uint8_t USB_TX = 1;
+				/** @} */
+			}
+		\end{lstlisting}
+		\caption{Pin assignments of the ChipKIT microcontroller}
+		\label{lst:pins}
+	\end{listingfloat}
+
+
+
 \bib
 
 \end{document}
