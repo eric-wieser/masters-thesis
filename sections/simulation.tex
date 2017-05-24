@@ -1,0 +1,102 @@
+\providecommand{\thebibpath}{..}
+\makeatletter\def\input@path{{\thebibpath/}{.}}\makeatother
+\documentclass[main.tex]{subfiles}
+\begin{document}
+
+\subsection{Small unicycle}
+
+	\subsubsection{Fixing the cost function}
+	\label{sec:cost-function}
+	It was discovered that multiple mistakes were present in the cost function. The original cost function was defined as in the documentation as:
+	\begin{align}
+		c(\bm z) = 1 - \exp\left\{-\frac{1}{2}\left(a\|\bm{p} - \bm p_0\|^2+ \frac{\phi^2}{(4\pi)^2}\right)\right\} \label{eq:cost-bad}
+	\end{align},
+	where $\bm{p} \in \mathbb{R}^3$ is the position of the centre of the turntable in robot-centric coordinates, $\bm{p}_0$ is the target position, and $a$ a dimensionless weight to adjust the relative cost of position vs yaw angle.
+	The implementation did not match this, applying different weights to each component of $\bm{p} - \bm{p_0}$, which whilst reasonable, is a form of cost-shaping -- something that should be avoided, as it is providing unnecessary hints to \textsc{Pilco} about how to learn the task.
+
+	Both of these approaches can be shown to be invalid by dimensional analysis -- the addition in \cref{eq:cost-bad} attempts to add a quantity with units \si{\meter\square} to a unitless quantity, which is not a well-defined operation.
+	Indeed, this caused noticeable problems when attempting to learn on the small unicycle, as the first term decreased by a factor of $10$ due to the change in size.
+	The fix is to form a non-dimensional group with $\bm{p}$ and the robot parameters and use that in place of $\bm{p}$, for which $\frac{\bm{p}}{h}$ is sufficient, giving
+	\begin{align}
+		c(\bm z) = 1 - \exp\left\{-\frac{1}{2}\left(a\frac{\|\bm{p} - \bm p_0\|}{h}^2+ \frac{\phi^2}{(4\pi)^2}\right)\right\} \,, \label{eq:correct-cost}
+	\end{align}
+	where $h = r_w + r_f + r_t$ is the total height of the robot.
+
+	There was also a mistake in the algebra for $\|\bm{p} - \bm p_0\|^2$, which omitted a trigonometric term.
+	The correct expressions for these vectors, using the states defined in \cref{eq:state-vars} and the robot parameters from \cref{table:mechanical}, is
+	\begin{align}
+			\bm{p} &= \begin{bmatrix}
+				(r_f + r_t) \sin \psi \\
+				\big((r_f + r_t) \cos \psi + r_w\big) \sin\theta \\
+				\big((r_f + r_t) \cos \psi + r_w\big) \cos\theta
+			\end{bmatrix}\,,
+		\quad&
+			\bm{p}_0 &= \begin{bmatrix}
+				x_c \\
+				y_c \\
+				r_w + r_t + r_f
+			\end{bmatrix}\,.
+	\end{align}
+	The product terms containing $\cos$ and $\sin$ can be combined with
+	\begin{align}
+		\begin{aligned}
+			\cos \psi \sin\theta &= \tfrac{1}{2} \big(
+				\sin \beta + \sin \alpha
+			\big) \\
+			\cos \psi \cos\theta &= \tfrac{1}{2} \big(
+				\cos \beta + \cos \alpha
+			\big)
+		\end{aligned}
+		\quad\text{where}\quad
+		\begin{aligned}
+		\alpha &:= \theta - \psi \\
+		\beta &:= \theta + \psi
+		\end{aligned}\,,
+	\end{align}
+	suggesting the augmentation of the state vector with $\sin, \cos$ of $\alpha, \beta$.
+	This allows $\bm{p}$ to be expressed as a linear function of the augmented state $\tilde{\bm{z}}$,
+	\begin{align}
+		\bm{p} &= \underbrace{\begin{bmatrix}
+			(r_f + r_t) \unitv{\psi} \\
+			\tfrac{1}{2} (r_f + r_t) (\unitv{\sin \beta} + \unitv{\sin \alpha}) +
+			 \unitv{\sin \theta} r_w \\
+			\tfrac{1}{2} (r_f + r_t) (\unitv{\cos \beta} + \unitv{\cos \alpha}) +
+			 \unitv{\cos \theta} r_w
+		\end{bmatrix}}_{A_p} \tilde{\bm{z}}, &
+		\bm{p}_0 &= \underbrace{\begin{bmatrix}
+			\unitv{x_c} \\
+			\unitv{y_c} \\
+			0
+		\end{bmatrix}}_{A_{p_0}} \tilde{\bm{z}} +
+		\underbrace{\begin{bmatrix} 0 \\ 0 \\ r_w + r_f + r_t \end{bmatrix}}_{\bm{b}_{p_0}}
+	\end{align}
+	defining the row vector $\unitv\psi$ such that $\unitv\psi\tilde{\bm{z}} = \psi$, and similarly for all other state variables.
+	This lets us express
+	\begin{align}
+		\|\bm{p} - \bm{p}_0\|^2
+			&= \|(A_p - A_{p_0})\tilde{\bm{z}} - \bm{b}_{p_0}\|^2  \nonumber \\
+			&= \|(A_p - A_{p_0})(\tilde{\bm{z}} - \tilde{\bm{z}}_{p_0})\|^2 \\
+		\text{where}\quad\tilde{\bm{z}}_{p_0}
+			&= \unitv{\cos \beta} + \unitv{\cos \alpha} + \unitv{\cos \theta}  \nonumber
+	\end{align}
+	From here, the cost function in \cref{eq:correct-cost} can be expressed in a simple form,
+	\begin{align}
+		c(\bm z) &= 1 - \exp\left\{-\frac{1}{2}
+			(\tilde{\bm{z}} - \tilde{\bm{z}}_0)^T  Q (\tilde{\bm{z}} - \tilde{\bm{z}}_0)
+		\right\} \,, \label{eq:quad-cost} \\
+		\text{where}\quad Q &=
+			\unitv{\phi}^T\frac{1}{4\pi^2}\unitv{\phi} +
+			(A_p - A_{p_0})^T\frac{1}{h^2}(A_p - A_{p_0}) \nonumber \\
+			\tilde{\bm{z}}_0 &= \tilde{\bm{z}}_{p_0} \nonumber
+	\end{align}
+
+\subsection{Roll limits}
+	A suggestion from previous work was to redesign the frame to \enquote{reduce the effect of the roll limitation}\cite[p.~35]{aleksi}, due to a suspicion that the way in which the hardware was limited in roll to \SI{17}{\degree} was a hindrance to the learning -- indeed, the simulated unicycle did not have this constraint.
+
+	Results from the earlier work were not necessarily valid, as they only evaluated the effect of this yaw limit in simulation on the large unicycle.
+	Since this work acquired a model for the small unicycle (\cref{table:mechanical}), a more correct experiment could be performed.
+
+	The results did indeed show a reduced ability to learn. \todo{Plots to show this}
+	However, it was realized that some cost-shaping would become desirable - there should be a penalty for coming close to the roll constraint, and so a new term was added to $Q$ from \cref{eq:quad-cost}, of $\unitv{\theta}\frac{1}{\SI{17}{\degree}}^2\unitv{\theta}^T$.
+	This did indeed improve performance \todo{Plots to show this}.
+\end{document}
