@@ -3,7 +3,12 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\section{Optimal Control of Discrete systems}
+\section{Optimal Control}
+
+	The field of control theory concerns itself with taking a system, and designing a controller that makes it behave in a desirable way.
+	Optimal control lets us formally define a measure of desirability, and find the controller that maximizes that measure.
+
+	In order to apply any control theory, we need a model of the system.
 	One way to model dynamical systems is with discrete-time equations, which for a sufficiently small timestep, are close approximations to their continuous-time counterparts.
 	For a suitable choice of state vector $\bm{x}$ and timestep $\delta t$, discrete-time systems can be described in terms of the transition dynamics,
 	\begin{align}
@@ -121,6 +126,9 @@
 	The key advantage of this method is that it requires orders of magnitude less interaction time \cite{pilco} than competing methods -– important for systems like a unicycle, where each failed interaction (falling over) can cause damage.
 
 \section{Unicycle robots}
+
+
+
 
 	Unicycles provide a challenging control problem to human riders, so intuitively provide a good testing ground for new control techniques.
 	A reasonable approximation for how a human rider operates a unicycle is that they have two degrees of freedom -- one through the pedals, and the other by adjusting their angular rotation through the vertical axis.
