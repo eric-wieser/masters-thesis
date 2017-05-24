@@ -159,12 +159,22 @@
 				\caption{In yaw (test \cref{sensor-test-yaw})}
 				\label{fig:bad-yaw}
 			\end{subfigure}
+		\end{figure}
+		\begin{figure}
 			\begin{subfigure}[t]{0.3\linewidth}
-				% \input{figures/position-wraparound.tikz}
-				\caption{In position (test \cref{sensor-test-wheel})}
-				\label{fig:bad-wheel}
+				\input{figures/bad-encoder-pos.tikz}
+				\caption{Seen in x and y}
+			\end{subfigure}\hfill
+			\begin{subfigure}[t]{0.3\linewidth}
+				\input{figures/bad-encoder-2d.tikz}
+				\caption{The \enquote{teleporting} path}
+			\end{subfigure}\hfill
+			\begin{subfigure}[t]{0.3\linewidth}
+				\input{figures/bad-encoder-dpos.tikz}
+				\caption{and wheel velocity}
 			\end{subfigure}
-			\caption{Wraparound errors in the states}
+			\label{fig:bad-wheel}
+			\caption{Wraparound errors in encoder readings}
 		\end{figure}
 
 
