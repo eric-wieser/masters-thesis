@@ -121,26 +121,29 @@
 		The problem was diagnosed to be due to an incorrect choice of euler angle convention, seemingly picked by virtue of being the first on the list in \cite{diebel2006representing}.
 		In our circumstance, this is not appropriate, as our Euler angles (see \cref{app:euler-angles}) must be chosen such that pitch aligns with the rotation of the wheel axle.
 		Invoking DRY once again, part of the problem here was an ambiguous representation, of \cpp{float yaw, pitch, roll;}, which says nothing about the euler convention used.
-		In the new code, this is expressed as \cpp{euler_angles<213> orient;} -- and muddling this with \cpp{euler_angles<213>} is a compile-time error.
+		In the new code, this is expressed as \cpp{euler_angles<213> orient;} -- and muddling this with \cpp{euler_angles<123>} is a compile-time error.
 
 		\begin{figure}
-			\begin{subfigure}[t]{\linewidth}
+			\centering
+			\begin{subfigure}[t]{0.333\linewidth-2em}
 				\input{figures/bad-euler.tikz}
 				\caption{
 					Plots of yaw (\ref{line:yaw}), pitch (\ref{line:pitch}), and roll (\ref{line:roll}).
 				}
-			\end{subfigure}
-
-			\begin{subfigure}[t]{0.5\linewidth-2em}
-				\input{figures/bad-euler-frame1.tikz}
-				\caption{State before}
 			\end{subfigure}\hfill
-			\begin{subfigure}[t]{0.5\linewidth-2em}
+			\begin{subfigure}[t]{0.333\linewidth-2em}
+				\input{figures/bad-euler-frame1.tikz}
+				\caption{State at $t_1$}
+			\end{subfigure}\hfill
+			\begin{subfigure}[t]{0.333\linewidth-2em}
 				\input{figures/bad-euler-frame2.tikz}
-				\caption{State after}
+				\caption{State at $t_2$}
 			\end{subfigure}
 			\caption{Evidence for incorrect Euler Angles}
 			\label{fig:bad-euler}
+			\medskip
+			\small
+			The state of the robot goes through a large discontinuity, rotating \SI{180}{\degree} underground, due to an incorrect convention for Euler Angles.
 		\end{figure}
 
 		Test \ref{sensor-test-roll} revealed that there was a sign mistake, with the hardware and visualizer rolling in opposite directions.
