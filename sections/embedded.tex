@@ -140,6 +140,7 @@
 		\end{description}
 
 \subsection{Recovering and documenting pin assignments}
+	\label{sec:pins}
 
 	When adding the switch in \cref{sec:switch}, it was found to that no documentation was present on which pins were free and which ones were in use. It was decided that this would be easier to determine through reading the source code, rather than dismantling the electronics, and following traces.
 	Unfortunately, the source code alone was not enough to reconstruct this, as some pins were not referred to by number, but by the hardware peripherals (timers, PWM, etc) they belong to, so the data sheet was needed too.

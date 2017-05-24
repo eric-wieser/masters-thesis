@@ -118,6 +118,8 @@
 	\end{enumerate}
 	In practice, the first time that step \ref{list:pilco:rollout} is executed, multiple rollouts will be done, in order to provide enough data to sensibly train the dynamics model.
 
+	The key advantage of this method is that it requires orders of magnitude less interaction time \cite{pilco} than competing methods -– important for systems like a unicycle, where each failed interaction (falling over) can cause damage.
+
 \section{Unicycle robots}
 
 	Unicycles provide a challenging control problem to human riders, so intuitively provide a good testing ground for new control techniques.
@@ -147,7 +149,7 @@
 			\end{bmatrix}^T &
 			\bm{u} &= \begin{bmatrix}
 				\tau_t & \tau_w
-			\end{bmatrix}^T\,,
+			\end{bmatrix}^T\,, \label{eq:state-vars}
 		\end{align}
 		where $\theta$ is the roll angle, $\phi$ is yaw, $\psi_w$ wheel angle,
 		$\psi$ pitch angle, $\psi_t$ the turntable angle, and $x_c, y_c$ are the position of the world-origin in the coordinate space of the robot.
@@ -156,7 +158,7 @@
 
 		In this report, we restrict our search for optimal controllers to affine controllers of the form
 		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
-		$c(\bm{x}, \bm{u}) = \mathbb{E}_{\bm{x}, \bm{u}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
+		$c(\bm{x}, \bm{u}) = 1 - \mathbb{E}_{\bm{x}, \bm{u}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
 
 		Our GP dynamics model is parametrized by $m$, $K$ of the form
 		\begin{align}

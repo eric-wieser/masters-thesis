@@ -52,43 +52,43 @@
 	\\
 \midrule
 	\texttt{Cw}
-		& MoI of wheel $\parallel$ to axle
+		& MOI of wheel $\parallel$ to axle
 		& 3.0536e-07 & \kilogram \square\meter
 		&\tikzmark{bra2}\multirow{2}{\hsize}{%
 			computing $m_\mathrm{wheel} = \mathtt{mw} - \rho_\mathrm{steel} \pi \allowbreak(lr^2)_\textrm{axle}$, and then assuming a uniform laminar disc.
 		}
 	\\
 	\texttt{Aw}
-		& MoI of wheel $\bot$ to axle
+		& MOI of wheel $\bot$ to axle
 		& 1.2739e-04 & \kilogram \square\meter
 		& \tikzmark{brb2}
 	\\
 	\texttt{Cf}
-		& MoI of frame
+		& MOI of frame
 		& 5.1116e-04 & \kilogram \square\meter
 		&\tikzmark{bra3}\multirow{3}{\hsize}{%
 			estimation by dimensional analysis, assuming that $I \propto \mathtt{mf}\,\mathtt{rf}^2$, and using known values for the large unicycle.
 		}
 	\\
 	\texttt{Bf}
-		& MoI of frame
+		& MOI of frame
 		& 2.8406e-04 & \kilogram \square\meter
 		&
 	\\
 	\texttt{Af}
-		& MoI of frame
+		& MOI of frame
 		& 2.618e-04 & \kilogram \square\meter
 		& \tikzmark{brb3}
 	\\
 	\texttt{Ct}
-		& MoI of tt. $\parallel$ to axle
+		& MOI of tt. $\parallel$ to axle
 		& 1.611e-04 & \kilogram \square\meter
 		&\tikzmark{bra4}\multirow{2}{\hsize}{%
 			decomposition into cylinders, and using $\rho_\mathrm{steel}$.
 		}
 	\\
 	\texttt{At}
-		& MoI of tt. $\bot$ to axle
+		& MOI of tt. $\bot$ to axle
 		& 8.102e-05 & \kilogram \square\meter
 		& \tikzmark{brb4}
 	\\
@@ -122,13 +122,13 @@
 \caption{Mechanical properties of the small unicycle}
 \medskip
 \small
-MoI and COM abbreviate Moment of Intertia and Center of Mass, respectively.
+MOI and COM abbreviate Moment of Inertia and Center of Mass, respectively.
 The first column indicates the property name of the \texttt{UnicyclePlant} class in the Matlab source code.
-Many properties proved impossible to measure due to the inability to dissasemble the robot, such as \texttt{mt}, requiring estimation techniques instead.
-The working for all of these techniques is implemented in the matlab \matlab{UnicyclePlant} class.
+Many properties proved impossible to measure due to the inability to disassemble the robot, such as \texttt{mt}, requiring estimation techniques instead.
+The working for all of these techniques is implemented in the Matlab \matlab{UnicyclePlant} class.
 
 \medskip
 Of these properties, only \texttt{rw} is needed by the embedded software.
-To learn a controller on the real robot, only \texttt{rw}, \texttt{rf}, and \texttt{rt} are needed, as these factor into the cost function (\cref{TODO}).
+To learn a controller on the real robot, only \texttt{rw}, \texttt{rf}, and \texttt{rt} are needed, as these factor into the cost function (\cref{sec:cost-function}).
 The full set of properties is only need for complete robot simulation.
 

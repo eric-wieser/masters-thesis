@@ -20,6 +20,8 @@
 \usepackage{multirow,bigdelim}
 \usepackage{subcaption}
 \usepackage{calc}
+\usepackage{caption}
+\captionsetup{format=hang}
 
 % others
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -28,6 +30,7 @@
 \newcommand{\cpp}{\lstinline[language={[11]C++}]}
 \newcommand{\matlab}{\lstinline[language={[11]C++}]}
 \newcommand{\tind}[1]{^{(#1)}}
+\newcommand{\unitv}[1]{\hat{\bm{e}}_{#1}}
 
 % for the braces
 \usepackage{tikz}
@@ -41,13 +44,38 @@
 %% the following commands are needed for some matlab2tikz features
 \usetikzlibrary{plotmarks}
 \usetikzlibrary{arrows.meta}
+\usetikzlibrary{decorations.markings}
 \usepgfplotslibrary{patchplots}
 \usepackage{grffile}
-\usepackage{amsmath}
+\pgfplotsset{%
+	every axis/.append style={
+		label style={font=\scriptsize},
+		tick label style={font=\scriptsize}
+	}
+}
+\tikzset{
+  set arrow inside/.code={\pgfqkeys{/tikz/arrow inside}{#1}},
+  set arrow inside={end/.initial=>, opt/.initial=},
+  /pgf/decoration/Mark/.style={
+    mark/.expanded=at position #1 with
+    {
+      \noexpand\arrow[\pgfkeysvalueof{/tikz/arrow inside/opt}]{\pgfkeysvalueof{/tikz/arrow inside/end}}
+    }
+  },
+  arrow inside/.style 2 args={
+    set arrow inside={#1},
+    postaction={
+      decorate,decoration={
+        markings,Mark/.list={#2}
+      }
+    }
+  },
+}
 
 % style only
 \usepackage[scaled=0.85]{beramono}
 \usepackage[onehalfspacing]{setspace}
+\usepackage{parskip}
 
 \lstset{
 	basicstyle=\ttfamily\footnotesize,
@@ -147,14 +175,11 @@
 	\chapter{Machine learning experiments}
 
 		\section{Simulation}
+		\subfile{sections/simulation}
 
-			\subsection{Small unicycle}
-
-			\subsection{Uniform cost function}
-
-			\subsection{Roll limits}
 
 		\section{Reality}
+		\subfile{sections/hardware-experiments}
 
 	\chapter{Conclusions}
 
