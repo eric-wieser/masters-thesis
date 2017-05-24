@@ -1,6 +1,9 @@
 % Use documentclass[wide]{IIBproject} to have narrower margins
 \documentclass[12pt,a4paper]{IIBproject}
 
+\usepackage[textsize=tiny]{todonotes}
+\setlength{\marginparwidth}{2cm}
+
 % vital stuff
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -23,10 +26,10 @@
 \usepackage{caption}
 \captionsetup{format=hang}
 
-% others
+
+% custom commands
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
-
 \newcommand{\cpp}{\lstinline[language={[11]C++}]}
 \newcommand{\matlab}{\lstinline[language={[11]C++}]}
 \newcommand{\tind}[1]{^{(#1)}}
@@ -146,7 +149,7 @@
 
 	% Summary
 	\begin{abstract}
-	No more than 100 words.
+	\todo{Write this}
 	\end{abstract}
 	\pagestyle{plain}
 	\tableofcontents

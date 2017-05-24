@@ -68,11 +68,28 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 
 \subsection{Electrical failure}
 
-	During one test of the hardware, the robot began to emit smoke from a then-unidentifiable location. The priority of course was to disconnect the battery as soon as possible to prevent a fireball, but even this proved difficult, with the melting power cables giving minor burns to a finger.
+	During one test of the hardware, the robot began to emit smoke from a then-unidentifiable location. The priority of course was to disconnect the battery as soon as possible to prevent a fireball, but even this proved difficult, with the melting power cables (\cref{fig:short:wires}) giving minor burns to a finger.
+
+	\begin{figure}
+		\begin{subfigure}[t]{0.5\linewidth-1em}
+			% \includegraphics[width=\linewidth]{}
+			\todo[inline]{Add photo}
+			\caption{Exposed metal on the motor}
+			\label{fig:short:cause}
+		\end{subfigure}
+		\begin{subfigure}[t]{0.5\linewidth-1em}
+			% \includegraphics[width=\linewidth]{}
+			\todo[inline]{Add photo}
+			\caption{Wires melted}
+			\label{fig:short:wires}
+		\end{subfigure}
+		\caption{Cause and effect of electrical short-circuit}
+		\label{fig:short}
+	\end{figure}
 
 	Methodical investigation followed, with the battery kept within its fire-safe bag, and the entire system in a non-flammable environment. The process consisted of removing as much of the electronics as possible, and plugging in components one-by-one until a short was detected. This time, wire-cutters were used to break the battery connection quickly and safely when the issue arose.
 
-	The cause is shown in \cref{TODO}. On the bottom of the microcontroller board, there is a small metal stub fastening the pin headers to the top. These stubs were being used as resting points, with one pulled against a cable tie, and the other against a painted motor. With time, the paint wore through, causing a direct short between the \texttt{Vin} and \texttt{GND} pins -- those connected directly to the battery.
+	The cause is shown in \cref{fig:short:cause}. On the bottom of the microcontroller board, there is a small metal stub fastening the pin headers to the top. These stubs were being used as resting points, with one pulled against a cable tie, and the other against a painted motor. With time, the paint wore through, causing a direct short between the \texttt{Vin} and \texttt{GND} pins -- those connected directly to the battery.
 
 	The upshot here, of course, is that the short happened through a few components as possible, with damage found only in the wiring. To prevent this issue recurring, the metal screws connecting the microcontroller to the frame were replaced with nylon standoffs (\cref{fig:clearance}) -- such that the board is now properly insulated from the frame, and furthermore has a far more rigid attachment.
 

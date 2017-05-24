@@ -3,6 +3,9 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
+
+\todo{Work out how much of this is really needed, and whether it fits better somewhere else in the text}
+
 An important part of designing control systems is the choice of representation of the state. In robotics, the state typically consists of four parts: the position, the velocity, the orientation, and the angular velocity. The first two of these are easily represented with vectors, and will not be discussed further here.
 
 Orientation and angular velocity pose more of a problem. In 2d, the situation is once again easy -- both can be represented with a single scalar, respectively $\theta$ and $\omega = \dot{\theta}$. Combining orientations can be done using addition, and is both associative and commutative. Rotation is 3d is not commutative, meaning that the order in which rotations are applied matters. Angular velocity in 3d can be represented with a vector $\bm{\omega}$, with the direction indicating the axis rotated around, and the magnitude the angular velocity about that axis.
@@ -42,12 +45,12 @@ Euler angles are algebraically awkward. It is difficult to combine two rotations
 
 \section{Quaternions}
 
-\begin{align}
-	\|\bm{q}\| = \|a + \bm{v}\| &= a^2 + \|v\| \\
-	\operatorname{normalize}(\bm{q}) &= \frac{\bm{q}}{\|\bm{q}\|}
-\end{align}
+	\begin{align}
+		\|\bm{q}\| = \|a + \bm{v}\| &= a^2 + \|v\| \\
+		\operatorname{normalize}(\bm{q}) &= \frac{\bm{q}}{\|\bm{q}\|}
+	\end{align}
 
-TODO
+	\todo[inline]{Actually write some stuff here?}
 
 \section{Integrating angular velocity}
 
@@ -86,6 +89,8 @@ TODO
 	However, on the robot our sampling rate for the integration of \SI{20}{\hertz} is rather low, so we can afford this extra computation.
 
 \section{Getting orientation from the Accelerometer}
+
+	\todo{Does this fit better into one of the previous sections}
 
 	Integrating the angular velocity gives a change in orientation, but it doesn't give an initial orientation.
 	Rather than relying on the robot operator to start the robot perfectly upright, we obtain the relevant information from the accelerometer. When the robot is not in motion the accelerometer measures only the acceleration due to gravity, telling us $\bm{a}_d$, the direction in which down lies.

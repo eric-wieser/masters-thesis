@@ -83,7 +83,16 @@
 	An animation is also played of the trajectory used to train the next iteration of the algorithm.
 	Log files are saved containing the state rollouts, controllers, and plots themselves -- making it easy to run the main script on a powerful remote computer, but view the results locally.
 
-	\Cref{TODO} shows an example of the plots.
+	\Cref{fig:pilco-interface} shows an example of the plots.
+
+	\begin{figure}
+		% \includegraphics[width=\linewidth]{}
+		\caption{Screenshot of the \textsc{Pilco} interface}
+		\label{fig:pilco-interface}
+		\medskip
+		\small
+		Shown at the end of the project, after the improvements made by the author.
+	\end{figure}
 
 	\subsection{Embedded C++}
 
@@ -130,12 +139,15 @@
 
 
 	\subsection{The importance of DRY code}
+
+	\todo{I think it's important to include this somewhere, as it motivated a lot of the software changes. But maybe not here. }
 	An important principle in software design is DRY, or \enquote{Don't Repeat Yourself}.
 	More specifically, this advocates that \enquote{Every piece of knowledge must have a single, unambiguous, authoritative representation within a system}\cite{dry}.
 	
 	To see the value in holding this principle, consider a case where there are two representations. If the piece of knownledge changes, such as the mass of the robot decreasing, now two places need updating. If one of them is missed, then the result is an incorrect system. This principle applies not only to data, but also procedures.
 
 	There are various places in which this principle is violated, across both codebases:
+	\todo{Some of these are mentioned elsewhere, so maybe the list should go}
 	\begin{multicols}{2}
 		\raggedcolumns
 		\noindent
@@ -143,7 +155,7 @@
 
 		\begin{itemize}[noitemsep]
 			\item computation of dynamics, rendering, and loss for the unicycle contain their own copies of physical unicycle parameters.
-			\item augmentation (\ref{sec:intro:augmentation}) of gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
+			\item augmentation of gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
 			\item ordering of states -- while the user's scenario files specify exactly which states should participate in which part of the algorithm, not all of these speifications are respected.
 			\item mapping of state numbers to state names -- many files contain code along the lines of \matlab{theta = x(9)}, which causes problems if a new state is inserted
 		\end{itemize}
