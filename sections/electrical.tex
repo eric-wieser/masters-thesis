@@ -21,7 +21,7 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 \end{figure}
 
 \begin{figure}
-	\begin{minipage}[t]{0.45\linewidth}
+	\begin{minipage}[t]{0.5\linewidth - 1em}
 		\includegraphics[width=\linewidth]{figures/standoffs.jpg}
 		\caption{Clearance below controller}
 		\label{fig:clearance}
@@ -31,7 +31,7 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 		clear gap between the motor (right) and the pins, preventing shorts.
 	\end{minipage}
 	\hfill
-	\begin{minipage}[t]{0.45\linewidth}
+	\begin{minipage}[t]{0.5\linewidth - 1em}
 		\includegraphics[width=\linewidth]{figures/battery-connectors.png}
 		\caption{The power connectors}
 		\label{fig:connectors}
@@ -68,18 +68,18 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 
 \subsection{Electrical failure}
 
+	\todo{Remove all remarks about safety under this heading, leaving them for the appendix?}
+
 	During one test of the hardware, the robot began to emit smoke from a then-unidentifiable location. The priority of course was to disconnect the battery as soon as possible to prevent a fireball, but even this proved difficult, with the melting power cables (\cref{fig:short:wires}) giving minor burns to a finger.
 
 	\begin{figure}
 		\begin{subfigure}[t]{0.5\linewidth-1em}
-			% \includegraphics[width=\linewidth]{}
-			\todo[inline]{Add photo}
+			\includegraphics[width=\linewidth]{figures/short-motor.jpg}
 			\caption{Exposed metal on the motor}
 			\label{fig:short:cause}
-		\end{subfigure}
+		\end{subfigure}\hfill
 		\begin{subfigure}[t]{0.5\linewidth-1em}
-			% \includegraphics[width=\linewidth]{}
-			\todo[inline]{Add photo}
+			\includegraphics[width=\linewidth]{figures/wires.jpg}
 			\caption{Wires melted}
 			\label{fig:short:wires}
 		\end{subfigure}

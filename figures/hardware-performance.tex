@@ -1,0 +1,60 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=\linewidth,
+height=0.5\linewidth,
+at={(0,0)},
+scale only axis,
+xmin=0,
+xmax=30,
+ymin=0,
+ymax=1,
+xlabel=Iteration number,
+ylabel={Time till impact / \si{\second}},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids
+]
+\addplot [color=mycolor1, forget plot]
+  table[row sep=crcr]{%
+1	0.5\\
+2	0.7\\
+3	0.7\\
+4	0.6\\
+5	0.45\\
+6	0.65\\
+7	0.9\\
+8	0.6\\
+9	0.5\\
+10	0.8\\
+11	0.3\\
+12	0.6\\
+13	0.75\\
+14	0.65\\
+15	0.7\\
+16	0.55\\
+17	0.35\\
+18	0.3\\
+19	0.55\\
+20	0.45\\
+21	0.9\\
+22	0.7\\
+23	0.5\\
+24	0.6\\
+25	0.4\\
+26	0.65\\
+27	0.45\\
+28	0.75\\
+29	0.75\\
+30	0.65\\
+};
+\end{axis}
+\end{tikzpicture}%

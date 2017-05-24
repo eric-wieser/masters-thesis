@@ -143,7 +143,8 @@
 	\supervisor{Prof. Carl Rasmussen}
 	\title{Machine learning for a miniature robotic unicycle}
 	\maketitle
-	\thispagestyle{empty}
+	\todo{Title page is broken with the \texttt{report} class}
+	% \thispagestyle{empty}
 
 
 
@@ -153,6 +154,10 @@
 	\end{abstract}
 	\pagestyle{plain}
 	\tableofcontents
+	\newpage
+
+	\listoftodos
+
 	\newpage
 
 	\chapter{Introduction}
@@ -184,7 +189,19 @@
 		\section{Reality}
 		\subfile{sections/hardware-experiments}
 
+	\chapter{Future Work}
+	\todo[inline]{Write this properly}
+	\begin{itemize}
+		\item Try automatic differentiation
+		\item Fully characterize the orientation of the sensor
+		\item Try a quadratic controller
+		\item Run more rollouts
+		\item Try and encapsulate more of the matlab code
+		\item $\cdots$
+	\end{itemize}
+
 	\chapter{Conclusions}
+	\todo[inline]{Write conclusion}
 
 	\printbibsectioned
 
