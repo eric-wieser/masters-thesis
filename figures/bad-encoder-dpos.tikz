@@ -4,7 +4,8 @@
 %  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
 %where you can also make suggestions and rate matlab2tikz.
 %
-\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}
+\pgfmathsetmacro{\PI}{3.141592654}%
 %
 \begin{tikzpicture}[%
 trim axis left,
@@ -12,21 +13,24 @@ trim axis right
 ]
 
 \begin{axis}[%
-width=0.951\linewidth,
-height=0.75\linewidth,
+width=\linewidth,
+height=0.5\linewidth,
 at={(0\linewidth,0\linewidth)},
 scale only axis,
 xmin=0,
 xmax=2.5,
 xlabel style={font=\color{white!15!black}},
 xlabel={time / $\si{\second}$},
-ymin=-6000,
-ymax=1000,
+ymin=-2500*pi,
+ymax=500*pi,
+ytick={-6283.18, 0},
+yticklabels={{$-2000\pi$}, {$0$}},
 ylabel style={font=\color{white!15!black}},
-ylabel={wheel $\omega$ / $\si{\radian\per\second}$},
+ylabel={$\omega$ / $\si{\radian\per\second}$},
 axis background/.style={fill=white},
 axis x line*=bottom,
-axis y line*=left
+axis y line*=left,
+yticklabel style={rotate=90}
 ]
 \addplot [color=mycolor1, forget plot]
   table[row sep=crcr]{%

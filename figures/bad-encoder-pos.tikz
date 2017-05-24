@@ -13,8 +13,8 @@ trim axis right
 ]
 
 \begin{axis}[%
-width=0.951\linewidth,
-height=0.75\linewidth,
+width=\linewidth,
+height=0.5\linewidth,
 at={(0\linewidth,0\linewidth)},
 scale only axis,
 xmin=0,
@@ -24,10 +24,11 @@ xlabel={time / $\si{\second}$},
 ymin=-0.4,
 ymax=1,
 ylabel style={font=\color{white!15!black}},
-ylabel={position / $\si{\meter}$},
+ylabel={$\bm{x}_c$ / $\si{\meter}$},
 axis background/.style={fill=white},
 axis x line*=bottom,
-axis y line*=left
+axis y line*=left,
+yticklabel style={rotate=90}
 ]
 \addplot [color=mycolor1, forget plot]
   table[row sep=crcr]{%
@@ -81,7 +82,7 @@ axis y line*=left
 2.35	0.464883893728256\\
 2.4	0.425264686346054\\
 2.45	0.386301577091217\\
-};
+}; \label{line:encoder:xc}
 \addplot [color=mycolor2, forget plot]
   table[row sep=crcr]{%
 0	-1.07901961833839e-13\\
@@ -134,6 +135,6 @@ axis y line*=left
 2.35	-0.311937034130096\\
 2.4	-0.313355624675751\\
 2.45	-0.314044684171677\\
-};
+};  \label{line:encoder:yc}
 \end{axis}
 \end{tikzpicture}%

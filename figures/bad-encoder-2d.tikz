@@ -12,23 +12,26 @@ trim axis right
 ]
 
 \begin{axis}[%
-width=0.951\linewidth,
-height=0.75\linewidth,
+width=\linewidth,
+height=0.5\linewidth,
 at={(0\linewidth,0\linewidth)},
 scale only axis,
 unbounded coords=jump,
-xmin=-0.184342354536057,
-xmax=0.872521698474884,
+xmin=-0.4,
+xmax=0.9,
 xlabel style={font=\color{white!15!black}},
 xlabel={x / $\si{\meter}$},
-ymin=-0.583122792299987,
-ymax=0.250436114026384,
+ymin=-0.625,
+ymax=0.125,
+ytick distance=0.5,
+xtick distance=0.5,
 ylabel style={font=\color{white!15!black}},
 ylabel={y / $\si{\meter}$},
 axis background/.style={fill=white},
 axis x line*=bottom,
 axis y line*=left,
-axis equal
+axis equal,
+yticklabel style={rotate=90}
 ]
 \addplot [color=mycolor1, forget plot]
   table[row sep=crcr]{%
@@ -83,11 +86,11 @@ nan	nan\\
 0.464883893728256	-0.311937034130096\\
 0.425264686346054	-0.313355624675751\\
 0.386301577091217	-0.314044684171677\\
-};
+}  [arrow inside={}{0.125, 0.375,0.625, 0.875}];
 \addplot [color=mycolor1, dotted, forget plot]
   table[row sep=crcr]{%
 -0.121541380882263	-0.328082174062729\\
 0.872521698474884	-0.334106743335724\\
-};
+}; \label{line:encoder:teleport}
 \end{axis}
 \end{tikzpicture}%

@@ -67,8 +67,32 @@
 		\subsubsection{Results and subsequent fixes}
 
 		Test \ref{sensor-test-wheel} revealed no mistakes.
-		However, later testing upon driving forward multiple wheel rotations discovered that the wheel position would overflow and wraparound to a negative number. Similarly, the wheel velocity would be afflicted with a very large spike.
+		However, later testing upon driving forward multiple wheel rotations discovered that the wheel position would overflow and wraparound, which manifests itself in the position in (\cref{fig:bad-wheel:pos}). Similarly, the wheel velocity would be afflicted with a very large spike (\cref{fig:bad-wheel:vel}). This produces a bizarre \emph{teleportation} effect (\cref{fig:bad-wheel:tele}) visible in the animation, which is how the problem was spotted.
 		It was determined that the first of these problems was one partially introduced by the author during the work in \cref{sec:platformio}, while the latter has been there since the beginning.
+
+		\begin{figure}
+			\newlength{\mypadding}
+			\setlength{\mypadding}{1.5cm}
+			\newlength{\mywidth}
+			\setlength{\mywidth}{(\linewidth-2\mypadding)/3}
+			\begin{subfigure}[t]{\mywidth}
+				\input{figures/bad-encoder-pos.tikz}
+				\caption{$x_c$ (\ref{line:encoder:xc}) and $y_c$ (\ref{line:encoder:yc})}
+				\label{fig:bad-wheel:pos}
+			\end{subfigure}\hfill
+			\begin{subfigure}[t]{\mywidth}
+				\input{figures/bad-encoder-2d.tikz}
+				\caption{Path traced, and \enquote{teleporting} segment (\ref{line:encoder:teleport})}
+				\label{fig:bad-wheel:tele}
+			\end{subfigure}\hfill
+			\begin{subfigure}[t]{\mywidth}
+				\input{figures/bad-encoder-dpos.tikz}
+				\caption{Wheel velocity}
+				\label{fig:bad-wheel:vel}
+			\end{subfigure}
+			\caption{Errors due to wraparound in encoder readings}
+			\label{fig:bad-wheel}
+		\end{figure}
 
 		To understand the problem, some background is needed here on the workings of the encoders.
 		They are attached to 16-bit timers, which after some here-unimportant interrupt tricks are configured to count up and down with the encoder pulses. When they count up to their maximum value of \cpp{0xFFFF}, they overflow and resume counting at \cpp{0x0000}.
@@ -152,33 +176,7 @@
 		The contents of \matlab{dynamics} was once-upon-a-time produced from some (now lost) symbolic algebra, so is completely incomprehensible to a human reader.
 		Due to the infeasibility of checking this code, it was assumed that the author of \matlab{dynamics} had made the sensible choice of a right-handed rotation sense, and the \matlab{draw} function was corrected accordingly.
 
-
-		\begin{figure}
-			\begin{subfigure}[t]{0.3\linewidth}
-				% \input{figures/yaw-wraparound.tikz}
-				\caption{In yaw (test \cref{sensor-test-yaw})}
-				\label{fig:bad-yaw}
-			\end{subfigure}
-		\end{figure}
-		\begin{figure}
-			\begin{subfigure}[t]{0.3\linewidth}
-				\input{figures/bad-encoder-pos.tikz}
-				\caption{Seen in x and y}
-			\end{subfigure}\hfill
-			\begin{subfigure}[t]{0.3\linewidth}
-				\input{figures/bad-encoder-2d.tikz}
-				\caption{The \enquote{teleporting} path}
-			\end{subfigure}\hfill
-			\begin{subfigure}[t]{0.3\linewidth}
-				\input{figures/bad-encoder-dpos.tikz}
-				\caption{and wheel velocity}
-			\end{subfigure}
-			\label{fig:bad-wheel}
-			\caption{Wraparound errors in encoder readings}
-		\end{figure}
-
-
-		Test \cref{sensor-test-yaw} initially seemed to show correct behaviour, but caused a discontinuity once rotated past \SI{180}{\degree}, seen in \cref{fig:bad-yaw}.
+		Test \cref{sensor-test-yaw} initially seemed to show correct behaviour, but caused a discontinuity once rotated past \SI{180}{\degree}.
 		While most rollouts fall over long before passing this yaw angle, it seemed wise to fix it, as it would not be modelled well by our GP dynamics.
 		The simple function added to fix this is shown in \cref{listing:unwrap}.
 
@@ -202,7 +200,8 @@
 		Following the theme of the software in this project, this took the form of a fully-expanded expression, without any remarks as to its derivation.
 		After contact with the author, it was found that the method was indeed incorrect, making the mistake of interpreting $\bm{\omega}$ as rates in Euler angles, yet going to the effor of using quaternions as an internal representation -- the worst of both worlds! A new approach was needed, as described in \cref{app:quat}.
 
-		With both problems fixed, significantly improved perfomance was noticeable
+		With both problems fixed, the performance of tracking angles was significantly improved.
+		Gyro drift would become noticeable after periods of around \SI{30}{\second}, but this is not important for us, as our rollouts are at most \SI{2.5}{\second} long.
 
 \bib
 
