@@ -124,8 +124,22 @@
 		In the new code, this is expressed as \cpp{euler_angles<213> orient;} -- and muddling this with \cpp{euler_angles<213>} is a compile-time error.
 
 		\begin{figure}
-				% \input{figures/euler-frames.tikz}
-			\caption{Evidence of problems with the Euler angle representation}
+			\begin{subfigure}[t]{\linewidth}
+				\input{figures/bad-euler.tikz}
+				\caption{
+					Plots of yaw (\ref{line:yaw}), pitch (\ref{line:pitch}), and roll (\ref{line:roll}).
+				}
+			\end{subfigure}
+
+			\begin{subfigure}[t]{0.5\linewidth-2em}
+				\input{figures/bad-euler-frame1.tikz}
+				\caption{State before}
+			\end{subfigure}\hfill
+			\begin{subfigure}[t]{0.5\linewidth-2em}
+				\input{figures/bad-euler-frame2.tikz}
+				\caption{State after}
+			\end{subfigure}
+			\caption{Evidence for incorrect Euler Angles}
 			\label{fig:bad-euler}
 		\end{figure}
 
