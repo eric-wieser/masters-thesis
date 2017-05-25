@@ -1,0 +1,30 @@
+\providecommand{\thebibpath}{..}
+\makeatletter\def\input@path{{\thebibpath/}{.}}\makeatother
+\documentclass[main.tex]{subfiles}
+\begin{document}
+	\todo{Should I mention the accelerometer stuff being added here?}
+
+	With all of the obvious problems corrected, it was finally time to apply the \textsc{Pilco} procedure.
+	10 rollouts were performed under an affine controller with parameters
+	\begin{align}
+		\bm{b} &= \bm{0}, &
+		W &=
+			\frac{1}{\SI{15}{\degree}}
+			\unitv{\psi}^T\unitv{\tau_w}
+			+ \frac{1}{\SI{90}{\degree\per\second}}
+			\unitv{\dot\phi}^T\unitv{\tau_t}\,,
+	\end{align}
+	and then $20$ rollouts were performed with learn controllers.
+	\todo[inline]{Much more content needed here}
+	\begin{figure}
+		\input{figures/learning-progress.tikz}
+		\caption{Lack of learning progress}
+	\end{figure}
+
+	\subsection{Correcting the initial state}
+
+	\todo[inline]{Make remarks here about fitting a gaussian to the initial state, and how it improves performance}
+
+\bib
+
+\end{document}
