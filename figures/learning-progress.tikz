@@ -14,7 +14,7 @@ trim axis right
 ]
 
 \begin{axis}[%
-width=0.951\linewidth,
+width=\linewidth,
 height=5cm,
 at={(0\linewidth,0cm)},
 scale only axis,
@@ -29,7 +29,7 @@ ylabel={time upright / $\si{\second}$},
 axis background/.style={fill=white},
 axis x line*=bottom,
 axis y line*=left,
-legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+legend style={legend pos=north west, legend cell align=left, align=left}
 ]
 \addplot [color=mycolor1]
   table[row sep=crcr]{%
