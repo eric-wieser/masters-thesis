@@ -24,77 +24,37 @@
 \if@cuedwide
 \oddsidemargin=0pt \evensidemargin=0pt \topmargin=0pt \textwidth=421pt \textheight=612pt
 \fi
-\renewcommand{\abstractname}{Summary}
 \def\supervisor#1{\gdef\@supervisor{#1}\gdef\thesupervisor{#1}}
 
-\if@titlepage
-  \renewcommand\maketitle{\begin{titlepage}%
-  \let\footnotesize\small
-  \let\footnoterule\relax
-  \null\vfil
-  \begin{textblock*}{120mm}(43mm,96mm)
-  \Large \@title
-  \end{textblock*}
-  \@thanks
-  \vfil\null
-  \end{titlepage}%
-  \setcounter{footnote}{0}%
-  \let\thanks\relax\let\maketitle\relax
-  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}}
-\else
-\renewcommand\maketitle{\par
-  \begingroup
-    \renewcommand\thefootnote{\@fnsymbol\c@footnote}%
-    \def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
-    \long\def\@makefntext##1{\parindent 1em\noindent
-            \hb@xt@1.8em{%
-                \hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
-    \if@twocolumn
-      \ifnum \col@number=\@ne
-        \@maketitle
-      \else
-        \twocolumn[\@maketitle]%
-      \fi
-    \else
-      \newpage
-      \global\@topnum\z@   % Prevents figures from going at top of page.
-      \@maketitle
-    \fi
-    \thispagestyle{plain}\@thanks % tpl - remove page number 
-  \endgroup
-  \setcounter{footnote}{0}%
-  \let\thanks\relax
-  \let\maketitle\relax\let\@maketitle\relax
-  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}}
-\def\@maketitle{%
-  \newpage
+\renewcommand\maketitle{%
+  \begin{titlepage}
   \null
   \includegraphics{Engineering.png}
 
-  \begin{textblock*}{130mm}(33mm,43mm)
-\LARGE \@title
-\end{textblock*}
+  \begin{textblock*}{\textwidth}(0mm,43mm)
+    \centering
+    \LARGE \@title
+  \end{textblock*}
   \par
 
-\begin{textblock*}{130mm}(33mm,122mm)
-\begin{flushright}
-Author Name: \@author{}\\
-Supervisor: \@supervisor{}\\
-\hspace{0cm}\\
-Date: \today
-\end{flushright}
-\end{textblock*}
+  \begin{textblock*}{\textwidth}(0mm,122mm)
+    \begin{flushright}
+      Author Name: \@author{}\\
+      Supervisor: \@supervisor{}\\
+      \hspace{0cm}\\
+      Date: \today
+    \end{flushright}
+  \end{textblock*}
 
-\begin{table}[b]
-\begin{tabular}{l}
-I hereby declare that, except where specifically indicated, the work\\ 
-submitted herein is my own original work.\\
-\\
-Signed: \underline{\hspace{6cm}} Date: \underline{\hspace{3cm}}
-\end{tabular}
-\end{table}
-\newpage}
-\fi
+  \begin{table}[b]
+    \begin{tabularx}{\linewidth}{@{}X@{}}
+    I hereby declare that, except where specifically indicated, the work 
+    submitted herein is my own original work.\\
+    \\
+    Signed:~\hrulefill\hrulefill\hrulefill\hspace{2em} Date:~\hrulefill
+    \end{tabularx}
+  \end{table}
+\end{titlepage}}
 
 \endinput
 
