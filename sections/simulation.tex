@@ -89,12 +89,43 @@
 	\end{align}
 
 \subsection{Roll limits}
-	A suggestion from previous work was to redesign the frame to \enquote{reduce the effect of the roll limitation}\cite[p.~35]{aleksi}, due to a suspicion that the way in which the hardware was limited in roll to \SI{17}{\degree} was a hindrance to the learning -- indeed, the simulated unicycle did not have this constraint.
+	A suggestion from previous work was to redesign the frame to \enquote{reduce the effect of the roll limitation}\cite[p.~35]{aleksi}, due to a suspicion that the way in which the hardware was limited in roll to \SI{17}{\degree} (due to its axle hitting the ground) was a hindrance to the learning -- indeed, the simulated unicycle did not have this constraint.
 
 	Results from the earlier work were not necessarily valid, as they only evaluated the effect of this yaw limit in simulation on the large unicycle.
 	Since this work acquired a model for the small unicycle (\cref{table:mechanical}), a more correct experiment could be performed.
+	\Cref{fig:roll:progress} shows the effect of running the algorithm with three different roll limits, representing real (\SI{17}{\degree}) and idealized (\SI{90}{\degree}) scenarios, along with the scenario assuming an optimistic mechanical redesign (\SI{45}{\degree}).
+	The difference in performance between \SI{17}{\degree} and \SI{45}{\degree} is minimal, showing that a mechanical redesign would not be a good uses of time.
 
-	The results did indeed show a reduced ability to learn. \todo{Plots to show this}
-	However, it was realized that some cost-shaping would become desirable - there should be a penalty for coming close to the roll constraint, and so a new term was added to $Q$ from \cref{eq:quad-cost}, of $\unitv{\theta}\frac{1}{\SI{17}{\degree}}^2\unitv{\theta}^T$.
-	This did indeed improve performance \todo{Plots to show this}.
+	\begin{figure}
+		\begin{subfigure}[t]{\linewidth}
+			\begin{minipage}{0.5\linewidth - 1em}
+				\input{figures/sim-lp-no-cost-iteration.tikz}
+			\end{minipage}\hfill
+			\begin{minipage}{0.5\linewidth - 1em}
+				\input{figures/sim-lp-no-cost-time.tikz}
+			\end{minipage}
+			\caption{As in previous work}
+		\end{subfigure}
+		\\
+		\begin{subfigure}[t]{\linewidth}
+			\begin{minipage}[t]{0.5\linewidth - 1em}
+				\input{figures/sim-lp-cost-iteration.tikz}
+			\end{minipage}\hfill
+			\begin{minipage}[t]{0.5\linewidth - 1em}
+				\input{figures/sim-lp-cost-time.tikz}
+			\end{minipage}
+			\caption{With cost penalty for roll}
+		\end{subfigure}
+		\caption{Effect of roll-limit on learning progress}
+		\label{fig:roll:progress}
+		\medskip
+		\small
+		This data is taken from just one learning run, since the duration of such a run prohibits many repeat trials, ranging from \SI{3.5}{\hour} for \SI{17}{\degree} to \SI{11}{\hour} for \SI{90}{\degree}.
+		Despite the random number generated being seeded identically for all 3 cases, the initial robot states will differ, due to a different volume of consumption of the random number stream whilst using the random controller.
+	\end{figure}
+
+
+	One of the problems encountered due to roll limits is that cost function contains little information about the fact that the axle is about to hit the ground. A cost function should penalize undesirable behaviour, so a new term was added to $Q$ from \cref{eq:quad-cost}, of $\unitv{\theta}\frac{1}{\SI{17}{\degree}}^2\unitv{\theta}^T$. The results are shown in \cref{fig:roll:progress-cost}.
+
+	\todo{Remark on these plots, once they exist}
 \end{document}

@@ -1,0 +1,200 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+%
+\begin{tikzpicture}[%
+trim axis left,
+trim axis right
+]
+
+\begin{axis}[%
+width=0.951\linewidth,
+height=3cm,
+at={(0\linewidth,0cm)},
+scale only axis,
+xmin=0.5,
+xmax=50.5,
+xlabel style={font=\color{white!15!black}},
+xlabel={iteration number},
+ymin=-0.1,
+ymax=2.6,
+ylabel style={font=\color{white!15!black}},
+ylabel={time upright / $\si{\second}$},
+axis background/.style={fill=white},
+axis x line*=bottom,
+axis y line*=left,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=mycolor1]
+  table[row sep=crcr]{%
+1	0.15\\
+2	0.25\\
+3	0.1\\
+4	0.1\\
+5	0.15\\
+6	0.2\\
+7	0.1\\
+8	0.15\\
+9	0.15\\
+10	0.15\\
+11	0.35\\
+12	0.35\\
+13	0.8\\
+14	0.6\\
+15	0.35\\
+16	0.55\\
+17	0.35\\
+18	0.7\\
+19	0.45\\
+20	0.5\\
+21	0.6\\
+22	0.75\\
+23	1.35\\
+24	0.75\\
+25	1.8\\
+26	0.7\\
+27	2.1\\
+28	2.05\\
+29	2.5\\
+30	2.5\\
+31	2.5\\
+32	2.5\\
+33	2.3\\
+34	2.15\\
+35	2.5\\
+36	2.5\\
+37	2.5\\
+38	2.5\\
+39	2.5\\
+40	2.5\\
+41	2.5\\
+42	2.5\\
+43	2.5\\
+44	2.5\\
+45	2.5\\
+46	2.5\\
+47	1.9\\
+48	2.5\\
+49	2.5\\
+50	2.5\\
+};
+\addlegendentry{\SI{90}{\degree}}
+
+\addplot [color=mycolor2]
+  table[row sep=crcr]{%
+1	0.15\\
+2	0.25\\
+3	0.1\\
+4	0.1\\
+5	0.15\\
+6	0.2\\
+7	0.1\\
+8	0.15\\
+9	0.15\\
+10	0.15\\
+11	0.35\\
+12	0.45\\
+13	0.25\\
+14	0.25\\
+15	0.45\\
+16	0.45\\
+17	0.3\\
+18	0.3\\
+19	0.45\\
+20	0.55\\
+21	0.45\\
+22	0.45\\
+23	0.6\\
+24	0.6\\
+25	0.5\\
+26	0.6\\
+27	0.75\\
+28	0.5\\
+29	0.45\\
+30	0.55\\
+31	0.5\\
+32	0.55\\
+33	0.6\\
+34	1.15\\
+35	0.8\\
+36	0.55\\
+37	0.6\\
+38	0.55\\
+39	0.4\\
+40	0.55\\
+41	0.75\\
+42	0.7\\
+43	0.45\\
+44	0.5\\
+45	0.85\\
+46	0.8\\
+47	1.25\\
+48	0.65\\
+49	1.45\\
+50	0.85\\
+};
+\addlegendentry{\SI{45}{\degree}}
+
+\addplot [color=mycolor3]
+  table[row sep=crcr]{%
+1	0.15\\
+2	0.2\\
+3	0.15\\
+4	0.1\\
+5	0.15\\
+6	0.15\\
+7	0.2\\
+8	0.15\\
+9	0.15\\
+10	0.15\\
+11	0.15\\
+12	0.15\\
+13	0.45\\
+14	0.2\\
+15	0.6\\
+16	0.25\\
+17	0.65\\
+18	0.15\\
+19	0.3\\
+20	0.45\\
+21	0.45\\
+22	0.45\\
+23	0.55\\
+24	0.55\\
+25	0.3\\
+26	0.45\\
+27	0.45\\
+28	0.4\\
+29	0.45\\
+30	0.3\\
+31	0.55\\
+32	0.4\\
+33	0.4\\
+34	0.35\\
+35	0.25\\
+36	0.6\\
+37	0.55\\
+38	0.35\\
+39	0.6\\
+40	0.55\\
+41	0.5\\
+42	0.5\\
+43	0.6\\
+44	0.5\\
+45	0.5\\
+46	0.5\\
+47	0.35\\
+48	0.55\\
+49	0.3\\
+50	0.55\\
+};
+\addlegendentry{\SI{17}{\degree}}
+
+\end{axis}
+\end{tikzpicture}%
