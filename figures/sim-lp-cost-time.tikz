@@ -75,6 +75,14 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 32.9	2.5\\
 35.4	2.5\\
 37.9	2.5\\
+40.4	2.5\\
+42.9	2.5\\
+45.4	2.5\\
+47.9	2.5\\
+50.4	2.5\\
+52.9	2.5\\
+55.4	2.5\\
+57.9	2.5\\
 };
 \addlegendentry{\SI{90}{\degree}}
 
@@ -125,6 +133,11 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 35.35	2.5\\
 37.85	2.5\\
 40.35	2.5\\
+42.85	2.5\\
+45.25	2.4\\
+47.75	2.5\\
+50.1	2.35\\
+52.6	2.5\\
 };
 \addlegendentry{\SI{45}{\degree}}
 
@@ -175,6 +188,11 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 26.55	1.4\\
 28.2	1.65\\
 30.4	2.2\\
+31.75	1.35\\
+34.25	2.5\\
+35.95	1.7\\
+37.55	1.6\\
+38.8	1.25\\
 };
 \addlegendentry{\SI{17}{\degree}}
 

@@ -20,9 +20,9 @@ N.sim = 40;
 N.sim_nocost_17 = 40;
 N.sim_nocost_45 = 40;
 N.sim_nocost_90 = 40;
-N.sim_cost_17 = 35;
-N.sim_cost_45 = 35;
-N.sim_cost_90 = 32;
+N.sim_cost_17 = 40;
+N.sim_cost_45 = 40;
+N.sim_cost_90 = 40;
 
 
 for f = fields(dirs)', f = f{1};
