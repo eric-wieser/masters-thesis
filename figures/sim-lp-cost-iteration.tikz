@@ -14,7 +14,7 @@ trim axis right
 ]
 
 \begin{axis}[%
-width=0.951\linewidth,
+width=\linewidth,
 height=3cm,
 at={(0\linewidth,0cm)},
 scale only axis,
@@ -28,8 +28,7 @@ ylabel style={font=\color{white!15!black}},
 ylabel={time upright / $\si{\second}$},
 axis background/.style={fill=white},
 axis x line*=bottom,
-axis y line*=left,
-legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+axis y line*=left
 ]
 \addplot [color=mycolor1]
   table[row sep=crcr]{%
@@ -195,6 +194,6 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 50	1.25\\
 };
 \addlegendentry{\SI{17}{\degree}}
-
+\legend{};
 \end{axis}
 \end{tikzpicture}%
