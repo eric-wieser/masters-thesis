@@ -93,39 +93,52 @@
 
 	Results from the earlier work were not necessarily valid, as they only evaluated the effect of this yaw limit in simulation on the large unicycle.
 	Since this work acquired a model for the small unicycle (\cref{table:mechanical}), a more correct experiment could be performed.
-	\Cref{fig:roll:progress} shows the effect of running the algorithm with three different roll limits, representing real (\SI{17}{\degree}) and idealized (\SI{90}{\degree}) scenarios, along with the scenario assuming an optimistic mechanical redesign (\SI{45}{\degree}).
-	The difference in performance between \SI{17}{\degree} and \SI{45}{\degree} is minimal, showing that a mechanical redesign would not be a good uses of time.
+	\Cref{fig:roll:progress:prev} shows the effect of running the algorithm with three different roll limits.
+	The difference in performance between \SI{17}{\degree} and \SI{45}{\degree} is minimal, with both showing a dramatic loss of performance compared to the idealized unicycle -- suggesting that a mechanical redesign would not be a good use of time.
+
+	One of the problems encountered due to roll limits is that cost function contains little information about the fact that the axle is about to hit the ground.
+	A cost function should penalize undesirable behaviour, so a new term of $\unitv{\theta}\frac{1}{\SI{17}{\degree}}^2\unitv{\theta}^T$ was added to the $Q$ from \cref{eq:quad-cost}.
+
+	\Cref{fig:roll:progress:fixed} shows this gives a dramatic performance increase, with all three configurations now learning a stabilizing controller with similar amounts of experience.
+	Of course, the \SI{17}{\degree} configuration requires more iterations, as each is shorter.
+	It's clear that there would still be an advantage to a mechanical redesign, but due to its reduced effect, it was decided it was not a good use of time in this work.
 
 	\begin{figure}
+	% Gross, but needed to make the `\ref`s work below
+		\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+		\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+		\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
 		\begin{subfigure}[t]{\linewidth}
-			\begin{minipage}{0.5\linewidth - 1em}
+			\begin{minipage}{0.5\linewidth - 2em}
 				\input{figures/sim-lp-no-cost-iteration.tikz}
 			\end{minipage}\hfill
-			\begin{minipage}{0.5\linewidth - 1em}
+			\begin{minipage}{0.5\linewidth - 2em}
 				\input{figures/sim-lp-no-cost-time.tikz}
 			\end{minipage}
-			\caption{As in previous work}
+			\caption{With corrected cost function from \cref{sec:cost-function}}
+			\label{fig:roll:progress:prev}
 		\end{subfigure}
-		\\
+		\par\bigskip
 		\begin{subfigure}[t]{\linewidth}
-			\begin{minipage}[t]{0.5\linewidth - 1em}
+			\begin{minipage}{0.5\linewidth - 2em}
 				\input{figures/sim-lp-cost-iteration.tikz}
 			\end{minipage}\hfill
-			\begin{minipage}[t]{0.5\linewidth - 1em}
+			\begin{minipage}{0.5\linewidth - 2em}
 				\input{figures/sim-lp-cost-time.tikz}
 			\end{minipage}
-			\caption{With cost penalty for roll}
+			\caption{As above, with added cost penalty for roll}
+			\label{fig:roll:progress:fixed}
 		\end{subfigure}
 		\caption{Effect of roll-limit on learning progress}
 		\label{fig:roll:progress}
 		\medskip
 		\small
+		Showing the idealized limit of \SI{90}{\degree} (\ref{line:sim:90}), the actual value of \SI{17}{\degree} (\ref{line:sim:17}), and an optimistic value achievable by a mechanical redesign of \SI{45}{\degree} (\ref{line:sim:45}).
+		\medskip\\
 		This data is taken from just one learning run, since the duration of such a run prohibits many repeat trials, ranging from \SI{3.5}{\hour} for \SI{17}{\degree} to \SI{11}{\hour} for \SI{90}{\degree}.
 		Despite the random number generated being seeded identically for all 3 cases, the initial robot states will differ, due to a different volume of consumption of the random number stream whilst using the random controller.
 	\end{figure}
 
+	\bib
 
-	One of the problems encountered due to roll limits is that cost function contains little information about the fact that the axle is about to hit the ground. A cost function should penalize undesirable behaviour, so a new term was added to $Q$ from \cref{eq:quad-cost}, of $\unitv{\theta}\frac{1}{\SI{17}{\degree}}^2\unitv{\theta}^T$. The results are shown in \cref{fig:roll:progress-cost}.
-
-	\todo{Remark on these plots, once they exist}
 \end{document}
