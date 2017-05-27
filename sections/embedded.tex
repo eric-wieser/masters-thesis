@@ -92,24 +92,24 @@
 		\end{itemize}
 
 		The problem of \enquote{framing}, then is build on this abstraction to provide a mechanism to group bytes together into packets. Consider the sequence of packets
-		\enquote{\texttt{F1}\,\texttt{00}\,\texttt{DS}},
+		\enquote{\texttt{F1}\,\texttt{00}\,\texttt{D5}},
 		\enquote{\texttt{0F}},
 		\enquote{\texttt{C0}\,\texttt{FF}\,\texttt{EE}}, shown with each byte in hexadecimal notation.
 		A na\"ive approach is to prefix a chunk of bytes by its length, giving
 		\mbox{\enquote{%
-			\textbf{\texttt{03}}\,\texttt{F1}\,\texttt{00}\,\texttt{DS}\,%
+			\textbf{\texttt{03}}\,\texttt{F1}\,\texttt{00}\,\texttt{D5}\,%
 			\textbf{\texttt{01}}\,\texttt{0F}\,%
 			\textbf{\texttt{03}}\,\texttt{C0}\,\texttt{FF}\,\texttt{EE}%
 		}}, with inserted bytes shown in bold.
 		To see why this is not enough, consider what happens if the\,\texttt{F1} byte does not fit in the buffer and is discarded. The receiver now sees \mbox{\enquote{%
-			\textbf{\texttt{03}}\,\texttt{00}\,\texttt{DS}\,\texttt{01}\,%
+			\textbf{\texttt{03}}\,\texttt{00}\,\texttt{D5}\,\texttt{01}\,%
 			\textbf{\texttt{0F}}\,\texttt{03}\,\texttt{C0}\,\texttt{FF}\,\texttt{EE}\,%
 			...%
 		}} -- corruption in the first packet has corrupted the following two packets, and possibly the rest of the stream for all time!
 
 		A good solution to this problem is COBS, which to quote the originating paper \cite{cobs}, \enquote{allows new listeners to join a broadcast stream at any time and without fail receive and decode the very next error free packet} -- ideal for our scenario where the serial USB connection is plugged and unplugged (\cref{sec:untethered}). Under COBS, the example packets are encoded as
 		\mbox{\enquote{%
-			\textit{\texttt{02}}\,\texttt{F1}\,\textit{\texttt{02}}\,\texttt{DS}\,\textbf{\texttt{00}}\,%
+			\textit{\texttt{02}}\,\texttt{F1}\,\textit{\texttt{02}}\,\texttt{D5}\,\textbf{\texttt{00}}\,%
 			\textit{\texttt{02}}\,\texttt{0F}\,\textbf{\texttt{00}}\,%
 			\textit{\texttt{04}}\,\texttt{C0}\,\texttt{FF}\,\texttt{EE}\,\textbf{\texttt{00}}%
 		}}, with \textbf{\texttt{00}} bytes appear only at the end of each packet.
