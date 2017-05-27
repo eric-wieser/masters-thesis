@@ -91,6 +91,16 @@
 	keepspaces=true,
 	columns=flexible
 }
+\lstdefinelanguage{proto}
+{
+  % list of keywords
+  keywords={
+    message,
+    oneof
+  },
+  comment=[l]{//}, % l is for line comment
+  morestring=[b]" % defines that strings are enclosed in double quotes
+}
 
 % related to links and references
 \usepackage{xr-hyper}
