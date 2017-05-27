@@ -76,26 +76,31 @@
 	Gaussian processes are a generalization of multivariate Gaussians to infinitely many variables.
 	This is done by noting that the vector $\mathbf{x} \in \mathbb{R}^k$ can be re-expressed as a discrete function of the index $x\colon [1,d] \to \mathbb{R}$, where $x_i = x(i)$.
 	From there, the domain can be expanded to the reals to produce a continuous scalar function, such that $x\colon \mathbb{R} \to \mathbb{R}$.
-	Gaussian processes (\cref{fig:gaussian:proc}) are described by a mean \emph{function} $m(i)$ and a covariance \emph{function} $K(i, j)$, satisfying
+	Gaussian processes (\cref{fig:gaussian:proc}) are described by a mean \emph{function} $m(i)$ and a covariance \emph{function} $K(i, j)$, such that any finite number of samples $x(i)$ from the process are jointly gaussian. Algebraically,
 	\begin{align}
-		x(\cdot) &\sim \mathrm{GP}(m(\cdot), K(\cdot,\cdot)) \\\implies
-		p(x(\cdot); m(\cdot), K(\cdot,\cdot))
-			&\propto \exp{\left[
-				-\frac{1}{2}
-				\iint
-					\left(x(i) - m(i)\right)
-					{K(i,j)}^{-1}
-					\left(x(j) - m(j)\right)
-				\diff i \diff j
-			\right]}\,.
+		x(\cdot) &\sim \mathrm{GP}(m(\cdot), K(\cdot,\cdot)) \\
+		\implies
+		\begin{bmatrix}
+			x(l_1) \\
+			\vdots \\
+			x(l_{|\mathcal{L}|})
+		\end{bmatrix} &\sim \mathcal{N}\left(\begin{bmatrix}
+			m(l_1) \\
+			\vdots \\
+			m(l_{|\mathcal{L}|})
+		\end{bmatrix}, \begin{bmatrix}
+			K(l_1,l_1) & \cdots & K(l_1,l_{|\mathcal{L}|}) \\
+			\vdots & \ddots & \vdots \\
+			x(l_{|\mathcal{L}|},l_1) & \cdots & K(l_{|\mathcal{L}|},l_{|\mathcal{L}|})
+		\end{bmatrix}\right), \quad l \in \mathcal{L} \subset \mathbb{R}\,.
 	\end{align}
 
 	We can take our generalization one further still, by replacing the scalar function $x\colon \mathbb{R} \to \mathbb{R}$ with a scalar field $x\colon \mathbb{R}^m \to \mathbb{R}$.
-	With this modification, the only change to the above equation is that the scalars $i,j$ become the vectors $\bm{i}$, $\bm{j}$.
+	With this modification, the only change to the above equation is that $\bm{l} \in \mathcal{L} \subset \mathbb{R}^m$.
 	By defining
 	\begin{align}
 		\bm{z}\tind{i} &= \begin{bmatrix}\bm{x}\tind{i} \\ \bm{u}\tind{i}\end{bmatrix} &
-		\Delta\bm{x}\tind{i} &= \bm{x}_{i + 1} - \bm{x}\tind{i}\,,
+		\Delta\bm{x}\tind{i} &= \bm{x}\tind{i + 1} - \bm{x}\tind{i}\,,
 	\end{align}
 	we can express \cref{eq:transition} in terms of a series of convenient $\mathbb{R}^m \to \mathbb{R}$ functions $f_j$ that can be modelled by such a distribution
 	\begin{align}
@@ -169,7 +174,7 @@
 		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
 		$c(\bm{x}, \bm{u}) = 1 - \mathbb{E}_{\bm{x}, \bm{u}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
 
-		Our GP dynamics model is parametrized by $m$, $K$ of the form
+		Each GP modelling the dynamics of a single state (\cref{eq:transition-gp}) is parametrized by $m$, $K$ of the form
 		\begin{align}
 			m(\bm{z}) &= \bm{z} \cdot \bm{w} + b \\
 			K(\bm{z}_1, \bm{z}_2) &= \sigma_s^2 \exp \left(
@@ -183,7 +188,20 @@
 				\bm{z}_2
 			\right) + \sigma_n^2 I \,,
 		\end{align}
-		where $\sigma_s^2$ and $\sigma_n^2$ estimate the signal and noise variances, $w$ (weight) and $b$ (bias) define a simple affine mean function, and $\bm{l}$ (length) defines a length-scale for the problem for each of the state variables.
+		where $\sigma_s^2$ and $\sigma_n^2$ estimate the signal and noise variances, $\bm{w}$ (weight) and $b$ (bias) define a simple affine mean function, and $\bm{l}$ (length) defines a length-scale for the problem for each of the state variables.
+		Note that these parameters have a unique value for each state.
+
+\section{Goals and direction of this work}
+
+	Like previous work, the ideal goal of this project is to apply \textsc{Pilco} to the unicycle robot, and achieve an outcome of a successfully balancing controller.
+	Previous work went to great lengths experimentally to achieve this goal, with limited success. Thankfully, this work was not wasted, as it raised and fixed mechanical and electrical problems, freeing this work from their hindrances.
+
+	However, few problems were traced back as far as the \textsc{Pilco} software -- indeed, none of the changes made to it during \cite{aleksi} were kept, indicating that they were at best hacks.
+	One of the problems with machine learning is that it's very hard to tell the difference between failure to learn due to a hard problem or insufficiently flexible model, and due to programmatic errors in the implementation.
+	This work therefore took on an approach of critically reviewing the source code used, targeting problems with non-obvious repercussions.
+	Work was also done to come up with better data representations in an effort to make it harder to introduce problems in future.
+
+
 
 \bib
 
