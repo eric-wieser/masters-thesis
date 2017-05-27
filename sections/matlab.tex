@@ -28,11 +28,54 @@ This was changed such that a unique folder was created for each run, containing 
 	These included
 	\begin{itemize}[noitemsep]
 		\item computation of dynamics, rendering, and loss for the unicycle contain their own copies of physical unicycle parameters.
-		\item ordering of states -- while the user's scenario files specify exactly which states should participate in which part of the algorithm, not all of these specifications are respected.
 		\item mapping of state numbers to state names -- many files contain code along the lines of \matlab{theta = x(9)}, which causes problems if a new state is inserted
 		\item augmentation of gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
+		\item ordering of states -- while the user's scenario files specify exactly which states should participate in which part of the algorithm, not all of these specifications are respected.
 	\end{itemize}
-	\todo[inline,noprepend,caption={Write matlab stuff}]{Write some remarks about the \texttt{gaussian} and \texttt{Frame} classes here, and also possibly the \texttt{UnicyclePlant} class. Also possibly some brief remarks about automatic differentiation}
+
+	The duplication of physical parameters was fixed by creating a \matlab{UnicyclePlant} class, which contains all the properties in \cref{table:mechanical}, and moves the functions that need these parameters to become methods, so they can access this state.
+	This makes it possible to switch between the large and small model by changing only one line.
+
+	The mapping of names to numbers was improved by introducing a \matlab{Frame} class, inspired by \citetitle{drake}'s \cite{drake} \matlab{CoordinateFrame} class.
+	This means that instead of the user having to think about state numbers, they need only concern themselves with state names, leaving the rest as an encapsulated implementation detail.
+	A contrived example is shown in \cref{lst:frames}.
+
+	\begin{listingfloat}
+		\centering
+		\begin{subfigure}{0.4\linewidth-1em}
+			\begin{lstlisting}[language=matlab,frame=single,gobble=8]
+				% coords are x, y, theta
+				posi = [1, 2];
+
+				angle = z(3);
+				pos = z(posi);
+			\end{lstlisting}
+			\caption{Before}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}{0.6\linewidth-1em}
+			\begin{lstlisting}[language=matlab,frame=single,gobble=8]
+				z_frame = Frame('z', {'x', 'y', 'theta'});
+				pos_frame = z_frame.subFrame({'x', 'y')})
+
+				angle = z(z_frame.i.theta);
+				pos = Frame.transform(z_frame, z, pos_frame);
+			\end{lstlisting}
+			\caption{After}
+		\end{subfigure}
+		\caption{Improvements offered by the \matlab{Frame} class}
+		\label{lst:frames}
+		\medskip
+		\small
+		The second code sample may be much longer, but it also contains no magic numbers.
+		Additionally, it moves information from a comment into code -- comments can lie, but code cannot.
+		If \matlab{z_frame} were attached directly to \matlab{z} in future (such as in a \matlab{Coordinate} class), then this code could become much less verbose.
+	\end{listingfloat}
+
+	A common concept that \textsc{Pilco} needs to represent is a Gaussian distribution, consisting of a mean and variance.
+	These are sometime represented as two separate variables, \matlab{gm} and \matlab{gs}, and sometimes as a \matlab{struct}, \matlab{g.m} and \matlab{g.s}.
+	Again applying DRY, it would be better to unify these representations.
+	It was decided a class would be a better choice, as then methods such as \matlab{g.sample(N)} can be added, rather than the current approach of sampling from first principles in every location.
 
 \subsection{Interactive visualization}
 
@@ -79,5 +122,18 @@ Future work could go on to add a time slider, to allow replaying a short section
 
 \todo{I think there might be a worrydream talk with some relevance here}
 
+\subsection{The need for Automatic Differentiation}
+
+	Another pattern that plagues not only the \textsc{Pilco} codebase, but machine learning software in general, is the manual computation of gradients.
+	Manually deriving and implementing gradients is bad practice because, to quote an opinion piece \cite{ad-criminal}, \enquote{Important ideas get obscured by the details}, and worse, \enquote{[it] restricts the community to only using computational structures we are capable of manually deriving gradients for}.
+	This goes on to recommend the use of \enquote{Automatic Differentiation} (AD), which computes the gradients in the same way that a manual implementation does.
+
+	A brief investigation was conducted into applying AD to the Matlab \textsc{Pilco} code, and it was found to be a large enough task that it probably warrants its own project. Additionally, the only Matlab implementation of reverse-AD (ADiMat) is not well-maintained, and was found to crash on the author's machine.
+	Therefore, adoption of AD would likely require a switch to a different language.
+	The author believes that switching to Python would be the way to go\footnotemark, noting that the \texttt{autograd} \cite{autograd} package supports AD of the Cholesky factorization, a key operation within \textsc{Pilco}.
+
+	\footnotetext{Although the author is biased here, as an active maintainer of \textit{the} numerical python package, \texttt{numpy}}
+
+\bib
 
 \end{document}
