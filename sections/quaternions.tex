@@ -3,9 +3,7 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-
-\todo{Work out how much of this is really needed, and whether it fits better somewhere else in the text}
-
+\todo{Work out how much of this is really needed, and whether it fits better somewhere else in the text}%
 An important part of designing control systems is the choice of representation of the state. In robotics, the state typically consists of four parts: the position, the velocity, the orientation, and the angular velocity. The first two of these are easily represented with vectors, and will not be discussed further here.
 
 Orientation and angular velocity pose more of a problem. In 2d, the situation is once again easy -- both can be represented with a single scalar, respectively $\theta$ and $\omega = \dot{\theta}$. Combining orientations can be done using addition, and is both associative and commutative. Rotation is 3d is not commutative, meaning that the order in which rotations are applied matters. Angular velocity in 3d can be represented with a vector $\bm{\omega}$, with the direction indicating the axis rotated around, and the magnitude the angular velocity about that axis.
@@ -16,14 +14,14 @@ An easy way to represent rotations is with a orthonormal (rotation) matrix $R \m
 \begin{align}
 	\bm{x}' = R \bm{x}
 \end{align}
-However, rotation matrices are a poor choice of state representation, as they are overconstrained.
+However, rotation matrices are a poor choice of state representation, as they are over-constrained.
 Under numerical error, orthonormality of the rotation matrices will be lost, leading to the introduction of unwanted skew and scaling transformations. One workaround is to renormalize the matrices frequently.
 
 
 \section{Euler angles}
 \label{app:euler-angles}
 
-Another option would be to parameterize the orientation with a set of angles.
+Another option would be to parametrize the orientation with a set of angles.
 It turns out that three angles are needed, usually named $(\phi, \theta, \psi)$.
 These angles are applied in order, and each have a corresponding axis. For instance, in what will be referred to here as $YXZ$ convention\footnotemark, the transformation represented is
 \footnotetext{Different authors use different conventions here -- differences include using axis numbers instead of axis names, and using intrinsic instead of extrinsic axes (equivalent to reversing the order). It is often advisable to look for a less ambiguous matrix definition, rather than relying on the naming. }
@@ -31,7 +29,7 @@ These angles are applied in order, and each have a corresponding axis. For insta
 	\bm{x}' = R_{YXZ}(\phi, \theta, \psi)\bm{x} = R_Y(\phi)R_X(\theta)R_Z(\psi) \bm{x}\,,
 	\label{eq:euler-matrix}
 \end{align}
-where $R_Q(\alpha)$ is the rotation matrix producing a rotation of $\alpha$ around the axis $Q$, in the right-hand sense. It should be clear from non-commutativity of matrix multiplication that different axis conventions give very different meaning of $(\phi, \theta, \psi)$ -- therefore it is vital to be explicit about the axis convention used when working with euler angles. There are 12 conventions using the cartesian axes, consisting of the 6 permutations of $XYZ$, and the 6 \enquote{sandwich} forms ($XYX$ etc). Of particular interest, are:
+where $R_Q(\alpha)$ is the rotation matrix producing a rotation of $\alpha$ around the axis $Q$, in the right-hand sense. It should be clear from non-commutativity of matrix multiplication that different axis conventions give very different meaning of $(\phi, \theta, \psi)$ -- therefore it is vital to be explicit about the axis convention used when working with euler angles. There are 12 conventions using the Cartesian axes, consisting of the 6 permutations of $XYZ$, and the 6 \enquote{sandwich} forms ($XYX$ etc). Of particular interest, are:
 \begin{description}
 	\item[XYZ]
 		Often referred to as \enquote{yaw, pitch, and roll}\footnotemark, corresponding to the angles $\psi$, $\theta$, and $\phi$.
@@ -67,7 +65,7 @@ Euler angles are algebraically awkward. It is difficult to combine two rotations
 		\right)
 		\exp a\,,
 	\end{align}
-	so due to the non-commutivity of quaternion multiplication, $\exists\bm{p},\bm{q}: \exp(\bm{p})\exp(\bm{q}) \ne \exp(\bm{p + q})$, preventing us from converting the product integral into a summation.
+	so due to the non-commutativity of quaternion multiplication, $\exists\bm{p},\bm{q}: \exp(\bm{p})\exp(\bm{q}) \ne \exp(\bm{p + q})$, preventing us from converting the product integral into a summation.
 	$\exp\left(\frac{1}{2}\bm{\omega}\diff t\right)$ is a unit quaternion, since $\bm{\omega}$ has no real part -- meaning that it represents a change in rotation.
 
 	On the unicycle robot, we need a discrete approximation to this integral, as we sample $\bm{\omega}$ at discrete times.
@@ -118,7 +116,7 @@ Euler angles are algebraically awkward. It is difficult to combine two rotations
 
 	The accelerometer does not tell us any information about the yaw angle (corresponding to the degree of freedom in \cref{eq:quat-sqrt}), so we are free to change the yaw rotation of the result as we please.
 	Since our cost function penalizes yaw, it is sensible to choose $\psi = 0$
-	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded soruce code at \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
+	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded source code at \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
 
 	\footnotetext{
 		In the source code, we take a more direct approach, noting that we need only extract the yaw from the quaternion, and post-multiply by the a quaternion to remove that yaw.
