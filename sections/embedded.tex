@@ -45,11 +45,8 @@
 	Both of these can be hard problems to get right, and so reinventing the wheel should be avoided.
 
 	\subsubsection{Serialization}
-		Google’s \enquote{Protocol Buffers}\cite{protobuf} (or simply \enquote{protobuf}) are a popular framework for implementing serialization, which are used extensively within Google, and have cross-language support.
-		This framework requires a \texttt{.proto} file to be specified, like the one in \cref{lst:proto}.
-		From this file, C++ and Python code can be generated to serialize and deserialize these messages into native types.
 
-		\begin{listingfloat}
+		\begin{listingfloat}[b]
 			\begin{lstlisting}[language=proto, gobble=6, frame=single]
 			// Not shown: definitions of DebugLevel, LogBundle, and LogEntry
 			syntax = "proto3";
@@ -68,6 +65,10 @@
 			\caption{A snippet of the protobuf description (\texttt{.proto} file) used with the robot}
 			\label{lst:proto}
 		\end{listingfloat}
+
+		Google’s \enquote{Protocol Buffers}\cite{protobuf} (or simply \enquote{protobuf}) are a popular framework for implementing serialization, which are used extensively within Google, and have cross-language support.
+		This framework requires a \texttt{.proto} file to be specified, like the one in \cref{lst:proto}.
+		From this file, C++ and Python code can be generated to serialize and deserialize these messages into native types.
 
 		An implementation of this for embedded C, with small code size and no heap allocation, exists as the Nanopb project \cite{nanopb}, which thanks to our switch to PlatformIO \cref{sec:platformio}, is easy to include on our robot.
 		Unfortunately, there is no first-party support of protobuf in Matlab, and the only available third-party implementation \cite{protobuf-matlab} is difficult to install, and abandonware.\footnotemark
