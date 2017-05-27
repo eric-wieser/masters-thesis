@@ -150,11 +150,12 @@
 	When adding the switch in \cref{sec:switch}, it was found to that no documentation was present on which pins were free and which ones were in use. It was decided that this would be easier to determine through reading the source code, rather than dismantling the electronics, and following traces.
 	Unfortunately, the source code alone was not enough to reconstruct this, as some pins were not referred to by number, but by the hardware peripherals (timers, PWM, etc) they belong to, so the data sheet was needed too.
 
-	The DRY principle stands against these mixed representations, so a novel system was invented to specify the pins numbers in the source code, but translate them into peripherals \emph{at compile time}.
+	The DRY principle (\cref{sec:dry}) stands against these mixed representations, so a novel system was invented to specify the pins numbers in the source code, but translate them into peripherals \emph{at compile time}.
 	This is powerful, because it means that code which tries to use a pin for a peripheral it does not support \emph{will not compile}! The trick in the implementation is to exploit the \cpp{constexpr} keyword, and is shown in \cref{lst:constexpr}.
 	Once this is done, the pins in use can be made directly readable from the source code, as in \cref{lst:pins}.
 
 	\begin{listingfloat}
+		\centering
 		\begin{lstlisting}[language={[11]c++},gobble=6,frame=single]
 			template<typename T>
 			T failed(const char*) { while(1); }
@@ -212,7 +213,16 @@
 		\label{lst:pins}
 	\end{listingfloat}
 
-
+\subsection{Other improvements}
+	Large amounts of additional refactoring not mentioned above happened within the embedded code, in order to try and comply better with DRY.
+	Examples where code was duplicated (and subsequently fixed) include the:
+	\begin{itemize}[noitemsep]
+		\item handling of encoder signs -- once for each encoder.
+		\item handling of motor operation -- once for each motor.
+		\item conversion from imu sensor coordinates to robot coordinates -- once for each of the gyro and accelometer
+		\item conversion from raw sensor reading to SI units -- conversion constants (or \enquote{magic numbers}) are duplicated throughout.
+	\end{itemize}
+	This is not an exhaustive list -- indeed, more problems are discovered during debugging later in this work.
 
 \bib
 

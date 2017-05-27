@@ -16,15 +16,23 @@ A better approach is taken in this work, to override the \matlab{rollout} functi
 This now presents a file-selection dialog to the user, which serves a dual purpose of waiting for the user to have collected the data.
 It is worth noting that this file resides with the embedded code, and so will not be found with the \textsc{Pilco} codebase.
 
-\subsection{Towards better data representations}
-
-\todo[inline,noprepend,caption={Write matlab stuff}]{Write some remarks about the \texttt{gaussian} and \texttt{Frame} classes here, and also possibly the \texttt{UnicyclePlant} class. Also possibly some brief remarks about automatic differentiation}
-
 \subsection{Better log files}
 
 The \textsc{Pilco} toolbox sensibly produces log files after each iteration, enabling easier debugging.
 Unfortunately, each time learning is restarted, all the old log files are overwritten.
 This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git commit hash identifying which version of \textsc{Pilco} was used to run it. An example under the new scheme is \lstinline{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \lstinline{unicycle/uninlds_007_H050.mat}.
+
+\subsection{Towards better data representations}
+
+	Like the embedded code, the Matlab code was also guilty of various DRY violations.
+	These included
+	\begin{itemize}[noitemsep]
+		\item computation of dynamics, rendering, and loss for the unicycle contain their own copies of physical unicycle parameters.
+		\item ordering of states -- while the user's scenario files specify exactly which states should participate in which part of the algorithm, not all of these specifications are respected.
+		\item mapping of state numbers to state names -- many files contain code along the lines of \matlab{theta = x(9)}, which causes problems if a new state is inserted
+		\item augmentation of gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
+	\end{itemize}
+	\todo[inline,noprepend,caption={Write matlab stuff}]{Write some remarks about the \texttt{gaussian} and \texttt{Frame} classes here, and also possibly the \texttt{UnicyclePlant} class. Also possibly some brief remarks about automatic differentiation}
 
 \subsection{Interactive visualization}
 
