@@ -133,8 +133,6 @@
 \section{Unicycle robots}
 
 
-
-
 	Unicycles provide a challenging control problem to human riders, so intuitively provide a good testing ground for new control techniques.
 	A reasonable approximation for how a human rider operates a unicycle is that they have two degrees of freedom -- one through the pedals, and the other by adjusting their angular rotation through the vertical axis.
 	This is mirrored in the design of the robotic unicycle, which has one motor attached to the drive wheel, and the other attached to a vertical flywheel\footnotemark (henceforth referred to as the turntable).
@@ -142,13 +140,29 @@
 
 	\footnotetext{While it may seem unfair that flywheel can rotate freely, while a human is limited to about \SI{180}{\degree} of motion, this intuition doesn't tell the whole story -- human riders are able to change their moment of inertia by extending and contracting their arms.}
 
-	\todo{Is delegating to Rodrigo Queiro here fine? Should I include pictures of the old unicycle}
+	\begin{figure}[!hbt]
+		\hspace*{\fill}
+		\begin{subfigure}{0.3\linewidth}
+			\includegraphics[width=\linewidth]{figures/old.jpg}
+			\caption{Old, \SI{1}{\meter} tall}
+			\label{fig:uni-old}
+		\end{subfigure}%
+		\hfill%
+		\begin{subfigure}{0.3\linewidth}
+			\includegraphics[width=\linewidth]{figures/front.jpg}
+			\caption{New, \SI{20}{\centi\meter} tall}
+			\label{fig:uni-new}
+		\end{subfigure}
+		\hspace*{\fill}
+		\caption{Unicycle robot configurations}
+	\end{figure}
+
 	There is a history of unicycle robots in the Engineering Department dating back to 2005, which is described in more detail by \citeauthor{queiro} \cite{queiro}.
 	Alongside work on these, the \textsc{Pilco} method has been successfully applied to computer models of these unicycles  \cite[section~3.3]{pilco}.
-	Based on the work in 2011, the decision was made to move from the large and dangerous platform described there to a much smaller and safer model.
+	Based on the work in 2011, the decision was made to move from the large and dangerous platform described there (\label{fig:uni-old}) to a much smaller and safer model (\label{fig:uni-new}).
 	Since then, work by \citeauthor{aleksi} \cite{aleksi} went on to write the embedded software for the system, and performed experiments to try and reproduce the results of \textsc{Pilco} in simulation in hardware.
 
-	\todo{Include picture of new unicycle}
+
 	This work met mixed success -- many problems in the hardware were identified and fixed, and there was some evidence of learning, with the controller marginally improving over time.
 	However, various concerns were raised with the testing procedure, and the computer model of the unicycle was never updated to match the hardware -- making it difficult to judge whether problems lay in the hardware or in simply a more difficult control task than on the larger unicycle, and raising concerns about whether other parts of the software stack were still configured for the large robot.
 

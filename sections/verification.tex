@@ -29,38 +29,31 @@
 		Since the motions are performed roughly by hand, checking for precise correspondences does not offer any useful information.
 		The tests are therefore designed to make any mistakes as obvious as possible
 
-		\todo{Denser layout here?}
 		\begin{enumerate}
 			\item \label{sensor-test-wheel}
 				Roll the robot forwards one full wheel rotation, and then backwards -- with its wheel turning.
-
 				This tests that the sign convention of the wheel angle and value of its radius are correct.
 
 			\item \label{sensor-test-tt}
 				Spin the turntable clockwise, then anticlockwise.
-
 				This tests the same properties of the turntable.
 
 			\item \label{sensor-test-pitch}
 				Rotate the robot $135\deg$ forwards in pitch, and back up again.
-
 				This tests that the Euler angles do not hit a singularity, and that the gyro integration has the correct scale factor.
 				It also verifies the sign convention.
 
 			\item \label{sensor-test-roll}
 
 			    Rotate the robot $90\deg$ left in roll, and back up again.
-
 			    This is looking for the same class of mistake as above.
 
 			\item \label{sensor-test-yaw}
 				Rotate the robot in $90\deg$ increments in yaw, up to $360\deg$
-
 			    This is looking for the same class of mistake as above, with an easy way to check if the original position is restored.
 
 			\item \label{sensor-test-free}
 			    Rotate the robot arbitrarily in 3D, and restore it to its original position.
-
 			    This checks that the orientation integration is conservative -- it should not depend on the path taken.
 		\end{enumerate}
 
