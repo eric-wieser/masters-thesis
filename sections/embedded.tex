@@ -179,10 +179,9 @@
 		The last line is a compiler error because \cpp{failed} is not marked \cpp{constexpr}, which \enquote{contaminates} the \cpp{constexpr}-ness of \cpp{timer_for}, forbidding its result from being placed in \cpp{tb}.
 	\end{listingfloat}
 
-	\begin{listingfloat}
+	\begin{listingfloat}[!tb]
 		\begin{lstlisting}[language={[11]c++},gobble=6,frame=single]
-			namespace pins
-			{
+			namespace pins {
 				/** @name Encoders */
 				static const uint8_t TT_DIR = 39;
 				static const uint8_t W_DIR  = 47;

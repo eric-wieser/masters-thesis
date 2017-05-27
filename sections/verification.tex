@@ -94,7 +94,7 @@
 
 		\begin{listingfloat}
 			\begin{lstlisting}[language={[11]c++},frame=single,gobble=8]
-				template<typename T, typename = enable_if<is_unsigned<T>::value>>
+				template<typename T, typename = enable_if<is_unsigned<T>::value>::type>
 				class wrapping {
 				private:
 				  T value;
