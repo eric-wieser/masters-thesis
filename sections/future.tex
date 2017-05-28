@@ -3,103 +3,166 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
+\section{Automatic Differentiation}
 
-	\todo[inline]{Write this properly}
-	\begin{itemize}
-		\item Try automatic differentiation
-		\item Fully characterize the orientation of the sensor
-		\item Try a quadratic controller
-		\item Run more rollouts
-		\item Try and encapsulate more of the matlab code
-		\item $\cdots$
-	\end{itemize}
+	Another pattern that plagues not only the \textsc{Pilco} codebase, but machine learning software in general, is the manual computation of gradients.
+	Manually deriving and implementing gradients is bad practice because, to quote an opinion piece \cite{ad-criminal}, \enquote{Important ideas get obscured by the details}, and worse, \enquote{[it] restricts the community to only using computational structures we are capable of manually deriving gradients for}.
+	This goes on to recommend the use of \enquote{Automatic Differentiation} (AD), which computes the gradients in the same way that a manual implementation does.
 
-	\section{The need for a quadratic controller}
+	A brief investigation was conducted into applying AD to the Matlab \textsc{Pilco} code, and it was found to be a large enough task that it probably warrants its own project. Additionally, the only Matlab implementation of reverse-AD (ADiMat) is not well-maintained, and was found to crash on the author's machine.
+	Therefore, adoption of AD would likely require a switch to a different language.
+	The author believes that switching to Python would be the way to go\footnotemark, noting that the \texttt{autograd} \cite{autograd} package supports AD of the Cholesky factorization, a key operation within \textsc{Pilco}.
+
+	\footnotetext{Although the author is biased here, as an active maintainer of \textit{the} numerical python package, \texttt{numpy}}
+
+	\section{Quadratic control}
 
 	It seems than in doing the work needed to switch to the small unicycle, and the pause put in the project during that transition, much of the work by \citeauthor{queiro} was forgotten.
-	In particular, they remark that a linear controller is insufficient in the sense of reaching a target position in \cite[fig.~8]{queiro}.
+	In particular, they remark that a linear controller is insufficient in the sense of reaching a target position in \cite[fig.~8]{queiro}, and thus used a quadratic controller.
 	We can go further, and prove that even symmetric upright balancing is not possible with a linear controller.
+
 	Consider a stationary unicycle, with all states at the origin apart from pitch ($\psi$) and roll ($\theta$), and the action needed to stabilize it.
 	Clearly, pitch can be stabilized by driving forward when leaning forward, and backwards when learning backwards.
-	The decisions on how to control the turntable are more complex:
-	\begin{description}
-		\item[tilted forward and right ($\psi > 0, \theta > 0$)]
-			Rotate clockwise ($\tau_t > 0$)\footnotemark.
-		\item[tilted forward and left ($\psi > 0, \theta < 0$)]
-			Rotate counter-clockwise ($\tau_t < 0$).
-		\item[tilted backward and right ($\psi < 0, \theta > 0$)]
-			Rotate counter-clockwise ($\tau_t < 0$).
-		\item[tilted backward and left ($\psi < 0, \theta < 0$)]
-			Rotate clockwise ($\tau_t > 0$).
-	\end{description}
-	\Cref{fig:balancing} shows both of these control schemes pictorially.
-	The wheel controller in \cref{fig:balancing:wheel} can be described by $\tau_w = k\psi$, a linear controller.
-	However, the turntable controller in \cref{fig:balancing:tt} requires a controller of the form $\tau_t = k\psi\theta$, a quadratic controller.
+	The decisions on how to control the turntable are more complex, and shown pictorially in \cref{fig:balancing}.
+	The wheel controller in (a)(i) can be described by $\tau_w = k\psi$, a linear controller.
+	However, the turntable controller in (b)(i) requires a controller of the form $\tau_t = k\psi\theta$, a quadratic controller.
 	While some success was shown using the linear controller in this and previous reports, this success can only ever hold when the robot stays within one half-plane of the pitch-roll state-space -- that is, always remains tilted forwards, or to one side.
+	Indeed, (b)(ii) only matches (b)(i) in the half-plane where $\psi > 0$, suggesting the controller was learnt primarily from forward falls. (b)(ii) shows the opposite, that the harware learnt from backwards falls.
+
+	\newenvironment{ctrlaxis}{%
+		\begin{axis}[%
+			width=\linewidth,
+			height=0.75\linewidth,
+			scale only axis,
+			xmin=-pi/2,xmax=pi/2,
+			ymin=-3*pi/8,ymax=3*pi/8,
+			y dir=reverse,
+			xtick={-0.7853981, 0, 0.7853981},
+			ytick={-0.7853981, 0, 0.7853981},
+			ylabel={$\theta$},
+			xlabel={$\psi$},
+			xticklabels={{$-\frac{\pi}{4}$},{},{$\frac{\pi}{4}$}},
+			yticklabels={{$-\frac{\pi}{4}$},{},{$\frac{\pi}{4}$}},
+			axis lines=middle,
+			axis on top=true
+		]%
+	}{%
+		\end{axis}%
+	}
+	\newcommand{\drawge}{-- (rel axis cs:1,0) -- (rel axis cs:1,1) -- (rel axis cs:0,1) \closedcycle}
+	\newcommand{\drawle}{-- (rel axis cs:1,1) -- (rel axis cs:1,0) -- (rel axis cs:0,0) \closedcycle}
+	\newcommand\mybox[2][]{\tikz[overlay]\node[inner sep=2pt, anchor=text, rectangle, rounded corners=1mm,#1] {#2};\phantom{#2}}
+
+
+	\newlength{\ctlpadding}
+	\setlength{\ctlpadding}{2em}
 
 	\begin{figure}
-		\begin{subfigure}[t]{0.3\linewidth}
+		\singlespacing
+		\centering
+		\begin{subfigure}[t]{\linewidth}
+      \makebox[0pt]{\rotatebox[origin=c]{90}{
+        (a) wheel, $\tau_w$
+      }\hspace*{2em}}%
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\centering
+				\begin{tikzpicture}
+					\begin{ctrlaxis}
+						\fill[green!25]
+							(current axis.above origin) rectangle (current axis.south east);
+						\fill[red!25]
+							(current axis.above origin) rectangle (current axis.south west);
+					\end{ctrlaxis}
+				\end{tikzpicture}
+			\end{subfigure}\hfill
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\centering
+				\begin{tikzpicture}
+					\begin{ctrlaxis}
+						% cw
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=green!25] {x*-9.617634 + -0.187629} \drawge;
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=red!25] {x*-9.617634 + -0.187629} \drawle;
+						\addplot[domain=-pi:pi, samples=2] {x*-9.617634 + -0.187629};
+					\end{ctrlaxis}
+				\end{tikzpicture}
+			\end{subfigure}\hfill
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\centering
+				\begin{tikzpicture}
+					\begin{ctrlaxis}
+						% cw
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=green!25] {x*1.267563 + -0.008781} \drawle;
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=red!25] {x*1.267563 + -0.008781} \drawge;
+						\addplot[domain=-pi:pi, samples=2] {x*1.267563 + -0.008781};
+					\end{ctrlaxis}
+				\end{tikzpicture}
+			\end{subfigure}%
+			\label{fig:balancing:wheel}%
+		\end{subfigure}\\
+		%
+		\vskip-0.12em
+		\vskip\ctlpadding
+		%
+		\begin{subfigure}[t]{\linewidth}
+      \makebox[0pt]{\rotatebox[origin=c]{90}{
+        (b) turntable, $\tau_t$
+      }\hspace*{2em}}%
 			\centering
-			\begin{tikzpicture}
-				\begin{axis}[%
-					width=\linewidth,
-					height=\linewidth,
-					scale only axis,
-					xmin=-1,xmax=1,
-					ymin=-1,ymax=1,
-					ylabel={roll},
-					xlabel={pitch},
-					xticklabels={{}},
-					yticklabels={{}},
-    				axis lines=middle,
-    				axis on top=true
-				]
-					\fill[green!50]
-						(current axis.above origin) rectangle (current axis.south east)
-						node[black,midway, below] {$> 0$};
-					\fill[red!50]
-						(current axis.above origin) rectangle (current axis.south west)
-						node[black,midway, below] {$< 0$};
-				\end{axis}
-			\end{tikzpicture}
-			\caption{for $\tau_w$}
-			\label{fig:balancing:wheel}
-		\end{subfigure}\hfill
-		\begin{subfigure}[t]{0.3\linewidth}
-			\centering
-			\begin{tikzpicture}
-				\begin{axis}[%
-					width=\linewidth,
-					height=\linewidth,
-					scale only axis,
-					xmin=-1,xmax=1,
-					ymin=-1,ymax=1,
-					ylabel={roll},
-					xlabel={pitch},
-					xticklabels={{}},
-					yticklabels={{}},
-    				axis lines=middle,
-    				axis on top=true
-				]
-					\fill[green!50]
-						(current axis.origin) rectangle (current axis.north east)
-						node[black,midway] {$> 0$};
-					\fill[red!50]
-						(current axis.origin) rectangle (current axis.north west)
-						node[black,midway] {$< 0$};
-					\fill[green!50]
-						(current axis.origin) rectangle (current axis.south west)
-						node[black,midway] {$> 0$};
-					\fill[red!50]
-						(current axis.origin) rectangle (current axis.south east)
-						node[black,midway] {$< 0$};
-				\end{axis}
-			\end{tikzpicture}
-			\caption{for $\tau_t$}
-			\label{fig:balancing:tt}
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\begin{tikzpicture}
+					\begin{ctrlaxis}
+						\fill[green!25]	(current axis.origin) rectangle (current axis.north east);
+						\fill[red!25]	(current axis.origin) rectangle (current axis.north west);
+						\fill[green!25]	(current axis.origin) rectangle (current axis.south west);
+						\fill[red!25]	(current axis.origin) rectangle (current axis.south east);
+					\end{ctrlaxis}
+				\end{tikzpicture}
+			\end{subfigure}\hfill
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\begin{tikzpicture}
+					\begin{ctrlaxis}
+						% ct
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=green!25] {x*0.019940 + 0.002514} \drawge;
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=red!25] {x*0.019940 + 0.002514} \drawle;
+						\addplot[domain=-pi:pi, samples=2] {x*0.019940 + 0.002514};
+					\end{ctrlaxis}
+				\end{tikzpicture}
+			\end{subfigure}\hfill
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\centering
+				\begin{tikzpicture}
+					\begin{ctrlaxis}
+						% ct
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=green!25] {x*-0.360049 + 0.021050} \drawle;
+						\addplot[domain=-pi:pi, samples=2, draw=none, fill=red!25] {x*-0.360049 + 0.021050} \drawge;
+						\addplot[domain=-pi:pi, samples=2] {x*-0.360049 + 0.021050};
+					\end{ctrlaxis}
+				\end{tikzpicture}
+			\end{subfigure}%
+			\label{fig:balancing:tt}%
+		\end{subfigure}\\
+		\vskip \abovecaptionskip
+		\begin{subfigure}[t]{\linewidth}
+			\setcounter{subfigure}{0}%
+			\renewcommand\thesubfigure{\roman{subfigure}}%
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\caption{Ideal}
+			\end{subfigure}\hfill
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\caption{Learnt in simulation}
+			\end{subfigure}\hfill
+			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
+				\caption{Learnt in reality}
+			\end{subfigure}
 		\end{subfigure}
-		\caption{Controller required for stabilization}
+		\caption{Controllers for stabilizing pitch $\psi$ and roll $\theta$}
 		\label{fig:balancing}
+		\medskip
+		\small
+		Areas are shaded where \mybox[fill=green!25]{$\tau > 0$} and \mybox[fill=red!25]{$\tau < 0$}.
+		$\tau_w > 0$ corresponds to a force driving the robot forwards, and $\tau_t > 0$ corresponds to a moment rotating the robot clockwise
+		These plots can be interpreted as a top down view of the robot at the origin facing right, with a point on the plot corresponding to the location of the top of the robot.
+
 	\end{figure}
 
 	\footnotetext{Rotating the turntable counter-clockwise exerts a clockwise moment on the robot body}

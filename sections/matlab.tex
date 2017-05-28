@@ -122,18 +122,6 @@ Future work could go on to add a time slider, to allow replaying a short section
 
 \todo{I think there might be a worrydream talk with some relevance here}
 
-\subsection{The need for Automatic Differentiation}
-
-	Another pattern that plagues not only the \textsc{Pilco} codebase, but machine learning software in general, is the manual computation of gradients.
-	Manually deriving and implementing gradients is bad practice because, to quote an opinion piece \cite{ad-criminal}, \enquote{Important ideas get obscured by the details}, and worse, \enquote{[it] restricts the community to only using computational structures we are capable of manually deriving gradients for}.
-	This goes on to recommend the use of \enquote{Automatic Differentiation} (AD), which computes the gradients in the same way that a manual implementation does.
-
-	A brief investigation was conducted into applying AD to the Matlab \textsc{Pilco} code, and it was found to be a large enough task that it probably warrants its own project. Additionally, the only Matlab implementation of reverse-AD (ADiMat) is not well-maintained, and was found to crash on the author's machine.
-	Therefore, adoption of AD would likely require a switch to a different language.
-	The author believes that switching to Python would be the way to go\footnotemark, noting that the \texttt{autograd} \cite{autograd} package supports AD of the Cholesky factorization, a key operation within \textsc{Pilco}.
-
-	\footnotetext{Although the author is biased here, as an active maintainer of \textit{the} numerical python package, \texttt{numpy}}
-
 \bib
 
 \end{document}
