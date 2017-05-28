@@ -44,7 +44,9 @@
 			xticklabels={{$-\frac{\pi}{4}$},{},{$\frac{\pi}{4}$}},
 			yticklabels={{$-\frac{\pi}{4}$},{},{$\frac{\pi}{4}$}},
 			axis lines=middle,
-			axis on top=true
+			axis on top=true,
+			allow reversal of rel axis cs=false,
+			y label style={anchor=south west}
 		]%
 	}{%
 		\end{axis}%
@@ -69,9 +71,9 @@
 				\begin{tikzpicture}
 					\begin{ctrlaxis}
 						\fill[green!25]
-							(current axis.above origin) rectangle (current axis.south east);
+							(current axis.below origin) rectangle (rel axis cs: 1, 0);
 						\fill[red!25]
-							(current axis.above origin) rectangle (current axis.south west);
+							(current axis.below origin) rectangle (rel axis cs: 0, 0);
 					\end{ctrlaxis}
 				\end{tikzpicture}
 			\end{subfigure}\hfill
@@ -111,10 +113,10 @@
 			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
 				\begin{tikzpicture}
 					\begin{ctrlaxis}
-						\fill[green!25]	(current axis.origin) rectangle (current axis.north east);
-						\fill[red!25]	(current axis.origin) rectangle (current axis.north west);
-						\fill[green!25]	(current axis.origin) rectangle (current axis.south west);
-						\fill[red!25]	(current axis.origin) rectangle (current axis.south east);
+						\fill[green!25]	(current axis.origin) rectangle (rel axis cs: 1, 1);
+						\fill[red!25]	  (current axis.origin) rectangle (rel axis cs: 0, 1);
+						\fill[green!25]	(current axis.origin) rectangle (rel axis cs: 0, 0);
+						\fill[red!25]	  (current axis.origin) rectangle (rel axis cs: 1, 0);
 					\end{ctrlaxis}
 				\end{tikzpicture}
 			\end{subfigure}\hfill
@@ -160,11 +162,9 @@
 		\medskip
 		\small
 		Areas are shaded where \mybox[fill=green!25]{$\tau > 0$} and \mybox[fill=red!25]{$\tau < 0$}.
-		$\tau_w > 0$ corresponds to a force driving the robot forwards, and $\tau_t > 0$ corresponds to a moment rotating the robot clockwise
+		$\tau_w > 0$ corresponds to a force driving the robot forwards, and $\tau_t > 0$ corresponds to a moment rotating the robot clockwise.
 		These plots can be interpreted as a top down view of the robot at the origin facing right, with a point on the plot corresponding to the location of the top of the robot.
 
 	\end{figure}
-
-	\footnotetext{Rotating the turntable counter-clockwise exerts a clockwise moment on the robot body}
 
 \end{document}
