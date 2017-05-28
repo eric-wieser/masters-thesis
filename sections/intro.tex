@@ -135,7 +135,7 @@
 
 	Unicycles provide a challenging control problem to human riders, so intuitively provide a good testing ground for new control techniques.
 	A reasonable approximation for how a human rider operates a unicycle is that they have two degrees of freedom -- one through the pedals, and the other by adjusting their angular rotation through the vertical axis.
-	This is mirrored in the design of the robotic unicycle, which has one motor attached to the drive wheel, and the other attached to a vertical flywheel\footnotemark (henceforth referred to as the turntable).
+	This is mirrored in the design of the robotic unicycle, which has one motor attached to the drive wheel, and the other attached to a flywheel\footnotemark with a vertical axis (henceforth referred to as the turntable).
 	The state space of such a unicycle is $\mathbb{R}^{12}$ \cite{forster}, so this system is heavily underactuated, explaining the difficulty in controlling it.
 
 	\footnotetext{While it may seem unfair that flywheel can rotate freely, while a human is limited to about \SI{180}{\degree} of motion, this intuition doesn't tell the whole story -- human riders are able to change their moment of inertia by extending and contracting their arms.}

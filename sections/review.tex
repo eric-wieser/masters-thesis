@@ -11,7 +11,7 @@
 	Two MAXON motors\cite{motor} are attached to the robot, each with a corresponding 14:1 gearbox\cite{gearbox} and 512 count-per-revolution encoder\cite{encoder}.
 	The first motor is connected via a timing belt with a 40:16 ratio to the drive wheel, while the second motor is directly attached to a steel flywheel (henceforth referred to as the \enquote{turntable}).
 
-	To prevent damage to the turntable motor shaft, the chassis of the robot shields the turntable from direct impact, reinforced wtih some metal bolts.
+	To prevent damage to the turntable motor shaft, the chassis of the robot shields the turntable from direct impact, reinforced with some metal bolts.
 	Atop this shielding, lies the control board on the front side of the robot, and the battery duct-taped to the rear.
 
 	Previous work concluded \cite[p.~54]{aleksi} that a better simulation model of the unicycle was desirable, to help determine whether poor learning progress was due to implementation errors in software, or simply due to the small unicycle having a more challenging set of dynamics than the previously-simulated large unicycle.
@@ -32,9 +32,9 @@
 	Controlling the robot is a ChipKIT Max32 microcontroller board\cite{max32}. This and has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board. Atop the controller board sits a hand-soldered protoboard. This provided places to connect the sensors and actuators, which are as follows:
 	\begin{itemize}[noitemsep]
 		\item
-			A combined gyro and accelometer board \cite{imu}, connected via I\textsuperscript{2}C.
+			A combined gyroscope and accelerometer board \cite{imu}, connected via I\textsuperscript{2}C.
 		\item
-			A pair of rotary encoders \cite{encoder}, connected via custom electronics which convers the quadrature encoder pulses into a single pulse train and a direction signal.
+			A pair of rotary encoders \cite{encoder}, connected via custom electronics which convert the quadrature encoder pulses into a single pulse train and a direction signal.
 		\item
 			An external H-bridge driver board to operate the motors, interfaced to the microcontroller PWM outputs.
 	\end{itemize}
@@ -47,7 +47,7 @@
 
 	\subsection{Version control}
 
-	A crucial part of modern software development, both in industry and the open source community, is the use of version control software. 
+	A crucial part of modern software development, both in industry and the open source community, is the use of version control software.
 	This software tracks changes over time in the form of \enquote{commit}s, recording who made them, and allowing the programmer to describe why they made that change.
 	One particularly useful feature of this type of software is to \enquote{blame} a file, showing which commit each line was last modified in -- useful for distinguishing an important bugfix from obsolete code.
 	Two of the most common version control tools are Git and SVN, both of which are actively developed.
@@ -69,7 +69,7 @@
 
 	\subsection{Matlab toolbox}
 
-	The \textsc{Pilco} toolbox is a large collection of matlab scripts, functions, and classes that collectively implement the code required to run the \textsc{Pilco} algorithm. The user of the software creates a collection of scenario files, describing:
+	The \textsc{Pilco} toolbox is a large collection of Matlab scripts, functions, and classes that collectively implement the code required to run the \textsc{Pilco} algorithm. The user of the software creates a collection of scenario files, describing:
 	\begin{enumerate}[noitemsep]
 		\item The state and control variables of the system
 		\item The system dynamics, and noise model
@@ -77,22 +77,23 @@
 		\item A routine to draw the physical robot, used in animations
 		\item The form of the controller. For simplicity of implementation on hardware, we only investigate affine controllers in this report.
 	\end{enumerate}
-	Having done this, the user then copies and pastes a routine block of code to run the pilco algorithm in their fully set up workspace.
+	Having done this, the user then copies and pastes a routine block of code to run the \textsc{Pilco} algorithm in their fully set up workspace.
 
-	When running this code, the result is a series of state, action, and loss plots, showing simulated and predicted trajectories after each iteration.
-	An animation is also played of the trajectory used to train the next iteration of the algorithm.
-	Log files are saved containing the state rollouts, controllers, and plots themselves -- making it easy to run the main script on a powerful remote computer, but view the results locally.
-
-	\Cref{fig:pilco-interface} shows an example of the plots.
-
-	\begin{figure}
-		% \includegraphics[width=\linewidth]{}
+	\begin{figure}[b]
+		\centering
+		\includegraphics[width=\linewidth]{figures/pilco.png}
 		\caption{Screenshot of the \textsc{Pilco} interface}
 		\label{fig:pilco-interface}
 		\medskip
 		\small
 		Shown at the end of the project, after the improvements made by the author.
 	\end{figure}
+
+	When running this code, the result is a series of state, action, and loss plots, showing simulated and predicted trajectories after each iteration.
+	An animation is also played of the trajectory used to train the next iteration of the algorithm.
+	Log files are saved containing the state rollouts, controllers, and plots themselves -- making it easy to run the main script on a powerful remote computer, but view the results locally.
+
+	\Cref{fig:pilco-interface} shows an example of the plots.
 
 	\subsection{Embedded C++}
 
@@ -117,7 +118,7 @@
 		\item Saving the copied text into a csv file, which is read by Matlab
 	\end{enumerate}
 	Of these, steps 2 and 3 are slow, and 1, 5, and 6 are prone to human error.
-	Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark.
+	Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark. This work therefore comes up with a better approach in \cref{sec:comms}.
 
 	\footnotetext{For instance, if a byte is dropped due to a serial buffer overflow, the number \texttt{10.23} can be read as \texttt{0.23}}
 

@@ -27,7 +27,7 @@
 	The wheel controller in (a)(i) can be described by $\tau_w = k\psi$, a linear controller.
 	However, the turntable controller in (b)(i) requires a controller of the form $\tau_t = k\psi\theta$, a quadratic controller.
 	While some success was shown using the linear controller in this and previous reports, this success can only ever hold when the robot stays within one half-plane of the pitch-roll state-space -- that is, always remains tilted forwards, or to one side.
-	Indeed, (b)(ii) only matches (b)(i) in the half-plane where $\psi > 0$, suggesting the controller was learnt primarily from forward falls. (b)(ii) shows the opposite, that the harware learnt from backwards falls.
+	Indeed, (b)(ii) only matches (b)(i) in the half-plane where $\psi > 0$, suggesting the controller was learnt to avoid forward falls. (b)(ii) shows the opposite, that the hardware learnt to avoid backwards falls.
 
 	\newenvironment{ctrlaxis}{%
 		\begin{axis}[%
