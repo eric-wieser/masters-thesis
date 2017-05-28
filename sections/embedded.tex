@@ -74,7 +74,7 @@
 		An implementation of this for embedded C, with small code size and no heap allocation, exists as the Nanopb project \cite{nanopb}, which thanks to our switch to PlatformIO \cref{sec:platformio}, is easy to include on our robot.
 		Unfortunately, there is no first-party support of protobuf in Matlab, and the only available third-party implementation \cite{protobuf-matlab} is difficult to install, and abandonware.\footnotemark
 
-		\footnotetext{
+		\footnotetext{%
 			The API of protobuf has changed significantly in the 5 years since this package was last modified.
 			As such, were using protobuf from Matlab desired in future, the author would recommend starting the implementation from scratch as a protobuf python plugin, using the latest Google developer examples.
 		}
@@ -123,7 +123,7 @@
 		In the interest of giving back to the community, the author published PacketIO \cite{packetio}, a package to solve the framing problem.
 		This package includes unit tests and online documentation, in order to help verify its correctness and encourage its use.
 
-		\footnotetext{
+		\footnotetext{%
 			A package implementing COBS for Arduino does exist, PacketSerial\cite{packetserial}.
 			However, this requires the entire message to be calculated before any of it is sent, whereas nanopb requires a streaming protocol. Nanopb's choice makes it able to write arbitrarily large messages piece by piece -- such as our state logs.
 		}

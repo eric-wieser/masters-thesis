@@ -3,98 +3,118 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\todo{Work out how much of this is really needed, and whether it fits better somewhere else in the text}%
 An important part of designing control systems is the choice of representation of the state. In robotics, the state typically consists of four parts: the position, the velocity, the orientation, and the angular velocity. The first two of these are easily represented with vectors, and will not be discussed further here.
 
-Orientation and angular velocity pose more of a problem. In 2d, the situation is once again easy -- both can be represented with a single scalar, respectively $\theta$ and $\omega = \dot{\theta}$. Combining orientations can be done using addition, and is both associative and commutative. Rotation is 3d is not commutative, meaning that the order in which rotations are applied matters. Angular velocity in 3d can be represented with a vector $\bm{\omega}$, with the direction indicating the axis rotated around, and the magnitude the angular velocity about that axis.
+Orientation and angular velocity pose more of a problem. In 2d, the situation is once again easy -- both can be represented with a single scalar, respectively $\theta$ and $\omega = \dot{\theta}$.
+Combining 2D orientations can be done using addition, and is both associative and commutative, making integration of angular velocity easy.
+Rotation in 3d is not commutative, meaning that the order in which rotations are applied matters.
+Angular velocity in 3d can be represented with a pseudovector\footnote{Like a vector, but flips direction when reflected.} $\bm{\omega}$, with the direction indicating the axis rotated around, and the magnitude the angular velocity about that axis.
 
 \section{Rotation matrices}
 
-An easy way to represent rotations is with a orthonormal (rotation) matrix $R \mathbb{R}^{3\times3}$, which can be used to rotate a vector $\bm{x} \in \mathbb{R}^{3}$ with:
-\begin{align}
-	\bm{x}' = R \bm{x}
-\end{align}
-However, rotation matrices are a poor choice of state representation, as they are over-constrained.
-Under numerical error, orthonormality of the rotation matrices will be lost, leading to the introduction of unwanted skew and scaling transformations. One workaround is to renormalize the matrices frequently.
-
+	An easy way to represent rotations is with a orthonormal (rotation) matrix $R \mathbb{R}^{3\times3}$, which can be used to rotate a vector $\bm{x} \in \mathbb{R}^{3}$ with:
+	\begin{align}
+		\bm{x}' = R \bm{x}
+	\end{align}
+	However, rotation matrices are a poor choice of state representation, as they are under-constrained.
+	Under numerical error, orthonormality of the rotation matrices will be lost, leading to the introduction of unwanted skew and scaling transformations. One workaround is to renormalize the matrices frequently, but this can be expensive and ill-defined.
 
 \section{Euler angles}
 \label{app:euler-angles}
 
-Another option would be to parametrize the orientation with a set of angles.
-It turns out that three angles are needed, usually named $(\phi, \theta, \psi)$.
-These angles are applied in order, and each have a corresponding axis. For instance, in what will be referred to here as $YXZ$ convention\footnotemark, the transformation represented is
-\footnotetext{Different authors use different conventions here -- differences include using axis numbers instead of axis names, and using intrinsic instead of extrinsic axes (equivalent to reversing the order). It is often advisable to look for a less ambiguous matrix definition, rather than relying on the naming. }
-\begin{align}
-	\bm{x}' = R_{YXZ}(\phi, \theta, \psi)\bm{x} = R_Y(\phi)R_X(\theta)R_Z(\psi) \bm{x}\,,
-	\label{eq:euler-matrix}
-\end{align}
-where $R_Q(\alpha)$ is the rotation matrix producing a rotation of $\alpha$ around the axis $Q$, in the right-hand sense. It should be clear from non-commutativity of matrix multiplication that different axis conventions give very different meaning of $(\phi, \theta, \psi)$ -- therefore it is vital to be explicit about the axis convention used when working with euler angles. There are 12 conventions using the Cartesian axes, consisting of the 6 permutations of $XYZ$, and the 6 \enquote{sandwich} forms ($XYX$ etc). Of particular interest, are:
-\begin{description}
-	\item[XYZ]
-		Often referred to as \enquote{yaw, pitch, and roll}\footnotemark, corresponding to the angles $\psi$, $\theta$, and $\phi$.
-	\item[YZX]
-		The convention used on the unicycle. Here, $\psi$ is the rotation of the wheel about the z axis, $\theta$ the angle the axle makes with the vertical (roll), and $\phi$ the angle of the chassis about the axle.
-\end{description}
-Euler angles are algebraically awkward. It is difficult to combine two rotations expressed in them\footnotemark short of converting through another representation, which in turn makes it difficult to integrate $\bm{\omega}$ into orientation.
+	Another option would be to parametrize the orientation with a set of angles.
+	It turns out that three angles are needed, usually named $(\phi, \theta, \psi)$\footnote{Not to be confused with the names of the variables we parametrized the unicycle with in \cref{eq:state-vars}}.
+	These angles are applied in order, and each have a corresponding axis. For instance, in what will be referred to here as $YXZ$ convention\footnotemark, the transformation represented is
+	\begin{align}
+		\bm{x}' = R_{YXZ}(\phi, \theta, \psi)\bm{x} = R_Y(\phi)R_X(\theta)R_Z(\psi) \bm{x}\,,
+		\label{eq:euler-matrix}
+	\end{align}
+	where $R_Q(\alpha)$ is the rotation matrix producing a rotation of $\alpha$ around the axis $Q$, in the right-hand sense.
+	\footnotetext{Different authors use different notations here -- differences include using axis numbers instead of axis names, and using intrinsic instead of extrinsic axes (equivalent to reversing the order). It is often advisable to look for a less ambiguous matrix definition, rather than relying on the naming. }
+	It should be clear from non-commutativity of matrix multiplication that different axis conventions give very different meaning of $(\phi, \theta, \psi)$ -- therefore it is vital to be explicit about the axis convention used when working with Euler angles.
+	There are 12 conventions using the Cartesian axes, consisting of the 6 permutations of $XYZ$, and the 6 \enquote{sandwich} forms such as $XYX$. Of particular interest, are:
+	\begin{description}
+		\item[$XYZ$ (or 123)]
+			Often\footnotemark referred to as \enquote{yaw, pitch, and roll}, corresponding to the angles $\psi$, $\theta$, and $\phi$.
+		\item[$YZX$ (or 213)]
+			The convention used on the unicycle. Here, $\psi$ is the rotation of the wheel about the z axis, $\theta$ the angle the axle makes with the vertical (roll), and $\phi$ the angle of the chassis about the axle.
+	\end{description}
+	\footnotetext{These terms are also frequently used ambiguously to mean \enquote{some type of Euler angle}, such as in this and all previous unicycle reports -- so by no means should be taken of confirmation of $XYZ$ convention}
+	Euler angles are algebraically awkward. It is difficult to combine two rotations expressed in them\footnotemark short of converting through another representation, which in turn makes it difficult to integrate $\bm{\omega}$ into orientation.
+	\footnotetext{From \cref{eq:euler-matrix}, it should be apparent that simply adding corresponding angles does not work, as $R_{YXZ}(\phi_1 + \phi_2, \theta_1 + \theta_2, \psi_1 + \psi_2) \ne R_{YXZ}(\phi_2, \theta_2, \psi_2)R_{YXZ}(\phi_1, \theta_1, \psi_1)$.}
+	A common trap is to confuse the rate of change of Euler angles, or Euler rates, with the angular velocity vector\footnote{To a first-order approximation, these are equivalent at the origin -- but not everywhere else}.
 
-\footnotetext{From \cref{eq:euler-matrix}, it should be apparent that simply adding corresponding angles does not work, as $R_{YXZ}(\phi_1 + \phi_2, \theta_1 + \theta_2, \psi_1 + \psi_2) \ne R_{YXZ}(\phi_2, \theta_2, \psi_2)R_{YXZ}(\phi_1, \theta_1, \psi_1)$.}
 
 
 \section{Quaternions}
 
-	\begin{align}
-		\|\bm{q}\| = \|a + \bm{v}\| &= a^2 + \|v\| \\
-		\operatorname{normalize}(\bm{q}) &= \frac{\bm{q}}{\|\bm{q}\|}
-	\end{align}
+	\newcommand{\iu}{\mathrm{i}\mkern1mu}
+	\newcommand{\ju}{\mathrm{j}\mkern1mu}
+	\newcommand{\ku}{\mathrm{k}\mkern1mu}
 
-	\todo[inline]{Actually write some stuff here?}
+	Despite having dismissed the 2D case as trivial, it can provide some insight into other representations of orientation.
+	If a 2D vector is replaced by complex number $\bm{z} \in \mathbb{C}, \bm{z} = x+y\iu$ where $\iu^2 = -1$, then a rotation by $\theta$ can be represented with
+	\begin{align}
+		\bm{z}' = \bm{c}\bm{z} \quad \text{where} \quad \bm{c} = \exp(\iu\theta) = (\cos \theta + \iu \sin \theta)\,.
+		\label{eq:rot:complex}
+	\end{align}
+	Quaternions are an extension of this idea to 3d, but requiring two more imaginary units $\ju^2 = \ku^2 = -1$ corresponding to the two extra degrees of freedom, and the additional definition that $\iu\ju\ku = -1$ to fully defined multiplication.
+	This last identity causes quaternion multiplication to be non-commutative, suggesting parallels to 3d rotation.
+	A quaternion $\bm{q} \in \mathbb{H}$ can be written either as $w + x\iu + y\ju + z\ku$, or with the last three terms collected into a pseudo-vector\footnotemark as $a + \bm{v}$. Some useful definitions to parallel those of the complex numbers are
+	\begin{align}
+		\|\bm{q}\| &= a^2 + \|v\|, &
+		\bm{q}^* &= a - \bm{v}, &
+		\operatorname{normalize}(\bm{q}) &= \frac{\bm{q}}{\|\bm{q}\|}\,.
+		\label{eq:norm}
+	\end{align}
+	\Cref{eq:rot:complex} can be extended to quaternions as
+	\begin{align}
+		\bm{x}' = \bm{q} \bm{x} \bm{q}^* \quad \text{where} \quad
+		\bm{q} = \exp\left(\hat{\bm{\Omega}}\tfrac{\theta}{2}\right) = \cos \tfrac{\theta}{2} + \hat{\bm{\Omega}} \sin \tfrac{\theta}{2}
+		\label{eq:quat:exp}
+	\end{align}
+	$\hat{\bm{\Omega}}$ is the unit psuedovector to rotate around, and $\theta$ the angle to rotate by.
+
+	Quaternions are still under-constrained, like rotation matrices, but only by one degree of freedom, rather than six, and as shown in \cref{eq:norm} are easy to normalize.
 
 \section{Integrating angular velocity}
 
 	It can be shown that for a given angular velocity in the local frame, $\bm{\omega}$, the rate of change of the orientation quaternion $\bm{q}$ is \cite[p.~10]{boyle2016integration}
 	\begin{align}
 		\dot{\bm{q}} &= \frac{1}{2}\bm{\omega}\bm{q}\,, \\
-	\intertext{from which we can derived, using the product integral, that}
+	\intertext{which can be solved using the product integral as}
 		\bm{q}(t_2)
 			&= \left(\prod_{t_1}^{t_2} \left(\exp {\frac{1}{2}\bm{\omega}(t)}\right)^{\diff t}\right) \bm{q}(t_1) \\
 			&= \left(\prod_{t_1}^{t_2} \exp \left({\frac{1}{2}\bm{\omega}(t)} \diff t\right)\right) \bm{q}(t_1)\,.
-	\intertext{It's important to note that this is quaternion exponentiation, defined as}
-		\exp(\bm{q}) = \exp(a + \bm{v}) &= \left(
-			\cos \|\bm{v}\| + \frac{\bm{v}}{\|\bm{v}\|}\sin \|\bm{v}\|
-		\right)
-		\exp a\,,
 	\end{align}
-	so due to the non-commutativity of quaternion multiplication, $\exists\bm{p},\bm{q}: \exp(\bm{p})\exp(\bm{q}) \ne \exp(\bm{p + q})$, preventing us from converting the product integral into a summation.
-	$\exp\left(\frac{1}{2}\bm{\omega}\diff t\right)$ is a unit quaternion, since $\bm{\omega}$ has no real part -- meaning that it represents a change in rotation.
+	It's important to note that $\exp$ here is quaternion exponentiation, which we defined in \cref{eq:quat:exp}, so produces a quaternion.
+	As such, the product integral is not commutative, nor can it be turned into a summation inside the exponent.
 
 	On the unicycle robot, we need a discrete approximation to this integral, as we sample $\bm{\omega}$ at discrete times.
-	A simple approximation is to assume that between $t_1$ and $t_2$, the angular velocity is constant, with a value of $\bar{\bm{\omega}} = \frac{1}{2}(\bm{\omega}(t_1) + \bm{\omega}(t_2))$.
+	A simple approximation is to assume that between $t_1$ and $t_2$, the angular velocity is constant, with a value of $\bar{\bm{\omega}} = \frac{1}{2}(\bm{\omega}\tind{t_1} + \bm{\omega}\tind{t_2})$.
 	In this case, the terms in the product integral are all equal, and thus the multiplication is commutative -- so the integral becomes:
 	\begin{align}
 		\bm{q}(t_2)
 			&= \exp \left(
-				\frac{1}{2}\bar{\bm{\omega}} (t_2 - t_1)
+				\frac{1}{2} (t_2 - t_1) \bar{\bm{\omega}}
 			\right) \bm{q}(t_1)\,.
 		\\
 	\intertext{For small timesteps, this is often approximated to}
 		\bm{q}(t_2)
-			&\approx \left(1 + {\frac{1}{2}\bar{\bm{\omega}}} (t_2 - t_1)\right) \bm{q}(t_1)
+			&\approx \left(1 + \frac{1}{2} (t_2 - t_1) \bar{\bm{\omega}}\right) \bm{q}(t_1)\,,
 	\end{align}
-	using a taylor series expansion of $\exp$.
-	A normalization is then needed to keep unit quaternions.
+	using a taylor series expansion of $\exp$, but then a normalization is needed to keep unit quaternions.
 	This approximation is less computationally expensive, as it does not incur trigonometric functions.
 	However, on the robot our sampling rate for the integration of \SI{20}{\hertz} is rather low, so we can afford this extra computation.
 
 \section{Getting orientation from the Accelerometer}
 
-	\todo{Does this fit better into one of the previous sections}
-
+	\todo{Does this fit better into one of the previous sections}%
 	Integrating the angular velocity gives a change in orientation, but it doesn't give an initial orientation.
-	Rather than relying on the robot operator to start the robot perfectly upright, we obtain the relevant information from the accelerometer. When the robot is not in motion the accelerometer measures only the acceleration due to gravity, telling us $\bm{a}_d$, the direction in which down lies.
+	Rather than relying on the robot operator to start the robot perfectly upright, we obtain the relevant information from the accelerometer. When the robot is not in motion the accelerometer measures only the acceleration due to gravity, telling us $\bm{a}$, the direction in which down lies.
 
-	We know that for the upright robot, the reading of the accelerometer should be $\hat{\bm{a}}_d = \begin{bmatrix}0 & 0 & -g\end{bmatrix}^T$\footnotemark. We desire a quaternion $\bm{q}$ that rotates $\hat{\bm{a}}_d$ onto $\bm{a}_d$. We can compute the square of this quaternion as follows:
-	\footnotetext{
+	We know that for the upright robot, the reading of the accelerometer should be $\bm{a}_0 = \begin{bmatrix}0 & 0 & -g\end{bmatrix}^T$\footnotemark. We desire a quaternion $\bm{q}$ that rotates $\bm{a}_0$ onto $\bm{a}$. We can compute the square of this quaternion as follows:
+	\footnotetext{%
 		After the appropriate transformation from sensor to robot coordinates.
 		We approximate this with a simple rotation matrix of
 		$\left[\begin{smallmatrix}0 & 0 & -1 \\ 1 & 0 & 0 \\ 0 & -1 & 0\end{smallmatrix}\right]$.
@@ -103,7 +123,7 @@ Euler angles are algebraically awkward. It is difficult to combine two rotations
 	\begin{align}
 		\bm{q}^2
 			&= \operatorname{normalize}\left(
-				\hat{\bm{a}}_d \cdot \bm{a}_d + \hat{\bm{a}}_d \times \bm{a}_d
+				\bm{a}_0 \cdot \bm{a} + \bm{a}_0 \times \bm{a}
 			\right)
 			\label{eq:quat-sqrt}
 	\end{align}
@@ -115,10 +135,10 @@ Euler angles are algebraically awkward. It is difficult to combine two rotations
 	For insight on why this is the case, the simplified case where $q\in\mathbb{C}$ can be shown graphically.
 
 	The accelerometer does not tell us any information about the yaw angle (corresponding to the degree of freedom in \cref{eq:quat-sqrt}), so we are free to change the yaw rotation of the result as we please.
-	Since our cost function penalizes yaw, it is sensible to choose $\psi = 0$
+	Since our cost function penalizes yaw, it is sensible to choose $\psi = 0$.
 	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded source code at \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
 
-	\footnotetext{
+	\footnotetext{%
 		In the source code, we take a more direct approach, noting that we need only extract the yaw from the quaternion, and post-multiply by the a quaternion to remove that yaw.
 		This approach removes the need to call any trigonometric functions.
 	}
