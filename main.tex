@@ -10,6 +10,8 @@
 \usepackage{subfiles}
 \usepackage{ifthen}
 \usepackage{lmodern}
+\normalfont %to load T1lmr.fd 
+\DeclareFontShape{T1}{lmr}{bx}{sc} { <-> ssub * cmr/bx/sc }{}
 
 % tools used
 \usepackage{enumitem}
@@ -32,7 +34,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand*\diff{\mathop{}\!\mathrm{d}}
 \newcommand{\cpp}{\lstinline[language={[11]C++}]}
-\newcommand{\matlab}{\lstinline[language={[11]C++}]}
+\newcommand{\matlab}{\lstinline[language=matlab]}
 \newcommand{\tind}[1]{^{(#1)}}
 \newcommand{\unitv}[1]{\hat{\bm{e}}_{#1}}
 
@@ -80,6 +82,7 @@
 \usepackage[scaled=0.85]{beramono}
 \usepackage[onehalfspacing]{setspace}
 \usepackage{parskip}
+\usepackage[hang]{footmisc}
 
 \lstset{
 	basicstyle=\ttfamily\footnotesize,
@@ -145,7 +148,7 @@
         {\printbibsectioned}
         {}
     }
-
+\renewcommand*{\bibfont}{\small}
 
 \pagestyle{empty}
 
@@ -216,7 +219,7 @@
 	\chapter{Risk assessment retrospective}
 	\subfile{sections/risk-assessment}
 
-	\chapter{A primer on quaternions}
+	\chapter{Angular representations}
 	\label{app:quat}
 	\subfile{sections/quaternions}
 

@@ -115,7 +115,7 @@
 			\textit{\texttt{02}}\,\texttt{0F}\,\textbf{\texttt{00}}\,%
 			\textit{\texttt{04}}\,\texttt{C0}\,\texttt{FF}\,\texttt{EE}\,\textbf{\texttt{00}}%
 		}}, with \textbf{\texttt{00}} bytes appear only at the end of each packet.
-		The italic inserted bytes encode zeros within packets by counting the number of bytes until the next zero.
+		The inserted italicized bytes encode zeros within packets by counting the number of bytes until the next zero.
 		Using this method, dropping any non-zero byte will corrupt only a single packet, and dropping a zero byte will corrupt only two packets.
 
 		Sadly, no implementation of COBS was available for the Arduino which was suitable for use with Nanopb\footnotemark.
@@ -133,8 +133,14 @@
 		With a messaging interface on the robot, a tool was needed on the PC to communicate with it.
 		Due to the previously-mentioned lack of protobuf implementation in Matlab, Python 3.5 was chosen as the tool for the job.
 
+		\begin{figure}
+			\todo[inline]{Take a screenshot}
+			\caption{The command-line interface}
+			\label{fig:cli}
+		\end{figure}
+
 		For simplicity, the tool was created as an interactive command-line application, rather than a GUI.
-		A screenshot of the interface is shown in \todo[inline]{Take a screenshot}.
+		A screenshot of the interface is shown in \cref{fig:cli}.
 		From this command line, commands can be sent to and data collected from the robot.
 		Of particular note is that any diagnostic messages from the robot also appear in this interface, as they too go through the messaging interface. Example commands include:
 		\begin{description}

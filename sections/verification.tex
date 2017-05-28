@@ -87,12 +87,7 @@
 			\label{fig:bad-wheel}
 		\end{figure}
 
-		To understand the problem, some background is needed here on the workings of the encoders.
-		They are attached to 16-bit timers, which after some here-unimportant interrupt tricks are configured to count up and down with the encoder pulses. When they count up to their maximum value of \cpp{0xFFFF}, they overflow and resume counting at \cpp{0x0000}.
-		The trick to working around this is to sum the change in reading on each timestep. This change \emph{must} be calculated using \cpp{unsigned} subtraction of the values, where wraparound is well defined. This is actually hard to get right without invoking undefined behaviour, which the previous code did according to \cite[Paragraph~5/4]{cpp-standard}.
-		Using the guideline that good software should \enquote{Make interfaces easy to use correctly and hard to use incorrectly}\cite{meyers2004most}, the type in \cref{listing:wrapping} was defined.
-
-		\begin{listingfloat}
+		\begin{listingfloat}[b!]
 			\begin{lstlisting}[language={[11]c++},frame=single,gobble=8]
 				template<typename T, typename = enable_if<is_unsigned<T>::value>::type>
 				class wrapping {
@@ -128,6 +123,11 @@
 			\small
 			This encapsulates the process of casting back-and-forth between \cpp{signed} and \cpp{unsigned} types, and makes various misuses illegal.
 		\end{listingfloat}
+
+		To understand the problem, some background is needed here on the workings of the encoders.
+		They are attached to 16-bit timers, which after some here-unimportant interrupt tricks are configured to count up and down with the encoder pulses. When they count up to their maximum value of \cpp{0xFFFF}, they overflow and resume counting at \cpp{0x0000}.
+		The trick to working around this is to sum the change in reading on each timestep. This change \emph{must} be calculated using \cpp{unsigned} subtraction of the values, where wraparound is well defined. This is actually hard to get right without invoking undefined behaviour, which the previous code did according to \cite[Paragraph~5/4]{cpp-standard}.
+		Using the guideline that good software should \enquote{Make interfaces easy to use correctly and hard to use incorrectly}\cite{meyers2004most}, the type in \cref{listing:wrapping} was defined.
 
 		Test \ref{sensor-test-tt} revealed an incorrect sign on the turntable encoder -- made due to the motor being mounted upside-down.
 		This was to be expected, as the same mistake had already been found in the motor torque.
