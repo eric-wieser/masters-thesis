@@ -47,10 +47,7 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 
 
 \section{Quaternions}
-
-	\newcommand{\iu}{\mathrm{i}\mkern1mu}
-	\newcommand{\ju}{\mathrm{j}\mkern1mu}
-	\newcommand{\ku}{\mathrm{k}\mkern1mu}
+	\label{sec:quat:intro}
 
 	Despite having dismissed the 2D case as trivial, it can provide some insight into other representations of orientation.
 	If a 2D vector is replaced by complex number $\bm{z} \in \mathbb{C}, \bm{z} = x+y\iu$ where $\iu^2 = -1$, then a rotation by $\theta$ can be represented with
@@ -78,6 +75,7 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 	Quaternions are still under-constrained, like rotation matrices, but only by one degree of freedom, rather than six, and as shown in \cref{eq:norm} are easy to normalize.
 
 \section{Integrating angular velocity}
+\label{sec:quat:int}
 
 	It can be shown that for a given angular velocity in the local frame, $\bm{\omega}$, the rate of change of the orientation quaternion $\bm{q}$ is \cite[p.~10]{boyle2016integration}
 	\begin{align}
@@ -106,42 +104,6 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 	using a taylor series expansion of $\exp$, but then a normalization is needed to keep unit quaternions.
 	This approximation is less computationally expensive, as it does not incur trigonometric functions.
 	However, on the robot our sampling rate for the integration of \SI{20}{\hertz} is rather low, so we can afford this extra computation.
-
-\section{Getting orientation from the Accelerometer}
-
-	\todo{Does this fit better into one of the previous sections}%
-	Integrating the angular velocity gives a change in orientation, but it doesn't give an initial orientation.
-	Rather than relying on the robot operator to start the robot perfectly upright, we obtain the relevant information from the accelerometer. When the robot is not in motion the accelerometer measures only the acceleration due to gravity, telling us $\bm{a}$, the direction in which down lies.
-
-	We know that for the upright robot, the reading of the accelerometer should be $\bm{a}_0 = \begin{bmatrix}0 & 0 & -g\end{bmatrix}^T$\footnotemark. We desire a quaternion $\bm{q}$ that rotates $\bm{a}_0$ onto $\bm{a}$. We can compute the square of this quaternion as follows:
-	\footnotetext{%
-		After the appropriate transformation from sensor to robot coordinates.
-		We approximate this with a simple rotation matrix of
-		$\left[\begin{smallmatrix}0 & 0 & -1 \\ 1 & 0 & 0 \\ 0 & -1 & 0\end{smallmatrix}\right]$.
-		This is likely to be incorrect by the order of \SI{5}{\degree} on some axis, due to bending of components.
-	}
-	\begin{align}
-		\bm{q}^2
-			&= \operatorname{normalize}\left(
-				\bm{a}_0 \cdot \bm{a} + \bm{a}_0 \times \bm{a}
-			\right)
-			\label{eq:quat-sqrt}
-	\end{align}
-	There are infinitely many solutions to this equation, lying on a circle in $\mathbb{H}$.
-	We choose the rotation of minimum angle, which can be shown to be
-	\begin{align}
-		q &= \operatorname{normalize}(q^2 + 1)\,.
-	\end{align}
-	For insight on why this is the case, the simplified case where $q\in\mathbb{C}$ can be shown graphically.
-
-	The accelerometer does not tell us any information about the yaw angle (corresponding to the degree of freedom in \cref{eq:quat-sqrt}), so we are free to change the yaw rotation of the result as we please.
-	Since our cost function penalizes yaw, it is sensible to choose $\psi = 0$.
-	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded source code at \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
-
-	\footnotetext{%
-		In the source code, we take a more direct approach, noting that we need only extract the yaw from the quaternion, and post-multiply by the a quaternion to remove that yaw.
-		This approach removes the need to call any trigonometric functions.
-	}
 
 \bib
 

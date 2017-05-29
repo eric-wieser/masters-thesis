@@ -1,0 +1,40 @@
+\begin{tikzpicture}[
+	trim axis left,
+	trim axis right
+]
+	\begin{axis}[%
+		width=\linewidth,
+		height=7\linewidth/11,
+		at={(0\linewidth,0\linewidth)},
+		scale only axis,
+		axis equal,
+		axis lines=middle,
+		xmin=-.2, xmax=2,
+		ymin=-.2, ymax=1.2,
+		xlabel=$w$,
+		ylabel=$x$,
+		xtick=\empty,
+		ytick=\empty,
+	]
+
+	\draw[gray] (0,0) circle (1);
+
+	\coordinate (q2p1) at (1.6, 0.8);
+	\coordinate (q2) at (0.6, 0.8);
+	\coordinate (one) at (1, 0);
+	\coordinate (zero) at (0, 0);
+	\coordinate (q) at (0.894427190999916, 0.447213595499958);
+
+	\node[above, blue] at (q2) {\footnotesize $q^2$};
+	\node[below right, red] at (one) {\footnotesize $1$};
+	\node[above left, purple] at (q) {\footnotesize $q$};
+
+	\draw[->, red, thick] (0,0) -- (one);
+	\draw[->, blue, thick] (0,0) -- (q2);
+	\draw[->, red, thick, dashed] (q2) -- (q2p1);
+	\draw[->, blue, thick, dashed] (one) -- (q2p1);
+	\draw[->, purple, thick] (0,0) -- (q);
+	\draw[purple, thick, dashed] (q) -- (q2p1);
+
+	\end{axis}
+\end{tikzpicture}%

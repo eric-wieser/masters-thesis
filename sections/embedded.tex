@@ -220,6 +220,52 @@
 		\label{lst:pins}
 	\end{listingfloat}
 
+\subsection{Measuring initial orientation}
+	Earlier work \cite{aleksi} noted that there were issues with variation in orientation in which the robot is placed by the operator when started.
+	This stems from the fact that the estimate of orientation used by the robot is from integration of angular velocity (\cref{sec:quat:int}), only giving a change in orientation -- yet the true dynamics depend on the absolute orientation with respect to gravity.
+	In that work, there was discussion of learning these offsets and incorporating them into the dynamics model.
+	While this would be a useful approach for building the dynamics model, it does not help in implementing a controller, as for this to work the embedded code would not only need to do the learning, but would need to do it online and in realtime.
+
+	A better approach would be to simply measure the initial orientation, for which we already have a suitable sensor, the accelerometer. When the robot is not in motion, this measures only the acceleration due to gravity, telling us $\bm{a}$, the direction in which down lies in the frame of the robot.
+	We know that for the upright robot, the reading of the accelerometer should be $\bm{a}_0 = \begin{bmatrix}0 & 0 & -g\end{bmatrix}^T$\footnotemark. We desire a quaternion (\cref{sec:quat:intro}) $\bm{q}$ that rotates $\bm{a}_0$ onto $\bm{a}$, from which it can be shown
+	\footnotetext{%
+		After the appropriate transformation from sensor to robot coordinates.
+		We approximate this with a simple rotation matrix of
+		$\left[\begin{smallmatrix}0 & 0 & -1 \\ 1 & 0 & 0 \\ 0 & -1 & 0\end{smallmatrix}\right]$.
+		This is likely to be incorrect by the order of \SI{5}{\degree} on some axis, due to bending of components.
+	}
+	\begin{align}
+		\bm{a} &= \bm{q}\bm{a}_0\bm{q}^*\, & \implies
+		\bm{q}^2
+			&= \operatorname{normalize}\left(
+				\bm{a}_0 \cdot \bm{a} + \bm{a}_0 \times \bm{a}
+			\right)
+			\label{eq:quat-sqrt}
+	\end{align}
+	There are infinitely many solutions to this equation, lying on a circle in $\mathbb{H}$.
+	We choose the rotation of minimum angle,
+	\begin{align}
+		\bm{q} &= \operatorname{normalize}(\bm{q}^2 + 1)\,, &
+		%
+		\parbox{\linewidth/5}{%
+			\input{figures/quat-sqrt.tikz}
+		}
+	\end{align}
+	for which the  graphical interpretation for the simplified case where $\bm{q}^2 = w + x\iu$ is shown on the right.
+
+	The accelerometer does not tell us any information about the yaw angle (corresponding to the degree of freedom in \cref{eq:quat-sqrt}), so we are free to change the yaw rotation of the result as we please.
+	Since our cost function penalizes yaw, it is sensible to choose $\psi = 0$.
+	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded source code as \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
+
+	\footnotetext{%
+		In the source code, we take a more direct approach, noting that we need only extract the yaw from the quaternion, and post-multiply by a quaternion that removes that yaw.
+		This approach removes the need to call any trigonometric functions.
+	}
+
+	With this change in place, the operator can worry less about the orientation in which the robot is released -- it now does not affect the correctness of the dynamics model, only the likelihood of falling over.
+	This means that the operator too can learn that they are releasing in a bad position, as they are no longer constrained to releasing in the same way every time.
+
+
 \subsection{Other improvements}
 	Large amounts of additional refactoring not mentioned above happened within the embedded code, in order to try and comply better with DRY.
 	Examples where code was duplicated (and subsequently fixed) include the:
