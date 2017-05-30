@@ -52,7 +52,7 @@
 		\caption{Probabilistic applications of Gaussians}
 		\medskip
 		\small
-		The grey shaded region shows a \SI{90}{\percent} confidence interval, and red markers show samples taken from the distribution. Above 1D, plotting the probability density becomes impractical.
+		The grey shaded regions show a \SI{90}{\percent} confidence interval, and red markers show samples taken from the distribution. Above 1D, plotting the probability density becomes impractical.
 	\end{figure}
 
 	A Gaussian (or \enquote{normal}) distribution (\cref{fig:gaussian:1d}) is described by a mean $\mu$ and a variance $\sigma^2$, and satisfies
@@ -188,7 +188,7 @@
 		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
 		$c(\bm{x}, \bm{u}) = 1 - \mathbb{E}_{\bm{x}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
 
-		Each GP modelling the dynamics of a single state (\cref{eq:transition-gp}) is parametrized by $m$, $K$ of the form
+		Each GP in \cref{eq:transition-gp} modelling the dynamics of a single state is parametrized by $m$, $K$ of the form
 		\begin{align}
 			m(\bm{z}) &= \bm{z} \cdot \bm{w} + b \\
 			K(\bm{z}_1, \bm{z}_2) &= \sigma_s^2 \exp \left(
@@ -212,16 +212,15 @@
 	Previous work went to great lengths experimentally to achieve this goal, with limited success. Thankfully, this work was not wasted, as it raised and fixed mechanical and electrical problems, freeing this work from their hindrances.
 
 	However, few problems were traced back as far as the \textsc{Pilco} software -- indeed, none of the changes made to it during \cite{aleksi} were kept, indicating that they were at best hacks.
-	One of the problems with machine learning is that it's very hard to tell the difference between failure to learn due to a hard problem or insufficiently flexible model, and due to programmatic errors in the implementation.
-	This work therefore took on an approach of critically reviewing the source code used, targeting problems with non-obvious repercussions.
+	One of the problems with machine learning is that it's very hard to tell the difference between failure to learn due to a hard problem or insufficiently flexible model, and failure to learn due to programmatic errors in the implementation.
+	This work therefore took on an approach of critically reviewing the source code used, targeting obvious problems with non-obvious repercussions.
 
 	In the process of reviewing source code, software engineering best-practices were kept in mind, and applied retrospectively to correct and incorrect code alike.
 	A particularly important principle in software design is DRY, or \enquote{Don't Repeat Yourself}.
 	More specifically, this advocates that \enquote{Every piece of knowledge must have a single, unambiguous, authoritative representation within a system}\cite{dry}.
 	To see the value in holding this principle, consider a case where there are two representations. If the piece of knowledge changes, such as the mass of the robot decreasing, now two places need updating. If one of them is missed, then the result is an incorrect system. This principle applies not only to data, but also procedures.
 
-
-
+	In addition, many of the tools were improved to streamline the process of applying \textsc{Pilco} to real hardware, most of which are transferable to other non-unicycle investigations in future.
 
 
 \bib
