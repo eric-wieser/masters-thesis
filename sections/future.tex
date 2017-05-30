@@ -3,19 +3,30 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\section{Automatic Differentiation}
+\section{Incorporating constraints into GP propagation}
 
-	Another pattern that plagues not only the \textsc{Pilco} codebase, but machine learning software in general, is the manual computation of gradients.
-	Manually deriving and implementing gradients is bad practice because, to quote an opinion piece~\cite{ad-criminal}, \enquote{Important ideas get obscured by the details}, and worse, \enquote{[it] restricts the community to only using computational structures we are capable of manually deriving gradients for}.
-	This goes on to recommend the use of \enquote{Automatic Differentiation} (AD), which computes the gradients in the same way that a manual implementation does.
+	When using the learnt dynamics model to choose an optimal controller, the constraints of the robot are not respected, with the only effect they have being through the updated cost function from \cref{sec:roll-cost}.
+	This is noticeable as an optimistic prediction for loss being obtained from a poor rollout, shown in \cref{fig:loss-prediction}.
+	\begin{figure}[b!]
+		\begin{minipage}{\linewidth/2-2em}
+			\input{figures/test.tikz}
+		\end{minipage}\hfill%
+		\begin{minipage}{\linewidth/2-2em}
+			\caption{Actual and posterior loss}
+			\label{fig:loss-prediction}
+			\small
+			\medskip
+			Data is taken from iteration 40 of experiment 2.
+			The blue band shows the \SI{95}{\percent} confidence interval of the posterior, and green and red lines show experimental data.
+			The posterior predicts far further into the future than the state constraints allow.
+			As a result, policy optimization can focus too much on this unattainable tail.
+		\end{minipage}
+	\end{figure}
+	At present, the forward-propagation of the dynamics model continues until \enquote{divergence}, which we define as having a mean or variance over some arbitrary limit.
+	In addition to this, future work could look at the probability of the state distribution, terminating propagation early if the probability of state constraint violation exceeds some threshold (say, \SI{50}{\percent}).
+	Without this change, we risk the policy being optimized for a region that we can't ever be in.
 
-	A brief investigation was conducted into applying AD to the Matlab \textsc{Pilco} code, and it was found to be a large enough task that it probably warrants its own project. Additionally, the only Matlab implementation of reverse-AD (ADiMat) is not well-maintained, and was found to crash on the author's machine.
-	Therefore, adoption of AD would likely require a switch to a different language.
-	The author believes that switching to Python would be the way to go\footnotemark, noting that the \texttt{autograd}~\cite{autograd} package supports AD of the Cholesky factorization, a key operation within \textsc{Pilco}.
-
-	\footnotetext{Although the author is biased here, as an active maintainer of \textit{the} numerical python package, \texttt{numpy}}
-
-	\section{Quadratic control}
+\section{Quadratic control}
 
 	It seems than in doing the work needed to switch to the small unicycle, and the pause put in the project during that transition, much of the work by~\citeauthor{queiro} was forgotten.
 	In particular, they remark that a linear controller is insufficient in the sense of reaching a target position in~\cite[fig.~8]{queiro}, and thus used a quadratic controller.
@@ -146,7 +157,7 @@
 				\caption{Learnt in simulation}
 			\end{subfigure}\hfill
 			\begin{subfigure}{(\linewidth - 2\ctlpadding)/3}
-				\caption{Learnt in reality}
+				\caption{Learnt in experiment 1}
 			\end{subfigure}
 		\end{subfigure}
 		\caption{Controllers for stabilizing pitch $\psi$ and roll $\theta$}
@@ -165,12 +176,28 @@
 	While some success was shown using the linear controller in this and previous reports, this success can only ever hold when the robot stays within one half-plane of the pitch-roll state-space -- that is, with the equilibrium in a tilted forward state (drives forward forever), or to one side (drives in a circle).
 	Indeed, (b.ii) only matches (b.i) in the half-plane where $\psi > 0$, suggesting the simulated controller learnt to avoid forward falls. (b.iii) shows the opposite, that the hardware learnt to avoid backwards falls.
 
-	A quadratic policy has been implemented on the robot and in the communication protocol (\cref{sec:comms}) as a \cpp{QuadraticPolicy} message, but no Matlab code currently exists to convert the \textsc{Pilco} policy object into a suitable protobuf message, nor has any testing been performed.
+	A quadratic policy has been implemented on the robot and in the communication protocol (\cref{sec:comms}) as a \cpp{QuadraticPolicy} message, but no Matlab code currently exists to convert the {\Pilco} policy object into a suitable protobuf message, nor has any testing been performed.
+
+
+\section{Automatic Differentiation}
+
+	Another pattern that recurs not only throughout the {\Pilco} codebase, but machine learning software in general, is the manual computation of gradients.
+	Manually deriving and implementing gradients is bad practice because, to quote an opinion piece~\cite{ad-criminal}, \enquote{Important ideas get obscured by the details}, and worse, \enquote{[it] restricts the community to only using computational structures we are capable of manually deriving gradients for}.
+	This goes on to recommend the use of \enquote{Automatic Differentiation} (AD), which computes the gradients in the same way that a manual implementation does.
+
+	A brief investigation was conducted into applying AD to the Matlab {\Pilco} code, and it was found to be a large enough task that it probably warrants its own project. Additionally, the only Matlab implementation of reverse-AD (ADiMat) is not well-maintained, and was found to crash on the author's machine.
+	Therefore, adoption of AD would likely require a switch to a different language.
+	The author believes that switching to Python would be the way to go\footnotemark, noting that the \texttt{autograd}~\cite{autograd} package supports AD of the Cholesky factorization, a key operation within {\Pilco}.
+
+	A big advantage of switching out components in favor of an open-source library is the increase in the number of users, increasing the chance of bugs already having been found.
+
+	\footnotetext{Although the author is biased here, as an active maintainer of the numerical python package, \texttt{numpy}}
 
 \section{Improving robustness to impact}
 
 	At present, the robot is partially protected from impact by the use of foam padding tied around its circumference.
 	This does the job of protecting the primary impact point, but often the secondary impact occurs either on the microcontroller or the battery. Impact on the former was observed to cause the IMU to require a power cycle, whilst sharp impact to the battery could result in a fireball.
 	Care should be taken here to not do this at the expense of too much weight, which would decrease the effectiveness of the actuators. 
+
 
 \end{document}

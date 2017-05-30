@@ -35,7 +35,7 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 \subsection{Enabling untethered operation}
 	\label{sec:untethered}
 
-	Previous data collection from the small robot required the USB cable to be connected while the robot is in motion. Cables are stiff, and thus the force from flexing them can have a considerable effect on the dynamics of an small and unstable robot -- especially with an unpredictable human holding the other end. This unpredictability is the key issue - since this cable is in a different place each time, and that information is not available to the controller, \textsc{Pilco} is not able to learn to handle it.
+	Previous data collection from the small robot required the USB cable to be connected while the robot is in motion. Cables are stiff, and thus the force from flexing them can have a considerable effect on the dynamics of an small and unstable robot -- especially with an unpredictable human holding the other end. This unpredictability is the key issue - since this cable is in a different place each time, and that information is not available to the controller, {\Pilco} is not able to learn to handle it.
 
 	This was not a deliberate choice -- the design of the microcontroller board makes it impossible to reattach a USB cable without resetting the microchip, as the RS232 \texttt{DTR} line is connected to the microcontroller reset\footnotemark. The solution was to cut a jumper pad on the microcontroller to break this connection, preventing this restart. This allows the USB cable to be reconnected after a test, and data to be recovered.
 

@@ -17,14 +17,12 @@
 	Previous work concluded~\cite[p.~54]{aleksi} that a better simulation model of the unicycle was desirable, to help determine whether poor learning progress was due to implementation errors in software, or simply due to the small unicycle having a more challenging set of dynamics than the previously-simulated large unicycle.
 
 	As part of my project, model parameters were found for the small unicycle, shown alongside the method used to obtain them in \cref{table:mechanical}.
-	Noting that since one of the goals of \textsc{Pilco} is \emph{not} to require a detailed system model, some properties were simply estimated.
+	Noting that since one of the goals of {\Pilco} is \emph{not} to require a detailed system model, some properties were simply estimated.
 
 	\begin{table}
 		\input{tables/mechanical.tex}
 		\label{table:mechanical}
 	\end{table}
-
-	% Another suggestion from previous work was to redesign the frame to \enquote{reduce the effect of the roll limitation}\cite[p.~35]{aleksi} TODO
 
 
 \section{Electrical}
@@ -52,7 +50,7 @@
 	One particularly useful feature of this type of software is to \enquote{blame} a file, showing which commit each line was last modified in -- useful for distinguishing an important bugfix from obsolete code.
 	Two of the most common version control tools are Git and SVN, both of which are actively developed.
 
-	The \textsc{Pilco} codebase used SVN when this project started. After a short trial period near the beginning of the project, operating a Git mirror of the SVN repository, the decision was made to switch to Git. It's worth noting that an objective comparison of the two is difficult, but for this project, it presented some key advantages:
+	The {\Pilco} codebase used SVN when this project started. After a short trial period near the beginning of the project, operating a Git mirror of the SVN repository, the decision was made to switch to Git. It's worth noting that an objective comparison of the two is difficult, but for this project, it presented some key advantages:
 	\begin{itemize}
 		\item
 			Git is decentralized. This means that even without internet access, it is possible to create commits.
@@ -69,7 +67,19 @@
 
 	\subsection{Matlab toolbox}
 
-	The \textsc{Pilco} toolbox is a large collection of Matlab scripts, functions, and classes that collectively implement the code required to run the \textsc{Pilco} algorithm. The user of the software creates a collection of scenario files, describing:
+	\begin{figure}[b!]
+		\centering
+		\includegraphics[width=\linewidth]{figures/pilco.png}
+		\caption{Screenshot of the {\Pilco} interface}
+		\label{fig:pilco-interface}
+		\medskip
+		\small
+		Shown at the end of the project, after the improvements described in \cref{sec:visualization}.
+		The center and lower-left panes show predicted (blue) and actual (red) state and loss plots.
+		The right pane shows an animation of the highlighted state plot.
+	\end{figure}
+
+	The {\Pilco} toolbox is a large collection of Matlab scripts, functions, and classes that collectively implement the code required to run the {\Pilco} algorithm. The user of the software creates a collection of scenario files, describing:
 	\begin{enumerate}[noitemsep]
 		\item The state and control variables of the system
 		\item The system dynamics, and noise model
@@ -77,23 +87,11 @@
 		\item A routine to draw the physical robot, used in animations
 		\item The form of the controller. For simplicity of implementation on hardware, we only investigate affine controllers in this report.
 	\end{enumerate}
-	Having done this, the user then copies and pastes a routine block of code to run the \textsc{Pilco} algorithm in their fully set up workspace.
+	Having done this, the user then copies and pastes a routine block of code to run the {\Pilco} algorithm in their fully set up workspace.
 
-	\begin{figure}[b]
-		\centering
-		\includegraphics[width=\linewidth]{figures/pilco.png}
-		\caption{Screenshot of the \textsc{Pilco} interface}
-		\label{fig:pilco-interface}
-		\medskip
-		\small
-		Shown at the end of the project, after the improvements made by the author.
-	\end{figure}
-
-	When running this code, the result is a series of state, action, and loss plots, showing simulated and predicted trajectories after each iteration.
-	An animation is also played of the trajectory used to train the next iteration of the algorithm.
+	Running this code produces a series of state, action, and loss plots after each iteration, shown in in \cref{fig:pilco-interface}.
+	An animation of the trajectory used to train the next iteration of the algorithm is also played.
 	Log files are saved containing the state rollouts, controllers, and plots themselves -- making it easy to run the main script on a powerful remote computer, but view the results locally.
-
-	\Cref{fig:pilco-interface} shows an example of the plots.
 
 	\subsection{Embedded C++}
 
@@ -121,21 +119,5 @@
 	Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark. This work therefore comes up with a better approach in \cref{sec:comms}.
 
 	\footnotetext{For instance, if a byte is dropped due to a serial buffer overflow, the number \texttt{10.23} can be read as \texttt{0.23}}
-
-	% TODO
-
-	% From a software design perspective, the code suffered from numerous bad practices:
-	% \begin{itemize}
-	% 	\item
-	% 		\enquote{Magic numbers} -- unnamed numbers in the source code. These ranged from pin numbers, miscellaneous hardware register values, to conversion factors between representations.
-	% 		This type of code is impossible to understand without a datasheet for each component in hand.
-
-	% 		The better approach is to use code like \cpp{constexpr double GEARBOX_RATIO = 225/16;} at the top of a file, and use that longer name, rather than repeat \lstinline{225/16} in multiple place.
-
-	% 	\item
-	% 		Global variables. This is bad for two reasons: it leaks global state, meaning that attempting to run the program a second time without a full reset is difficult; and it makes it unknowable which variables are used in which locations.
-
-	% 		Generally speaking, variables should be placed in the deepest scope possible. If they must be global, then wrapping related variables up into a \texttt{struct} helps keep things clear
-	% \end{itemize}
 
 \end{document}

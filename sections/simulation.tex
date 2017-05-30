@@ -10,7 +10,7 @@
 		c(\bm z) = 1 - \exp\left\{-\frac{1}{2}\left(a\|\bm{p} - \bm p_0\|^2+ \frac{\phi^2}{(4\pi)^2}\right)\right\} \,, \label{eq:cost-bad}
 	\end{align}
 	where $\bm{p} \in \mathbb{R}^3$ is the position of the centre of the turntable in robot-centric coordinates, $\bm{p}_0$ is the target position, and $a$ a dimensionless weight to adjust the relative cost of position vs yaw angle.
-	The implementation did not match this, applying different weights to each component of $\bm{p} - \bm{p_0}$, which whilst reasonable, is a form of cost-shaping -- something that should be avoided, as it is providing unnecessary hints to \textsc{Pilco} about how to learn the task.
+	The implementation did not match this, applying different weights to each component of $\bm{p} - \bm{p_0}$, which whilst reasonable, is a form of cost-shaping -- something that should be avoided, as it is providing unnecessary hints to {\Pilco} about how to learn the task.
 
 	Both of these approaches can be shown to be invalid by dimensional analysis -- the addition in \cref{eq:cost-bad} attempts to add a quantity with units \si{\meter\square} to a unitless quantity, which is not a well-defined operation.
 	Indeed, this caused noticeable problems when attempting to learn on the small unicycle, as the first term decreased by a factor of $10$ due to the change in size.
@@ -89,6 +89,7 @@
 	\end{align}
 
 \subsection{Roll limits}
+	\label{sec:roll-cost}
 	A suggestion from previous work was to redesign the frame to \enquote{reduce the effect of the roll limitation}\cite[p.~35]{aleksi}, due to a suspicion that the way in which the hardware was limited in roll to \SI{17}{\degree} (due to its axle hitting the ground) was a hindrance to the learning -- indeed, the simulated unicycle did not have this constraint.
 
 	Results from the earlier work were not necessarily valid, as they only evaluated the effect of this yaw limit in simulation on the large unicycle.
@@ -97,7 +98,8 @@
 	The difference in performance between \SI{17}{\degree} and \SI{45}{\degree} is minimal, with both showing a dramatic loss of performance compared to the idealized unicycle -- suggesting that a mechanical redesign would not be a good use of time.
 
 	\begin{figure}[b!]
-	% Gross, but needed to make the `\ref`s work below
+		\centering
+		% Gross, but needed to make the `\ref`s work below
 		\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
 		\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
 		\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
@@ -127,9 +129,7 @@
 		\medskip
 		\small
 		Showing the idealized limit of \SI{90}{\degree} (\ref{line:sim:90}), the actual value of \SI{17}{\degree} (\ref{line:sim:17}), and an optimistic value achievable by a mechanical redesign of \SI{45}{\degree} (\ref{line:sim:45}).
-		\medskip\\
 		This data is taken from just one learning run, since the duration of such a run prohibits many repeat trials, ranging from \SI{3.5}{\hour} for \SI{17}{\degree} to \SI{11}{\hour} for \SI{90}{\degree}.
-		Despite the random number generated being seeded identically for all 3 cases, the initial robot states will differ, due to a different volume of consumption of the random number stream whilst using the random controller.
 	\end{figure}
 
 	One of the problems encountered due to roll limits is that cost function contains little information about the fact that the axle is about to hit the ground.

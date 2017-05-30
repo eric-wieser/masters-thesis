@@ -16,7 +16,7 @@ dirs.sim_cost_90 = 'P:\scenarios\unicycle\logs\limit_cost_90_1@917ba0a+';
 
 N = struct();
 N.hardware1 = 23;  % only 23 hardware runs
-N.hardware2 = 38;
+N.hardware2 = 40;
 N.sim = 40;
 N.sim_nocost_17 = 40;
 N.sim_nocost_45 = 40;

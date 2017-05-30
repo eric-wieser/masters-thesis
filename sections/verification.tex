@@ -18,10 +18,10 @@
 		A command was added to the communication protocol to enable directly setting the motor speeds, \texttt{go} $\langle$wheel$\rangle$ $\langle$turntable$\rangle$.
 		It was discovered that that a positive command to the turntable resulted in a clockwise rotation -- whereas our convention elsewhere was the reverse.
 		This was a trivial fix, and required a corresponding sign reverse in the sensor, as verified below.
-		It is worth noting that such a sign flip would not impede \textsc{Pilco}, but it would cause results from simulation and hardware to be incomparable.
+		It is worth noting that such a sign flip would not impede {\Pilco}, but it would cause results from simulation and hardware to be incomparable.
 
 	\subsection{Sensors}
-		The aim of these tests is to verify that the state measurements on the robot are representative of reality, and consistent with the interpretation of those measurements as used by the animation routine in the matlab code\footnotemark.
+		The aim of these tests is to verify that the state measurements on the robot are representative of reality, and consistent with the interpretation of those measurements as used by the animation routine in the Matlab code\footnotemark.
 		\footnotetext{With the hope that the animation routine is consistent with the dynamics, as both have been used sufficiently much in the past. This turned out to be false, but not in a significant way.}
 
 		To perform them, a null controller was loaded onto the robot (equivalent to disconnecting the battery), the datalogger started, and then some motions performed by hand.
@@ -135,9 +135,10 @@
 		Test \ref{sensor-test-pitch} showed intended behaviour up to just short of $90\deg$, indicating a correct sign convention.
 		However, when slowly crossing this threshold, the rendering of the robot rotated rapidly around until it placed the entire drawing under the ground plane.
 		A few frames from the animation revealing this are shown in \cref{fig:bad-euler}.
-		The problem was diagnosed to be due to an incorrect choice of euler angle convention, seemingly picked by virtue of being the first on the list in~\cite{diebel2006representing}.
-		In our circumstance, this is not appropriate, as our Euler angles (see \cref{app:euler-angles}) must be chosen such that pitch aligns with the rotation of the wheel axle.
-		Invoking DRY once again, part of the problem here was an ambiguous representation, of \cpp{float yaw, pitch, roll;}, which says nothing about the euler convention used.
+		The problem was diagnosed to be due to an incorrect choice of Euler angle convention, seemingly having been solely picked by virtue of being the first on the list in~\cite{diebel2006representing}.
+		In our circumstance, the chosen XYZ convention is not appropriate, as our Euler angles must be chosen such that pitch aligns with the rotation of the wheel axle. The convention that achieves this is YXZ.
+		\Cref{app:euler-angles} explains this in more detail.
+		Invoking DRY once again, part of the problem here was an ambiguous representation, of \cpp{float yaw, pitch, roll;}, which says nothing about the Euler convention used.
 		In the new code, this is expressed as \cpp{euler_angles<213> orient;} -- and muddling this with \cpp{euler_angles<123>} is a compile-time error.
 
 		\begin{figure}

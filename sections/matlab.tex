@@ -14,13 +14,13 @@
 
 	A better approach is taken in this work, to override the \matlab{rollout} function.
 	This now presents a file-selection dialog to the user, which serves a dual purpose of waiting for the user to have collected the data.
-	It is worth noting that this file resides with the embedded code, and so will not be found with the \textsc{Pilco} codebase.
+	It is worth noting that this file resides with the embedded code, and so will not be found with the {\Pilco} codebase.
 
 \subsection{Better log files}
 
-	The \textsc{Pilco} toolbox sensibly produces log files after each iteration, enabling easier debugging.
+	The {\Pilco} toolbox sensibly produces log files after each iteration, enabling easier debugging.
 	Unfortunately, each time learning is restarted, all the old log files are overwritten.
-	This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git commit hash identifying which version of \textsc{Pilco} was used to run it. An example under the new scheme is \lstinline{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \lstinline{unicycle/uninlds_007_H050.mat}.
+	This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git commit hash identifying which version of {\Pilco} was used to run it. An example under the new scheme is \lstinline{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \lstinline{unicycle/uninlds_007_H050.mat}.
 
 \subsection{Towards better data representations}
 
@@ -72,12 +72,13 @@
 		If \matlab{z_frame} were attached directly to \matlab{z} in future (such as in a \matlab{Coordinate} class), then this code could become much less verbose.
 	\end{listingfloat}
 
-	A common concept that \textsc{Pilco} needs to represent is a Gaussian distribution, consisting of a mean and variance.
+	A common concept that {\Pilco} needs to represent is a Gaussian distribution, consisting of a mean and variance.
 	These are sometime represented as two separate variables, \matlab{gm} and \matlab{gs}, and sometimes as a \matlab{struct}, \matlab{g.m} and \matlab{g.s}.
 	Again applying DRY, it would be better to unify these representations.
 	It was decided a class would be a better choice, as then methods such as \matlab{g.sample(N)} can be added, rather than the current approach of sampling from first principles in every location.
 
 \subsection{Interactive visualization}
+	\label{sec:visualization}
 
 	A great tool for checking the validity of data is human vision, if presented with data in the right form.
 	Armed with this principle, the following improvements were made to the visualizer (some of which are visible in \cref{fig:pilco-interface}):
@@ -106,7 +107,7 @@
 		\end{itemize}
 	\end{multicols}
 
-	A substantial amount of work was required before any of these changes could be made, to try and separate the concerns of plotting data and applying parts of the \textsc{Pilco} method into separate files
+	A substantial amount of work was required before any of these changes could be made, to try and separate the concerns of plotting data and applying parts of the {\Pilco} method into separate files
 	One all the code to do a task is in one place, it becomes far easier to augment that task with new behaviour.
 	Similarly, unifying the representations of probabilistic and recorded trajectories greatly simplified the plotting code.
 
@@ -124,14 +125,14 @@
 
 \section{Bug fixes}
 
-	In the process of working with \textsc{Pilco}, various bugs were found, such as
+	In the process of working with {\Pilco}, various bugs were found, such as
 	\begin{itemize}
 		\item No scenario examples working on Windows
 		\item Invalid states (after falling) being used to train the dynamics model
 		\item The \matlab{minimize} function failing if the initial guess is correct
 		\item $\cdots$
 	\end{itemize}
-	Bugs in \textsc{Pilco} were continual stumbling blocks, and call into question the validity of any previous experiments performed using the tool.
+	Bugs in {\Pilco} were continual stumbling blocks, and call into question the validity of any previous experiments performed using the tool.
 	As a result, little experimental results, especially comparative ones, are presented in this report.
 	Unfortunately, after most tests new bugs were uncovered, calling into question the validity of any previous tests and leaving little to compare new data against.
 

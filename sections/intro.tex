@@ -109,9 +109,9 @@
 	giving a probabilistic representation of discrete system dynamics.
 	Such a representation is able to capture model uncertainty, process noise, and observation noise.
 
-\section{The \textsc{Pilco} approach}
+\section{The {\Pilco} approach}
 
-	Armed with a probabilistic representation of dynamics,~\citeauthor{pilco}'s \textsc{Pilco}~\cite{pilco} (Probabilistic Inference for Learning Control) provides a technique to learn the parameters of this representation, and to select a probabilistically optimal controller.
+	Armed with a probabilistic representation of dynamics,~\citeauthor{pilco}'s {\Pilco}~\cite{pilco} (Probabilistic Inference for Learning Control) provides a technique to learn the parameters of this representation, and to select a probabilistically optimal controller.
 
 	As such, the optimization in \cref{eq:optimal} also becomes probabilistic\footnotemark, with $\bm{x}\tind{i}$ and $\bm{u}\tind{i}$ becoming distributions over, not simply values of, states and outputs. These distributions can be found by sequentially applying the probabilistic one-step transition equation described in \cref{eq:transition-gp}.
 
@@ -158,16 +158,16 @@
 	\end{figure}
 
 	There is a history of unicycle robots in the Engineering Department dating back to 2005, which is described in more detail by~\citeauthor{queiro}~\cite{queiro}.
-	Alongside work on these, the \textsc{Pilco} method has been successfully applied to computer models of these unicycles ~\cite[section~3.3]{pilco}.
+	Alongside work on these, the {\Pilco} method has been successfully applied to computer models of these unicycles ~\cite[section~3.3]{pilco}.
 	Based on the work in 2011, the decision was made to move from the large and dangerous platform described there (\cref{fig:uni-old}) to a much smaller and safer model (\cref{fig:uni-new}).
-	Since then, work by~\citeauthor{aleksi}~\cite{aleksi} went on to write the embedded software for the system, and performed experiments to try and reproduce the results of \textsc{Pilco} in simulation in hardware.
+	Since then, work by~\citeauthor{aleksi}~\cite{aleksi} went on to write the embedded software for the system, and performed experiments to try and reproduce the results of {\Pilco} in simulation in hardware.
 
 
 	This work met mixed success -- many problems in the hardware were identified and fixed, and there was some evidence of learning, with the controller marginally improving over time.
 	However, various concerns were raised with the testing procedure, and the computer model of the unicycle was never updated to match the hardware -- making it difficult to judge whether problems lay in the hardware or in simply a more difficult control task than on the larger unicycle, and raising concerns about whether other parts of the software stack were still configured for the large robot.
 
-	\subsection{Application of \textsc{Pilco} to the unicycle}
-		For the purposes of \textsc{Pilco}, our action and reduced (ie., the components used for learning) state vectors are
+	\subsection{Application of {\Pilco} to the unicycle}
+		For the purposes of {\Pilco}, our action and reduced (ie., the components used for learning) state vectors are
 		\begin{align}
 			\bm{x} &= \begin{bmatrix}
 				\dot\theta & \dot\phi &\dot\psi_w & \dot\psi & \dot\psi_t &
@@ -208,10 +208,10 @@
 \section{Goals and direction of this work}
 	\label{sec:dry}
 
-	Like previous work, the ideal goal of this project is to apply \textsc{Pilco} to the unicycle robot, and achieve an outcome of a successfully balancing controller.
+	Like previous work, the ideal goal of this project is to apply {\Pilco} to the unicycle robot, and achieve an outcome of a successfully balancing controller.
 	Previous work went to great lengths experimentally to achieve this goal, with limited success. Thankfully, this work was not wasted, as it raised and fixed mechanical and electrical problems, freeing this work from their hindrances.
 
-	However, few problems were traced back as far as the \textsc{Pilco} software -- indeed, none of the changes made to it during~\cite{aleksi} were kept, indicating that they were at best hacks.
+	However, few problems were traced back as far as the {\Pilco} software -- indeed, none of the changes made to it during~\cite{aleksi} were kept, indicating that they were at best hacks.
 	One of the problems with machine learning is that it's very hard to tell the difference between failure to learn due to a hard problem or insufficiently flexible model, and failure to learn due to programmatic errors in the implementation.
 	This work therefore took on an approach of critically reviewing the source code used, targeting obvious problems with non-obvious repercussions.
 
@@ -220,7 +220,7 @@
 	More specifically, this advocates that \enquote{Every piece of knowledge must have a single, unambiguous, authoritative representation within a system}\cite{dry}.
 	To see the value in holding this principle, consider a case where there are two representations. If the piece of knowledge changes, such as the mass of the robot decreasing, now two places need updating. If one of them is missed, then the result is an incorrect system. This principle applies not only to data, but also procedures.
 
-	In addition, many of the tools were improved to streamline the process of applying \textsc{Pilco} to real hardware, most of which are transferable to other non-unicycle investigations in future.
+	In addition, many of the tools were improved to streamline the process of applying {\Pilco} to real hardware, most of which are transferable to other non-unicycle investigations in future.
 
 
 \bib

@@ -15,10 +15,12 @@
 		\label{fig:learning-compare}
 		\medskip
 		\small
-		Note the the first 10 rollouts were reused between the two experiments.
+		Note that the first 10 rollouts were reused between the two experiments.
 	\end{figure}
 
-	With all of the obvious problems corrected, it was finally time to apply the \textsc{Pilco} procedure.
+	With all of the obvious problems corrected, it was finally time to apply the {\Pilco} procedure.
+	The results described here were obtained very late in the project, as each earlier attempt to do so exposed bugs in the first few iterations, and it was deemed pointless continuing the experiment before fixing them.
+
 	$10$ rollouts were performed under an affine controller with parameters
 	\begin{align}
 		\bm{b} &= \bm{0}, &
@@ -28,7 +30,7 @@
 			+ \frac{1}{\SI{90}{\degree\per\second}}
 			\unitv{\dot\phi}^T\unitv{\tau_t}\,,
 	\end{align}
-	and then remaining rollouts were performed with learnt controllers.
+	and then up to $40$ additional rollouts were performed with learnt controllers.
 	Performance (measured by time upright) is compared with that of the simulated robot in \cref{fig:learning-compare}.
 	Performance in reality\footnotemark is better than in simulation for the first 20 trials, due to perhaps:
 	\begin{itemize}[noitemsep]
@@ -37,17 +39,21 @@
 		\item A narrowed initial state distribution -- in simulation, the robot is started with initial velocities.
 	\end{itemize}
 	\footnotetext{Previous work~\cite{aleksi} concluded that this longer time upright was due to human reaction time in releasing the robot, but the work in \cref{sec:switch} makes this no longer relevant.}
-	However, after this point, the simulation begins to learn a better controller, whereas the experimental run do not.
-	More alarmingly, this trea
+	However, after this point, the simulation begins to learn a better controller, whereas the experimental runs do not.
+	This result does not match \cite{aleksi}'s, suggesting that either the old behaviour was exploiting a bug patched in this work, or that a new bug was introduced in the course of this work. Unfortunately, by this point there was no more time to investigate the cause of the issue.
 
-	\subsection{Correcting the initial state}
-	It was realized that after the improvements made in \cref{sec:acc:orient}, the initial state of the robot would no longer always be a vector of zeros. The symptom of this problem is shown in \todo{}.
+\subsection{Correcting the initial state}
+
+	It was realized that after the improvements made in \cref{sec:acc:orient}, the initial state of the robot would no longer always be a vector of zeros, which it was in previous work.
 	As such, it became necessary to compute a distribution of starts states.
 	For simplicity, a Gaussian with a sparse diagonal covariance matrix is fitted to the data -- sparse because fitting a dense matrix would need far too many data points to not be degenerate. Future work could apply a relatively simple Bayesian learning approach here, in order to start with a prior.
 
-	Experiment 2 from \label{fig:learning-compare} was conducted after these changes were made.
+	Experiment 2 from \cref{fig:learning-compare} was conducted after these changes were made.
 
 	With this in place, it becomes easy to test our earlier hypothesis about the narrower initial state distribution, by comparing this fitted distribution against the one used in simulation -- indeed, it proves to be false, with the distribution in reality being about $5\times$ wider\footnotemark.
+
+	This wider state distribution could be the cause of the impaired learning -- in future work, it would be sensible to perform a simulation with this parameter change and compare performance.
+
 
 	\footnotetext{Except in the yaw axis, which is always zero on the hardware, and in the position axes, due to a small bug that was then fixed}
 
