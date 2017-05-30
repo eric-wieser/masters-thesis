@@ -121,6 +121,8 @@ legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align
 23.15	0.7\\
 23.55	0.4\\
 23.95	0.4\\
+24.65	0.7\\
+25.15	0.5\\
 };
 \addlegendentry{experiment 2}
 
