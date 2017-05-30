@@ -8,19 +8,19 @@
 
 \subsection{Interfacing to the hardware}
 
-Previous work deduced that the \matlab{applyController} needed to be duplicated to support collecting data from the hardware.
-This was a poor decision, as that meant that all the state-plotting code would be duplicated between the two places.
-Furthermore, it was not possible to collect data while the robot was running, as Matlab would not wait for the data to be collected.
+	Previous work deduced that the \matlab{applyController} needed to be duplicated to support collecting data from the hardware.
+	This was a poor decision, as that meant that all the state-plotting code would be duplicated between the two places.
+	Furthermore, it was not possible to collect data while the robot was running, as Matlab would not wait for the data to be collected.
 
-A better approach is taken in this work, to override the \matlab{rollout} function.
-This now presents a file-selection dialog to the user, which serves a dual purpose of waiting for the user to have collected the data.
-It is worth noting that this file resides with the embedded code, and so will not be found with the \textsc{Pilco} codebase.
+	A better approach is taken in this work, to override the \matlab{rollout} function.
+	This now presents a file-selection dialog to the user, which serves a dual purpose of waiting for the user to have collected the data.
+	It is worth noting that this file resides with the embedded code, and so will not be found with the \textsc{Pilco} codebase.
 
 \subsection{Better log files}
 
-The \textsc{Pilco} toolbox sensibly produces log files after each iteration, enabling easier debugging.
-Unfortunately, each time learning is restarted, all the old log files are overwritten.
-This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git commit hash identifying which version of \textsc{Pilco} was used to run it. An example under the new scheme is \lstinline{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \lstinline{unicycle/uninlds_007_H050.mat}.
+	The \textsc{Pilco} toolbox sensibly produces log files after each iteration, enabling easier debugging.
+	Unfortunately, each time learning is restarted, all the old log files are overwritten.
+	This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git commit hash identifying which version of \textsc{Pilco} was used to run it. An example under the new scheme is \lstinline{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \lstinline{unicycle/uninlds_007_H050.mat}.
 
 \subsection{Towards better data representations}
 
@@ -121,6 +121,20 @@ This was changed such that a unique folder was created for each run, containing 
 	Future work could go on to add a time slider, to allow replaying a short section of an animation. Another approach would be to attempt to pull in the visualization toolkit used by Drake \cite{drake}, a sophisticated toolbox for dynamical systems.
 
 	\todo{I think there might be a worrydream talk with some relevance here}
+
+\section{Bug fixes}
+
+	In the process of working with \textsc{Pilco}, various bugs were found, such as
+	\begin{itemize}
+		\item No scenario examples working on Windows
+		\item Invalid states (after falling) being used to train the dynamics model
+		\item The \matlab{minimize} function failing if the initial guess is correct
+		\item $\cdots$
+	\end{itemize}
+	Bugs in \textsc{Pilco} were continual stumbling blocks, and call into question the validity of any previous experiments performed using the tool.
+	As a result, little experimental results, especially comparative ones, are presented in this report.
+	Unfortunately, after most tests new bugs were uncovered, calling into question the validity of any previous tests and leaving little to compare new data against.
+
 
 \bib
 

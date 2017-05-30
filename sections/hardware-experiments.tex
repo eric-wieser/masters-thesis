@@ -14,15 +14,21 @@
 			\unitv{\dot\phi}^T\unitv{\tau_t}\,,
 	\end{align}
 	and then $20$ rollouts were performed with learnt controllers.
-	\todo[inline]{Much more content needed here}
+	Performance (measured by time upright) is compared with that of the simulated robot in \cref{fig:learning-compare}.
+	Unsurprisingly, it performs much better in early iterations, as we have already set it up with a plausible controller.
+	Previous work \cite{aleksi} concluded that this longer time upright was due to human reaction time in releasing the robot, but the work in \cref{sec:switch} makes this no longer relevant.
+	Instead, this is likely due to a mismatch in the simulation model (\cref{table:mechanical}), especially since the parameters determining the rate of a fall from rest are the frame moments of inertia, which were estimated with the least accuracy.
 	\begin{figure}
 		\input{figures/learning-progress.tikz}
 		\caption{Lack of learning progress}
+		\label{fig:learning-compare}
 	\end{figure}
+	\todo[inline]{Much more content needed here}
 
 	\subsection{Correcting the initial state}
-
-	\todo[inline]{Make remarks here about fitting a gaussian to the initial state, and how it improves performance}
+	It was realized that after the improvements made in \cref{sec:acc:orient}, the initial state of the robot would no longer always be a vector of zeros. The symptom of this problem is shown in \todo{}.
+	As such, it became necessary to compute a distribution of starts states.
+	For simplicity, a Gaussian with a sparse diagonal covariance matrix is fitted to the data -- sparse because fitting a dense matrix would need far too many data points to not be degenerate. Future work could apply a relatively simple Bayesian learning approach here, in order to start with a prior.
 
 \bib
 

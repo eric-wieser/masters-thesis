@@ -156,7 +156,6 @@
 		Areas are shaded where \mybox[fill=green!25]{$\tau > 0$} and \mybox[fill=red!25]{$\tau < 0$}.
 		$\tau_w > 0$ corresponds to a force driving the robot forwards, and $\tau_t > 0$ corresponds to a moment rotating the robot clockwise.
 		These plots can be interpreted as a top-down view of the robot at the origin facing right, with a point on the plot corresponding to the location of the top of the robot.
-
 	\end{figure}
 
 	Consider a stationary unicycle, with all states at the origin apart from pitch ($\psi$) and roll ($\theta$), and the action needed to stabilize it.
@@ -165,5 +164,13 @@
 	The decisions on how to control the turntable, shown pictorially in (b.i), are more complex, requiring a quadratic controller of the form $\tau_t = k\psi\theta$.
 	While some success was shown using the linear controller in this and previous reports, this success can only ever hold when the robot stays within one half-plane of the pitch-roll state-space -- that is, with the equilibrium in a tilted forward state (drives forward forever), or to one side (drives in a circle).
 	Indeed, (b.ii) only matches (b.i) in the half-plane where $\psi > 0$, suggesting the simulated controller learnt to avoid forward falls. (b.iii) shows the opposite, that the hardware learnt to avoid backwards falls.
+
+	A quadratic policy has been implemented on the robot and in the communication protocol (\cref{sec:comms}) as a \cpp{QuadraticPolicy} message, but no Matlab code currently exists to convert the \textsc{Pilco} policy object into a suitable protobuf message, nor has any testing been performed.
+
+\section{Improving robustness to impact}
+
+	At present, the robot is partially protected from impact by the use of foam padding tied around its circumference.
+	This does the job of protecting the primary impact point, but often the secondary impact occurs either on the microcontroller or the battery. Impact on the former was observed to cause the IMU to require a power cycle, whilst sharp impact to the battery could result in a fireball.
+	Care should be taken here to not do this at the expense of too much weight, which would decrease the effectiveness of the actuators. 
 
 \end{document}

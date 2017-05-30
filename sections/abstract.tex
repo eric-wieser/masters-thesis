@@ -2,8 +2,25 @@
 \makeatletter\def\input@path{{\thebibpath/}{.}}\makeatother
 \documentclass[main.tex]{subfiles}
 \begin{document}
-This report documents the current state of and latest work done towards an evolving multidisciplinary project that has been passed down through more than 10 years of students within the Cambridge University Engineering Department. The core theme of this ongoing work is to produce a self-balancing rider-less unicycle.
+\normalsize
+This report documents the current state of, and latest work done towards, an evolving multidisciplinary project that has been passed down through more than 10 years of students within the Cambridge University Engineering Department. The core theme of this ongoing work is to produce a self-balancing rider-less unicycle.
 
-In this iteration of the work, the focus is on a smaller unicycle, and producing a controller capable of balancing it via a machine-learning route, rather than by forming a detailed model and applying control theory. This involves applying a technique known as \textsc{Pilco}, for which a Matlab toolbox exists, maintained by the department.
+In this iteration of the work, the focus is on a smaller unicycle, and producing an affine controller capable of balancing it via a machine-learning route, rather than by forming a detailed model and applying control theory. This involves applying a technique known as \textsc{Pilco}, for which a Matlab toolbox exists, maintained by the department. This toolbox has already been shown to be successful when applied to a simulation of a large unicycle.
+
+The small unicycle was the subject of a very similar project last year. In this work, numerous electrical and mechanical problems were identified and fixed, and while many learning experiments were performed, they were unsuccessful in balancing the unicycle. A number of outstanding issues were raised, from which this work addresses:
+automating the transfer of data to and from the robot;
+dealing with initial orientations by using data from the accelerometer;
+and building a more representative unicycle model in simulation.
+
+Simulations were performed to evaluate a claims made that a \SI{17}{\degree} roll restriction was impairing learning progress. This was shown to be true, but a simple solution was proposed and tested that diminished this effect, without incurring a mechanical redesign.
+
+Numerous new problems were found in the existing software and electronics while attempting to replicate previous experiments.
+Instead of taking a similar approach of doing lots of full-system experiments, and then working backwards from a failure to learn towards problems with the system, this work focussed more on an approach of critically reviewing source code, and performing simple hardware tests.
+In the process of doing the former, many hard-to-decipher pieces of code were found, and new abstractions written to easer their readability, applying modern software engineering principles.
+As a result, large amounts of software was rewritten.
+
+Minor improvements were also made to the human interfaces to the software, both graphical and logical in nature -- greatly improving its usefulness for identifying problems with the system.
+
+In outlining future work for this project, it is noted that it might be worth focusing on overhauling the \textsc{Pilco} framework in isolation, applying computational tools such as Automatic Differentiation. It is also discussed that an affine controller is unlike to ever be satisfactory, with a quadratic controller shown to be desirable by means of a thought experiment -- for which the trickier parts of an implementation are already in place but untested.
 
 \end{document}
