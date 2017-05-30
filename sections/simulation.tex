@@ -8,7 +8,7 @@
 	It was discovered that multiple mistakes were present in the cost function. The original cost function was defined as in the documentation as
 	\begin{align}
 		c(\bm z) = 1 - \exp\left\{-\frac{1}{2}\left(a\|\bm{p} - \bm p_0\|^2+ \frac{\phi^2}{(4\pi)^2}\right)\right\} \,, \label{eq:cost-bad}
-	\end{align},
+	\end{align}
 	where $\bm{p} \in \mathbb{R}^3$ is the position of the centre of the turntable in robot-centric coordinates, $\bm{p}_0$ is the target position, and $a$ a dimensionless weight to adjust the relative cost of position vs yaw angle.
 	The implementation did not match this, applying different weights to each component of $\bm{p} - \bm{p_0}$, which whilst reasonable, is a form of cost-shaping -- something that should be avoided, as it is providing unnecessary hints to \textsc{Pilco} about how to learn the task.
 

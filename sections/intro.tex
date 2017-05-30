@@ -55,7 +55,7 @@
 		The grey shaded region shows a \SI{90}{\percent} confidence interval, and red markers show samples taken from the distribution. Above 1D, plotting the probability density becomes impractical.
 	\end{figure}
 
-	A Gaussian (or \enquote{normal}) distribution (\cref{fig:gaussian:1d})is described by a mean $\mu$ and a variance $\sigma^2$, and satisfies
+	A Gaussian (or \enquote{normal}) distribution (\cref{fig:gaussian:1d}) is described by a mean $\mu$ and a variance $\sigma^2$, and satisfies
 	\begin{align}
 		x &\sim \mathcal{N}(\mu, \sigma) &\implies
 		p(x; \mu, \sigma^2) &= \frac{1}{\sqrt{2\pi\sigma^2}} \exp{\left[
@@ -91,7 +91,7 @@
 		\end{bmatrix}, \begin{bmatrix}
 			K(l_1,l_1) & \cdots & K(l_1,l_{|\mathcal{L}|}) \\
 			\vdots & \ddots & \vdots \\
-			x(l_{|\mathcal{L}|},l_1) & \cdots & K(l_{|\mathcal{L}|},l_{|\mathcal{L}|})
+			K(l_{|\mathcal{L}|},l_1) & \cdots & K(l_{|\mathcal{L}|},l_{|\mathcal{L}|})
 		\end{bmatrix}\right), \quad l \in \mathcal{L} \subset \mathbb{R}\,.
 	\end{align}
 
@@ -128,7 +128,7 @@
 	\end{enumerate}
 	In practice, the first time that step \ref{list:pilco:rollout} is executed, multiple rollouts will be done, in order to provide enough data to sensibly train the dynamics model.
 
-	The key advantage of this method is that it requires orders of magnitude less interaction time \cite{pilco} than competing methods -– important for systems like a unicycle, where each failed interaction (falling over) can cause damage.
+	The key advantage of this method is that it requires orders of magnitude less interaction time \cite{pilco} than competing methods -- important for systems like a unicycle, where each failed interaction (falling over) can cause damage.
 
 \section{Unicycle robots}
 
@@ -186,7 +186,7 @@
 
 		In this report, we restrict our search for optimal controllers to affine controllers of the form
 		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
-		$c(\bm{x}, \bm{u}) = 1 - \mathbb{E}_{\bm{x}, \bm{u}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
+		$c(\bm{x}, \bm{u}) = 1 - \mathbb{E}_{\bm{x}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
 
 		Each GP modelling the dynamics of a single state (\cref{eq:transition-gp}) is parametrized by $m$, $K$ of the form
 		\begin{align}
