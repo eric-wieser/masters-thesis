@@ -7,7 +7,7 @@
 	When writing software, and especially when refactoring software, it is very useful to have tests in place, to isolate and detect mistakes early.
 	The idea is that all the test can be run with one tool, making it easy to tell if old behaviour has been broken.
 
-	Over 500 lines\footnotemark of tests were written just for the packet framing code \cite{packetio}, as when building a deep software stack, you really want to make sure the foundation is solid. These are intended to hit all the corner-cases.
+	Over 500 lines\footnotemark of tests were written just for the packet framing code~\cite{packetio}, as when building a deep software stack, you really want to make sure the foundation is solid. These are intended to hit all the corner-cases.
 	Similar tests were written for the new \matlab{Frame} and \matlab{gaussian} classes, which caught some minor bugs whilst code was being written.
 
 	\footnotetext{More than the number of lines in the implementation, 430!}
@@ -126,7 +126,7 @@
 
 		To understand the problem, some background is needed here on the workings of the encoders.
 		They are attached to 16-bit timers, which after some here-unimportant interrupt tricks are configured to count up and down with the encoder pulses. When they count up to their maximum value of \cpp{0xFFFF}, they overflow and resume counting at \cpp{0x0000}.
-		The trick to working around this is to sum the change in reading on each timestep. This change \emph{must} be calculated using \cpp{unsigned} subtraction of the values, where wraparound is well defined. This is actually hard to get right without invoking undefined behaviour, which the previous code did according to \cite[Paragraph~5/4]{cpp-standard}.
+		The trick to working around this is to sum the change in reading on each timestep. This change \emph{must} be calculated using \cpp{unsigned} subtraction of the values, where wraparound is well defined. This is actually hard to get right without invoking undefined behaviour, which the previous code did according to~\cite[Paragraph~5/4]{cpp-standard}.
 		Using the guideline that good software should \enquote{Make interfaces easy to use correctly and hard to use incorrectly}\cite{meyers2004most}, the type in \cref{listing:wrapping} was defined.
 
 		Test \ref{sensor-test-tt} revealed an incorrect sign on the turntable encoder -- made due to the motor being mounted upside-down.
@@ -135,7 +135,7 @@
 		Test \ref{sensor-test-pitch} showed intended behaviour up to just short of $90\deg$, indicating a correct sign convention.
 		However, when slowly crossing this threshold, the rendering of the robot rotated rapidly around until it placed the entire drawing under the ground plane.
 		A few frames from the animation revealing this are shown in \cref{fig:bad-euler}.
-		The problem was diagnosed to be due to an incorrect choice of euler angle convention, seemingly picked by virtue of being the first on the list in \cite{diebel2006representing}.
+		The problem was diagnosed to be due to an incorrect choice of euler angle convention, seemingly picked by virtue of being the first on the list in~\cite{diebel2006representing}.
 		In our circumstance, this is not appropriate, as our Euler angles (see \cref{app:euler-angles}) must be chosen such that pitch aligns with the rotation of the wheel axle.
 		Invoking DRY once again, part of the problem here was an ambiguous representation, of \cpp{float yaw, pitch, roll;}, which says nothing about the euler convention used.
 		In the new code, this is expressed as \cpp{euler_angles<213> orient;} -- and muddling this with \cpp{euler_angles<123>} is a compile-time error.
@@ -189,7 +189,7 @@
 		This process would occur at startup, which was doubly problematic: the calibration requires the robot to be still, yet at startup a human is probably holding the robot; and the gyro is affected by temperature, which naturally rises when getting power for the first time.
 		A \texttt{calibrate} command was added to the communication protocol, which repeated the calibration process, and reported back the variance of the readings obtained -- high variance implies the robot was not still enough.
 
-		Further investigation revealed a suspicious method of integrating angular velocities, that did not match the literature \cite{boyle2016integration}.
+		Further investigation revealed a suspicious method of integrating angular velocities, that did not match the literature~\cite{boyle2016integration}.
 		Following the theme of the software in this project, this took the form of a fully-expanded expression, without any remarks as to its derivation.
 		After contact with the author, it was found that the method was indeed incorrect, making the mistake of interpreting $\bm{\omega}$ as rates in Euler angles, yet going to the effor of using quaternions as an internal representation -- the worst of both worlds! A new approach was needed, as described in \cref{app:quat}.
 

@@ -111,7 +111,7 @@
 
 \section{The \textsc{Pilco} approach}
 
-	Armed with a probabilistic representation of dynamics, \citeauthor{pilco}'s \textsc{Pilco} \cite{pilco} (Probabilistic Inference for Learning Control) provides a technique to learn the parameters of this representation, and to select a probabilistically optimal controller.
+	Armed with a probabilistic representation of dynamics,~\citeauthor{pilco}'s \textsc{Pilco}~\cite{pilco} (Probabilistic Inference for Learning Control) provides a technique to learn the parameters of this representation, and to select a probabilistically optimal controller.
 
 	As such, the optimization in \cref{eq:optimal} also becomes probabilistic\footnotemark, with $\bm{x}\tind{i}$ and $\bm{u}\tind{i}$ becoming distributions over, not simply values of, states and outputs. These distributions can be found by sequentially applying the probabilistic one-step transition equation described in \cref{eq:transition-gp}.
 
@@ -128,7 +128,7 @@
 	\end{enumerate}
 	In practice, the first time that step \ref{list:pilco:rollout} is executed, multiple rollouts will be done, in order to provide enough data to sensibly train the dynamics model.
 
-	The key advantage of this method is that it requires orders of magnitude less interaction time \cite{pilco} than competing methods -- important for systems like a unicycle, where each failed interaction (falling over) can cause damage.
+	The key advantage of this method is that it requires orders of magnitude less interaction time~\cite{pilco} than competing methods -- important for systems like a unicycle, where each failed interaction (falling over) can cause damage.
 
 \section{Unicycle robots}
 
@@ -136,7 +136,7 @@
 	Unicycles provide a challenging control problem to human riders, so intuitively provide a good testing ground for new control techniques.
 	A reasonable approximation for how a human rider operates a unicycle is that they have two degrees of freedom -- one through the pedals, and the other by adjusting their angular rotation through the vertical axis.
 	This is mirrored in the design of the robotic unicycle, which has one motor attached to the drive wheel, and the other attached to a flywheel\footnotemark with a vertical axis (henceforth referred to as the turntable).
-	The state space of such a unicycle is $\mathbb{R}^{12}$ \cite{forster}, so this system is heavily underactuated, explaining the difficulty in controlling it.
+	The state space of such a unicycle is $\mathbb{R}^{12}$~\cite{forster}, so this system is heavily underactuated, explaining the difficulty in controlling it.
 
 	\footnotetext{While it may seem unfair that flywheel can rotate freely, while a human is limited to about \SI{180}{\degree} of motion, this intuition doesn't tell the whole story -- human riders are able to change their moment of inertia by extending and contracting their arms.}
 
@@ -157,10 +157,10 @@
 		\caption{Unicycle robot configurations}
 	\end{figure}
 
-	There is a history of unicycle robots in the Engineering Department dating back to 2005, which is described in more detail by \citeauthor{queiro} \cite{queiro}.
-	Alongside work on these, the \textsc{Pilco} method has been successfully applied to computer models of these unicycles  \cite[section~3.3]{pilco}.
+	There is a history of unicycle robots in the Engineering Department dating back to 2005, which is described in more detail by~\citeauthor{queiro}~\cite{queiro}.
+	Alongside work on these, the \textsc{Pilco} method has been successfully applied to computer models of these unicycles ~\cite[section~3.3]{pilco}.
 	Based on the work in 2011, the decision was made to move from the large and dangerous platform described there (\cref{fig:uni-old}) to a much smaller and safer model (\cref{fig:uni-new}).
-	Since then, work by \citeauthor{aleksi} \cite{aleksi} went on to write the embedded software for the system, and performed experiments to try and reproduce the results of \textsc{Pilco} in simulation in hardware.
+	Since then, work by~\citeauthor{aleksi}~\cite{aleksi} went on to write the embedded software for the system, and performed experiments to try and reproduce the results of \textsc{Pilco} in simulation in hardware.
 
 
 	This work met mixed success -- many problems in the hardware were identified and fixed, and there was some evidence of learning, with the controller marginally improving over time.
@@ -182,7 +182,7 @@
 		where $\theta$ is the roll angle, $\phi$ is yaw, $\psi_w$ wheel angle,
 		$\psi$ pitch angle, $\psi_t$ the turntable angle, and $x_c, y_c$ are the position of the world-origin in the coordinate space of the robot.
 		$\tau_t$ and $\tau_w$ are the control torques on the turntable and wheel, respectively.
-		In simulation, some extra states ($\dot{x}_c, \dot{y}_c, \psi_w, \psi_t$) are needed in order to implement the dynamics derived by \citeauthor{forster} \cite{forster}.
+		In simulation, some extra states ($\dot{x}_c, \dot{y}_c, \psi_w, \psi_t$) are needed in order to implement the dynamics derived by~\citeauthor{forster}~\cite{forster}.
 
 		In this report, we restrict our search for optimal controllers to affine controllers of the form
 		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
@@ -211,7 +211,7 @@
 	Like previous work, the ideal goal of this project is to apply \textsc{Pilco} to the unicycle robot, and achieve an outcome of a successfully balancing controller.
 	Previous work went to great lengths experimentally to achieve this goal, with limited success. Thankfully, this work was not wasted, as it raised and fixed mechanical and electrical problems, freeing this work from their hindrances.
 
-	However, few problems were traced back as far as the \textsc{Pilco} software -- indeed, none of the changes made to it during \cite{aleksi} were kept, indicating that they were at best hacks.
+	However, few problems were traced back as far as the \textsc{Pilco} software -- indeed, none of the changes made to it during~\cite{aleksi} were kept, indicating that they were at best hacks.
 	One of the problems with machine learning is that it's very hard to tell the difference between failure to learn due to a hard problem or insufficiently flexible model, and failure to learn due to programmatic errors in the implementation.
 	This work therefore took on an approach of critically reviewing the source code used, targeting obvious problems with non-obvious repercussions.
 

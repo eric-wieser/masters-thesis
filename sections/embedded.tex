@@ -6,7 +6,7 @@
 \subsection{Changing platform}
 \label{sec:platformio}
 
-	The inherited embedded software required a toolchain called MPIDE (a fork of an early version of the Arduino IDE), which to quote the authors \enquote{is no longer being maintained, and is quickly falling behind} \cite{ mpide}, as of January 2016. This is troublesome, as at some point in future, it may become impossible to download the software, which would make our embedded code unusable - better to deal with this technical debt now. The replacement software is an extension (\texttt{chipkit-core}) for the standard Arduino IDE.
+	The inherited embedded software required a toolchain called MPIDE (a fork of an early version of the Arduino IDE), which to quote the authors \enquote{is no longer being maintained, and is quickly falling behind}~\cite{ mpide}, as of January 2016. This is troublesome, as at some point in future, it may become impossible to download the software, which would make our embedded code unusable - better to deal with this technical debt now. The replacement software is an extension (\texttt{chipkit-core}) for the standard Arduino IDE.
 
 	Unfortunately, this change in tools also comes with a change in hardware libraries.
 	Due to license incompatibilities, the \texttt{plib} library bundled with MPIDE, which we were making use of to operate hardware registers, is not available in the Arduino IDE.
@@ -26,7 +26,7 @@
 	\end{itemize}
 	Worse yet, even if we remove the dependency on \texttt{C}, it is very difficult to distribute \texttt{A} alongside our application.
 
-	There is a open source project that acknowledges and provides a solution to these shortcomings, PlatformIO \cite{platformio}.
+	There is a open source project that acknowledges and provides a solution to these shortcomings, PlatformIO~\cite{platformio}.
 	This keeps the excellent cross-platform support that the Arduino libraries provide, and pairs them with a package manager, and a command line tool.
 	One particularly useful feature is the ability to run unit tests on the Arduino, to verify the correctness of software.
 
@@ -34,7 +34,7 @@
 	\label{sec:comms}
 
 	In the review of the current system, we noted that the current system to configure the robot is manual and error prone.
-	Echoing remarks by \citeauthor{aleksi} \cite[p.~34]{aleksi}, a worthwhile next step would be \enquote{automatically writing the policy parameters to the microcontroller program from Matlab as well as [adding] a direct serial communication between Matlab and the unicycle for data exchange}.
+	Echoing remarks by~\citeauthor{aleksi}~\cite[p.~34]{aleksi}, a worthwhile next step would be \enquote{automatically writing the policy parameters to the microcontroller program from Matlab as well as [adding] a direct serial communication between Matlab and the unicycle for data exchange}.
 
 	The approach taken here unifies the above two suggestions.
 	The goal is to have the program on the robot be static, and have it be reconfigurable over the serial link, as well as using that link to send back structured data.
@@ -71,8 +71,8 @@
 		This framework requires a \texttt{.proto} file to be specified, like the one in \cref{lst:proto}.
 		From this file, C++ and Python code can be generated to serialize and deserialize these messages into native types.
 
-		An implementation of this for embedded C, with small code size and no heap allocation, exists as the Nanopb project \cite{nanopb}, which thanks to our switch to PlatformIO \cref{sec:platformio}, is easy to include on our robot.
-		Unfortunately, there is no first-party support of protobuf in Matlab, and the only available third-party implementation \cite{protobuf-matlab} is difficult to install, and abandonware.\footnotemark
+		An implementation of this for embedded C, with small code size and no heap allocation, exists as the Nanopb project~\cite{nanopb}, which thanks to our switch to PlatformIO \cref{sec:platformio}, is easy to include on our robot.
+		Unfortunately, there is no first-party support of protobuf in Matlab, and the only available third-party implementation~\cite{protobuf-matlab} is difficult to install, and abandonware.\footnotemark
 
 		\footnotetext{%
 			The API of protobuf has changed significantly in the 5 years since this package was last modified.
@@ -109,7 +109,7 @@
 			...%
 		}} -- corruption in the first packet has corrupted the following two packets, and possibly the rest of the stream for all time!
 
-		A good solution to this problem is COBS, which to quote the originating paper \cite{cobs}, \enquote{allows new listeners to join a broadcast stream at any time and without fail receive and decode the very next error free packet} -- ideal for our scenario where the serial USB connection is plugged and unplugged (\cref{sec:untethered}). Under COBS, the example packets are encoded as
+		A good solution to this problem is COBS, which to quote the originating paper~\cite{cobs}, \enquote{allows new listeners to join a broadcast stream at any time and without fail receive and decode the very next error free packet} -- ideal for our scenario where the serial USB connection is plugged and unplugged (\cref{sec:untethered}). Under COBS, the example packets are encoded as
 		\mbox{\enquote{%
 			\textit{\texttt{02}}\,\texttt{F1}\,\textit{\texttt{02}}\,\texttt{D5}\,\textbf{\texttt{00}}\,%
 			\textit{\texttt{02}}\,\texttt{0F}\,\textbf{\texttt{00}}\,%
@@ -120,11 +120,11 @@
 
 		Sadly, no implementation of COBS was available for the Arduino which was suitable for use with Nanopb\footnotemark.
 		Messaging over serial is an essential part of many Arduino projects, and so the inability to assemble a robust messaging stack from library code is cause for alarm.
-		In the interest of giving back to the community, the author published PacketIO \cite{packetio}, a package to solve the framing problem.
+		In the interest of giving back to the community, the author published PacketIO~\cite{packetio}, a package to solve the framing problem.
 		This package includes unit tests and online documentation, in order to help verify its correctness and encourage its use.
 
 		\footnotetext{%
-			A package implementing COBS for Arduino does exist, PacketSerial \cite{packetserial}.
+			A package implementing COBS for Arduino does exist, PacketSerial~\cite{packetserial}.
 			However, this requires the entire message to be calculated before any of it is sent, whereas nanopb requires a streaming protocol. Nanopb's choice makes it able to write arbitrarily large messages piece by piece -- such as our state logs.
 		}
 
@@ -225,7 +225,7 @@
 
 \subsection{Measuring initial orientation}
 \label{sec:acc:orient}
-	Earlier work \cite{aleksi} noted that there were issues with variation in orientation in which the robot is placed by the operator when started.
+	Earlier work~\cite{aleksi} noted that there were issues with variation in orientation in which the robot is placed by the operator when started.
 	This stems from the fact that the estimate of orientation used by the robot is from integration of angular velocity (\cref{sec:quat:int}), only giving a change in orientation -- yet the true dynamics depend on the absolute orientation with respect to gravity.
 	In that work, there was discussion of learning these offsets and incorporating them into the dynamics model.
 	While this would be a useful approach for building the dynamics model, it does not help in implementing a controller, as for this to work the embedded code would not only need to do the learning, but would need to do it online and in realtime.
@@ -259,7 +259,7 @@
 
 	The accelerometer does not tell us any information about the yaw angle (corresponding to the degree of freedom in \cref{eq:quat-sqrt}), so we are free to change the yaw rotation of the result as we please.
 	Since our cost function penalizes yaw, it is sensible to choose $\psi = 0$.
-	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in \cite[eq~362 and 369]{diebel2006representing}, or in the embedded source code as \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
+	We can enforce this trivially by converting to Euler-YXZ angles, replacing $\psi$ with $0$, and converting back to a quaternion\footnotemark. The relevant conversions can be found in~\cite[eq~362 and 369]{diebel2006representing}, or in the embedded source code as \cpp{geometry::euler_angles<213>::operator quat()} and \cpp{geometry::euler_angles<213>::euler_angles<213>(quat q)}.
 
 	\footnotetext{%
 		In the source code, we take a more direct approach, noting that we need only extract the yaw from the quaternion, and post-multiply by a quaternion that removes that yaw.

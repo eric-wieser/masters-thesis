@@ -8,13 +8,13 @@
 	The robot frame is made out of CNC-cut copper-coated fibreglass, known more commonly for its use in prototyping circuitry.
 	This has the advantage of being light yet stiff, and immune to plastic deformation.
 
-	Two MAXON motors \cite{motor} are attached to the robot, each with a corresponding 14:1 gearbox \cite{gearbox} and 512 count-per-revolution encoder \cite{encoder}.
+	Two MAXON motors~\cite{motor} are attached to the robot, each with a corresponding 14:1 gearbox~\cite{gearbox} and 512 count-per-revolution encoder~\cite{encoder}.
 	The first motor is connected via a timing belt with a 40:16 ratio to the drive wheel, while the second motor is directly attached to a steel flywheel (henceforth referred to as the \enquote{turntable}).
 
 	To prevent damage to the turntable motor shaft, the chassis of the robot shields the turntable from direct impact, reinforced with some metal bolts.
 	Atop this shielding, lies the control board on the front side of the robot, and the battery duct-taped to the rear.
 
-	Previous work concluded \cite[p.~54]{aleksi} that a better simulation model of the unicycle was desirable, to help determine whether poor learning progress was due to implementation errors in software, or simply due to the small unicycle having a more challenging set of dynamics than the previously-simulated large unicycle.
+	Previous work concluded~\cite[p.~54]{aleksi} that a better simulation model of the unicycle was desirable, to help determine whether poor learning progress was due to implementation errors in software, or simply due to the small unicycle having a more challenging set of dynamics than the previously-simulated large unicycle.
 
 	As part of my project, model parameters were found for the small unicycle, shown alongside the method used to obtain them in \cref{table:mechanical}.
 	Noting that since one of the goals of \textsc{Pilco} is \emph{not} to require a detailed system model, some properties were simply estimated.
@@ -29,12 +29,12 @@
 
 \section{Electrical}
 
-	Controlling the robot is a ChipKIT Max32 microcontroller board \cite{max32}. This and has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board. Atop the controller board sits a hand-soldered protoboard. This provided places to connect the sensors and actuators, which are as follows:
+	Controlling the robot is a ChipKIT Max32 microcontroller board~\cite{max32}. This and has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board. Atop the controller board sits a hand-soldered protoboard. This provided places to connect the sensors and actuators, which are as follows:
 	\begin{itemize}[noitemsep]
 		\item
-			A combined gyroscope and accelerometer board \cite{imu}, connected via I\textsuperscript{2}C.
+			A combined gyroscope and accelerometer board~\cite{imu}, connected via I\textsuperscript{2}C.
 		\item
-			A pair of rotary encoders \cite{encoder}, connected via custom electronics which convert the quadrature encoder pulses into a single pulse train and a direction signal.
+			A pair of rotary encoders~\cite{encoder}, connected via custom electronics which convert the quadrature encoder pulses into a single pulse train and a direction signal.
 		\item
 			An external H-bridge driver board to operate the motors, interfaced to the microcontroller PWM outputs.
 	\end{itemize}

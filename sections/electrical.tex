@@ -3,7 +3,7 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-In the process of setting up and running experiments, various electrical concerns were found - some pre-emptively, and others post-hoc. The robot uses a Lithium Polymer battery, a type for which electrical mistakes can be catastrophic\footnote{An example being the newsworthy \cite{bbc-samsung-explosion} issues with the Galaxy Note 7} - making it important to avoid mistakes, and if they are made, preventing them being repeated. In line with the risk assessment, a fire-safe battery storage bag was purchased for the project.
+In the process of setting up and running experiments, various electrical concerns were found - some pre-emptively, and others post-hoc. The robot uses a Lithium Polymer battery, a type for which electrical mistakes can be catastrophic\footnote{An example being the newsworthy~\cite{bbc-samsung-explosion} issues with the Galaxy Note 7} - making it important to avoid mistakes, and if they are made, preventing them being repeated. In line with the risk assessment, a fire-safe battery storage bag was purchased for the project.
 
 The simplest of these was the connection of the battery to the robot, which was made using an unpolarized and uninsulated connector, show in \cref{fig:connectors}. A similar connector was used to charge the robot. Misconnecting either of these would result in outcomes ranging from a destroyed microcontroller to an exploding battery. Having exposed connections on loose flexible wires entails similar risk. These were replaced with JST RCY connectors.
 
@@ -29,7 +29,7 @@ The simplest of these was the connection of the battery to the robot, which was 
 	\end{minipage}
 \end{figure}
 
-Another issue with LiPo batteries, thankfully without safety ramifications, is over-discharging them. The protection circuits within the battery cause it to enter a `sleep mode' \cite{lipo-sleep-mode}, from which it cannot be restored without a more advanced charger. After being caught out by the first battery entering this state, a battery monitor was purchased (visible in \cref{fig:robot-back}), which gives a voltage readout, and an audible alarm whenever the battery needs charging.
+Another issue with LiPo batteries, thankfully without safety ramifications, is over-discharging them. The protection circuits within the battery cause it to enter a `sleep mode'~\cite{lipo-sleep-mode}, from which it cannot be restored without a more advanced charger. After being caught out by the first battery entering this state, a battery monitor was purchased (visible in \cref{fig:robot-back}), which gives a voltage readout, and an audible alarm whenever the battery needs charging.
 
 
 \subsection{Enabling untethered operation}
@@ -47,7 +47,7 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 	The previous approach to starting the test runs was to wait a short amount of time, and then turn on an LED.
 	The operator had to time their release of the robot to match this LED, which introduces a short period of artificial stability at the start of each test run due to human reaction time (as high as \SI{300}{\milli\second}, based on a self test).
 
-	An initial attempt was made to use an audio signal instead produced by the turntable motor, noting that human reaction time to audio is \SI{15}{\percent} faster than that to visual \cite{reaction}.
+	An initial attempt was made to use an audio signal instead produced by the turntable motor, noting that human reaction time to audio is \SI{15}{\percent} faster than that to visual~\cite{reaction}.
 	Furthermore, by sending out a rhythmic sequence, this can be much further reduced by taking advantage of our ability to anticipate the next beat in a sequence.
 
 	While this proved somewhat successful, a simpler approach was settled: using a limit switch, shown in \cref{fig:robot-back}.
@@ -94,7 +94,7 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 
 	The upshot here, of course, is that the short happened through a few components as possible, with damage found only in the wiring. To prevent this issue recurring, the metal screws connecting the microcontroller to the frame were replaced with nylon standoffs (\cref{fig:clearance}) -- such that the board is now properly insulated from the frame, and furthermore has a far more rigid attachment.
 
-	As a precaution, a 3.15A fuse was inserted into the system, such that if a short happens in future, it does so without causing damage. The rating of the fuse was chosen to be in line with the stall current of the motors \cite{motor}, making sure it did not exceed that of the 22AWG wires connecting it (roughly 5A).
+	As a precaution, a 3.15A fuse was inserted into the system, such that if a short happens in future, it does so without causing damage. The rating of the fuse was chosen to be in line with the stall current of the motors~\cite{motor}, making sure it did not exceed that of the 22AWG wires connecting it (roughly 5A).
 
 
 % https://electronics.stackexchange.com/a/230164/1217
