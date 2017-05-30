@@ -6,7 +6,7 @@
 \section{Incorporating constraints into GP propagation}
 
 	When using the learnt dynamics model to choose an optimal controller, the constraints of the robot are not respected, with the only effect they have being through the updated cost function from \cref{sec:roll-cost}.
-	This is noticeable as an optimistic prediction for loss being obtained from a poor rollout, shown in \cref{fig:loss-prediction}.
+	This can be observed as an optimistic prediction for loss being obtained from a poor rollout, shown in \cref{fig:loss-prediction}.
 	\begin{figure}[b!]
 		\begin{minipage}{\linewidth/2-2em}
 			\input{figures/test.tikz}

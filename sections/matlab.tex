@@ -121,20 +121,17 @@
 	Overall, these changes were tremendously helpful for identifying mistakes.
 	Future work could go on to add a time slider, to allow replaying a short section of an animation. Another approach would be to attempt to pull in the visualization toolkit used by Drake~\cite{drake}, a sophisticated toolbox for dynamical systems.
 
-	\todo{I think there might be a worrydream talk with some relevance here}
-
 \section{Bug fixes}
 
-	In the process of working with {\Pilco}, various bugs were found, such as
-	\begin{itemize}
-		\item No scenario examples working on Windows
-		\item Invalid states (after falling) being used to train the dynamics model
+	In the process of working with {\Pilco}, various bugs were found, and many of them fixed. These included:
+	\begin{itemize}[noitemsep]
+		\item Scenario examples not working on Windows
+		\item Invalid states (after constraint violation) being used to train the dynamics model
 		\item The \matlab{minimize} function failing if the initial guess is correct
-		\item $\cdots$
+		\item The \matlab{rollout} function incorrectly handling initial states
 	\end{itemize}
-	Bugs in {\Pilco} were continual stumbling blocks, and call into question the validity of any previous experiments performed using the tool.
-	As a result, little experimental results, especially comparative ones, are presented in this report.
-	Unfortunately, after most tests new bugs were uncovered, calling into question the validity of any previous tests and leaving little to compare new data against.
+	Bugs in {\Pilco} were continual stumbling blocks, and called into question the validity of any previous experiments performed using the tool.
+	In particular, this makes it difficult to meaningfully compare past results against current results, especially in the context of machine-learning where small fixes can have non-obvious consequences.
 
 
 \bib
