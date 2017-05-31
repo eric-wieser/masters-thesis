@@ -23,7 +23,7 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 \label{app:euler-angles}
 
 	Another option would be to parametrize the orientation with a set of angles.
-	It turns out that three angles are needed, usually named $(\phi, \theta, \psi)$\footnote{Not to be confused with the names of the variables we parametrized the unicycle with in \cref{eq:state-vars}}.
+	It turns out that three angles are needed, usually named $(\phi, \theta, \psi)$\footnote{Not to be confused with the names of the variables the unicycle was parametrized with in \cref{eq:state-vars}}.
 	These angles are applied in order, and each have a corresponding axis. For instance, in what will be referred to here as $YXZ$ convention\footnotemark, the transformation represented is
 	\begin{align}
 		\bm{x}' = R_{YXZ}(\phi, \theta, \psi)\bm{x} = R_Y(\phi)R_X(\theta)R_Z(\psi) \bm{x}\,,
@@ -85,7 +85,7 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 			&= \left(\prod_{t_1}^{t_2} \left(\exp {\frac{1}{2}\bm{\omega}(t)}\right)^{\diff t}\right) \bm{q}(t_1) \\
 			&= \left(\prod_{t_1}^{t_2} \exp \left({\frac{1}{2}\bm{\omega}(t)} \diff t\right)\right) \bm{q}(t_1)\,.
 	\end{align}
-	It's important to note that $\exp$ here is quaternion exponentiation, which we defined in \cref{eq:quat:exp}, so produces a quaternion.
+	It's important to note that $\exp$ here is quaternion exponentiation, which was defined in \cref{eq:quat:exp}, so produces a quaternion.
 	As such, the product integral is not commutative, nor can it be turned into a summation inside the exponent.
 
 	On the unicycle robot, we need a discrete approximation to this integral, as we sample $\bm{\omega}$ at discrete times.

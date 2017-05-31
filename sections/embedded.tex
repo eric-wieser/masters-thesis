@@ -6,10 +6,10 @@
 \subsection{Changing platform}
 \label{sec:platformio}
 
-	The inherited embedded software required a toolchain called MPIDE (a fork of an early version of the Arduino IDE), which to quote the authors \enquote{is no longer being maintained, and is quickly falling behind}~\cite{ mpide}, as of January 2016. This is troublesome, as at some point in future, it may become impossible to download the software, which would make our embedded code unusable - better to deal with this technical debt now. The replacement software is an extension (\texttt{chipkit-core}) for the standard Arduino IDE.
+	The inherited embedded software required a toolchain called MPIDE (a fork of an early version of the Arduino IDE), which to quote the authors \enquote{is no longer being maintained, and is quickly falling behind}~\cite{ mpide}, as of January 2016. This is troublesome, as at some point in future, it may become impossible to download the software, which would make our embedded code unusable -- better to deal with this technical debt now. The replacement software is an extension (\texttt{chipkit-core}) for the standard Arduino IDE.
 
 	Unfortunately, this change in tools also comes with a change in hardware libraries.
-	Due to license incompatibilities, the \texttt{plib} library bundled with MPIDE, which we were making use of to operate hardware registers, is not available in the Arduino IDE.
+	Due to license incompatibilities, the \texttt{plib} library bundled with MPIDE, which was being used to operate hardware registers, is not available in the Arduino IDE.
 	This meant that large amounts of code that interfaced with hardware had to change. Many of these changes involves switching to the standard Arduino constructs for setting interrupts and writing pins.
 	The rest required the use of features of the \texttt{chipkit-core} library.
 
@@ -24,7 +24,7 @@
 		\item The application depends on library \texttt{A} and \texttt{B}
 		\item Library \texttt{B} depends on \texttt{C}
 	\end{itemize}
-	Worse yet, even if we remove the dependency on \texttt{C}, it is very difficult to distribute \texttt{A} alongside our application.
+	Worse yet, even if the dependency on \texttt{C} is removed, it is very difficult to distribute \texttt{A} alongside our application.
 
 	There is a open source project that acknowledges and provides a solution to these shortcomings, PlatformIO~\cite{platformio}.
 	This keeps the excellent cross-platform support that the Arduino libraries provide, and pairs them with a package manager, and a command line tool.
@@ -33,7 +33,7 @@
 \subsection{Building a communication interface}
 	\label{sec:comms}
 
-	In the review of the current system, we noted that the current system to configure the robot is manual and error prone.
+	In the review of the current system (\cref{sec:review:electrical}), it was noted that the method to configure the robot is manual and error prone.
 	Echoing remarks by~\citeauthor{aleksi}~\cite[p.~34]{aleksi}, a worthwhile next step would be \enquote{automatically writing the policy parameters to the microcontroller program from Matlab as well as [adding] a direct serial communication between Matlab and the unicycle for data exchange}.
 
 	The approach taken here unifies the above two suggestions.
@@ -165,7 +165,7 @@
 	This is powerful, because it means that code which tries to use a pin for a peripheral it does not support \emph{will not compile}! The trick in the implementation is to exploit the \cpp{constexpr} keyword, and is shown in \cref{lst:constexpr}.
 	Once this is done, the pins in use can be made directly readable from the source code, as in \cref{lst:pins}.
 
-	\begin{listingfloat}
+	\begin{listingfloat}[!b]
 		\centering
 		\begin{lstlisting}[language={[11]c++},gobble=6,frame=single]
 			template<typename T>
@@ -189,7 +189,7 @@
 		The last line is a compiler error because \cpp{failed} is not marked \cpp{constexpr}, which \enquote{contaminates} the \cpp{constexpr}-ness of \cpp{timer_for}, forbidding its result from being placed in \cpp{tb}.
 	\end{listingfloat}
 
-	\begin{listingfloat}[!tb]
+	\begin{listingfloat}[!b]
 		\begin{lstlisting}[language={[11]c++},gobble=6,frame=single]
 			namespace pins {
 				/** @name Encoders */
@@ -230,7 +230,7 @@
 	In that work, there was discussion of learning these offsets and incorporating them into the dynamics model.
 	While this would be a useful approach for building the dynamics model, it does not help in implementing a controller, as for this to work the embedded code would not only need to do the learning, but would need to do it online and in realtime.
 
-	A better approach would be to simply measure the initial orientation, for which we already have a suitable sensor, the accelerometer. When the robot is not in motion, this measures only the acceleration due to gravity, telling us $\bm{a}$, the direction in which down lies in the frame of the robot.
+	A better approach would be to simply measure the initial orientation, for which the robot already has a suitable sensor, the accelerometer. When the robot is not in motion, this measures only the acceleration due to gravity, telling us $\bm{a}$, the direction in which down lies in the frame of the robot.
 	We know that for the upright robot, the reading of the accelerometer should be $\bm{a}_0 = \begin{bmatrix}0 & 0 & -g\end{bmatrix}^T$\footnotemark. We desire a quaternion (\cref{sec:quat:intro}) $\bm{q}$ that rotates $\bm{a}_0$ onto $\bm{a}$, from which it can be shown
 	\footnotetext{%
 		After the appropriate transformation from sensor to robot coordinates.

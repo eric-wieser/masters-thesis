@@ -51,7 +51,7 @@
 		\beta &:= \theta + \psi
 		\end{aligned}\,,
 	\end{align}
-	suggesting the augmentation of the state vector with $\sin, \cos$ of $\alpha, \beta$.
+	suggesting the augmentation of the state vector with $\sin, \cos$ of $\alpha, \beta$, written as $\tilde{\bm{z}}$.
 	This allows $\bm{p}$ to be expressed as a linear function of the augmented state $\tilde{\bm{z}}$,
 	\begin{align}
 		\bm{p} &= \underbrace{\begin{bmatrix}
@@ -66,7 +66,7 @@
 			\unitv{y_c} \\
 			0
 		\end{bmatrix}}_{A_{p_0}} \tilde{\bm{z}} +
-		\underbrace{\begin{bmatrix} 0 \\ 0 \\ r_w + r_f + r_t \end{bmatrix}}_{\bm{b}_{p_0}}
+		\underbrace{\begin{bmatrix} 0 \\ 0 \\ r_w + r_f + r_t \end{bmatrix}}_{\bm{b}_{p_0}}\,,
 	\end{align}
 	defining the row vector $\unitv\psi$ such that $\unitv\psi\tilde{\bm{z}} = \psi$, and similarly for all other state variables.
 	This lets us express
@@ -75,7 +75,7 @@
 			&= \|(A_p - A_{p_0})\tilde{\bm{z}} - \bm{b}_{p_0}\|^2  \nonumber \\
 			&= \|(A_p - A_{p_0})(\tilde{\bm{z}} - \tilde{\bm{z}}_{p_0})\|^2 \\
 		\text{where}\quad\tilde{\bm{z}}_{p_0}
-			&= \unitv{\cos \beta} + \unitv{\cos \alpha} + \unitv{\cos \theta}  \nonumber
+			&= \unitv{\cos \beta} + \unitv{\cos \alpha} + \unitv{\cos \theta}\,.  \nonumber
 	\end{align}
 	From here, the cost function in \cref{eq:correct-cost} can be expressed in a simple form,
 	\begin{align}
@@ -85,7 +85,7 @@
 		\text{where}\quad Q &=
 			\unitv{\phi}^T\frac{1}{4\pi^2}\unitv{\phi} +
 			(A_p - A_{p_0})^T\frac{1}{h^2}(A_p - A_{p_0}) \nonumber \\
-			\tilde{\bm{z}}_0 &= \tilde{\bm{z}}_{p_0} \nonumber
+			\tilde{\bm{z}}_0 &= \tilde{\bm{z}}_{p_0}\,. \nonumber
 	\end{align}
 
 \subsection{Roll limits}

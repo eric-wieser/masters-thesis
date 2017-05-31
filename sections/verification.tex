@@ -39,17 +39,17 @@
 				This tests the same properties of the turntable.
 
 			\item \label{sensor-test-pitch}
-				Rotate the robot $135\deg$ forwards in pitch, and back up again.
+				Rotate the robot \SI{135}{\degree} forwards in pitch, and back up again.
 				This tests that the Euler angles do not hit a singularity, and that the gyro integration has the correct scale factor.
 				It also verifies the sign convention.
 
 			\item \label{sensor-test-roll}
 
-			    Rotate the robot $90\deg$ left in roll, and back up again.
+			    Rotate the robot \SI{90}{\degree} left in roll, and back up again.
 			    This is looking for the same class of mistake as above.
 
 			\item \label{sensor-test-yaw}
-				Rotate the robot in $90\deg$ increments in yaw, up to $360\deg$
+				Rotate the robot in \SI{90}{\degree} increments in yaw, up to \SI{60}{\degree}.
 			    This is looking for the same class of mistake as above, with an easy way to check if the original position is restored.
 
 			\item \label{sensor-test-free}
@@ -60,7 +60,7 @@
 		\subsubsection{Results and subsequent fixes}
 
 		Test \ref{sensor-test-wheel} revealed no mistakes.
-		However, later testing upon driving forward multiple wheel rotations discovered that the wheel position would overflow and wraparound, which manifests itself in the position in (\cref{fig:bad-wheel:pos}). Similarly, the wheel velocity would be afflicted with a very large spike (\cref{fig:bad-wheel:vel}). This produces a bizarre \emph{teleportation} effect (\cref{fig:bad-wheel:tele}) visible in the animation, which is how the problem was spotted.
+		However, later testing upon driving forward multiple wheel rotations discovered that the wheel position would overflow and wraparound, which manifests itself in the position in (\cref{fig:bad-wheel:pos}). Similarly, the wheel velocity would be afflicted with a very large spike (\cref{fig:bad-wheel:vel}). This produces a bizarre \enquote{teleportation} effect (\cref{fig:bad-wheel:tele}) visible in the animation, which is how the problem was spotted.
 		It was determined that the first of these problems was one partially introduced by the author during the work in \cref{sec:platformio}, while the latter has been there since the beginning.
 
 		\begin{figure}
@@ -88,6 +88,7 @@
 		\end{figure}
 
 		\begin{listingfloat}[b!]
+			\centering
 			\begin{lstlisting}[language={[11]c++},frame=single,gobble=8]
 				template<typename T, typename = enable_if<is_unsigned<T>::value>::type>
 				class wrapping {
@@ -141,7 +142,7 @@
 		Invoking DRY once again, part of the problem here was an ambiguous representation, of \cpp{float yaw, pitch, roll;}, which says nothing about the Euler convention used.
 		In the new code, this is expressed as \cpp{euler_angles<213> orient;} -- and muddling this with \cpp{euler_angles<123>} is a compile-time error.
 
-		\begin{figure}
+		\begin{figure}[b!]
 			\centering
 			\begin{subfigure}[t]{0.333\linewidth-2em}
 				\input{figures/bad-euler.tikz}
@@ -174,7 +175,7 @@
 		While most rollouts fall over long before passing this yaw angle, it seemed wise to fix it, as it would not be modelled well by our GP dynamics.
 		The simple function added to fix this is shown in \cref{listing:unwrap}.
 
-		\begin{listingfloat}
+		\begin{listingfloat}[b]
 			\begin{lstlisting}[language={[11]C++}, gobble=8, frame=single]
 				float unwrap_angle(float next, float last) {
 					// remainder rounds to nearest, limiting to [-pi,pi]

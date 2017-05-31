@@ -8,10 +8,10 @@
 	When using the learnt dynamics model to choose an optimal controller, the constraints of the robot are not respected, with the only effect they have being through the updated cost function from \cref{sec:roll-cost}.
 	This can be observed as an optimistic prediction for loss being obtained from a poor rollout, shown in \cref{fig:loss-prediction}.
 	\begin{figure}[b!]
-		\begin{minipage}{\linewidth/2-2em}
+		\begin{minipage}{\linewidth/2-1em}
 			\input{figures/test.tikz}
 		\end{minipage}\hfill%
-		\begin{minipage}{\linewidth/2-2em}
+		\begin{minipage}{\linewidth/2-1em}
 			\caption{Actual and posterior loss}
 			\label{fig:loss-prediction}
 			\small
@@ -24,7 +24,7 @@
 	\end{figure}
 	At present, the forward-propagation of the dynamics model continues until \enquote{divergence}, which we define as having a mean or variance over some arbitrary limit.
 	In addition to this, future work could look at the probability of the state distribution, terminating propagation early if the probability of state constraint violation exceeds some threshold (say, \SI{50}{\percent}).
-	Without this change, we risk the policy being optimized for a region that we can't ever be in.
+	Without this change, we risk the policy being optimized for a region that the robot can't ever be in, at the expense of the region we care about.
 
 \section{Quadratic control}
 
@@ -166,7 +166,7 @@
 		\small
 		Areas are shaded where \mybox[fill=green!25]{$\tau > 0$} and \mybox[fill=red!25]{$\tau < 0$}.
 		$\tau_w > 0$ corresponds to a force driving the robot forwards, and $\tau_t > 0$ corresponds to a moment rotating the robot clockwise.
-		These plots can be interpreted as a top-down view of the robot at the origin facing right, with a point on the plot corresponding to the location of the top of the robot.
+		The $\theta$ axes are inverted so that these plots can be interpreted as a top-down view of the robot at the origin facing right, with a point on the plot corresponding to the location of the top of the robot.
 	\end{figure}
 
 	Consider a stationary unicycle, with all states at the origin apart from pitch ($\psi$) and roll ($\theta$), and the action needed to stabilize it.
@@ -176,7 +176,7 @@
 	While some success was shown using the linear controller in this and previous reports, this success can only ever hold when the robot stays within one half-plane of the pitch-roll state-space -- that is, with the equilibrium in a tilted forward state (drives forward forever), or to one side (drives in a circle).
 	Indeed, (b.ii) only matches (b.i) in the half-plane where $\psi > 0$, suggesting the simulated controller learnt to avoid forward falls. (b.iii) shows the opposite, that the hardware learnt to avoid backwards falls.
 
-	A quadratic policy has been implemented on the robot and in the communication protocol (\cref{sec:comms}) as a \cpp{QuadraticPolicy} message, but no Matlab code currently exists to convert the {\Pilco} policy object into a suitable protobuf message, nor has any testing been performed.
+	A quadratic policy has been implemented on the robot and in the communication protocol (\cref{sec:comms}) as a \cpp{QuadraticPolicy} message, but no Matlab code currently exists to convert the {\Pilco} policy object into a suitable protobuf message\footnote{Which is messy due to a subtle format difference}, nor has any testing been performed.
 
 
 \section{Automatic Differentiation}
