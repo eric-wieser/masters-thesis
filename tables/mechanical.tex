@@ -123,13 +123,13 @@
 \caption{Mechanical properties of the small unicycle}
 \medskip
 \small
-MOI and COM abbreviate Moment of Inertia and Center of Mass, respectively.
+Moment of Inertia and Center of Mass are abbreviated by MOI and COM, respectively.
 The first column indicates the property name of the \texttt{UnicyclePlant} class in the Matlab source code.
 Many properties proved impossible to measure due to the inability to disassemble the robot, such as \texttt{mt}, requiring estimation techniques instead.
 The working for all of these techniques is implemented in the Matlab \matlab{UnicyclePlant} class.
 
 \medskip
 Of these properties, only \texttt{rw} is needed by the embedded software.
-To learn a controller on the real robot, only \texttt{rw}, \texttt{rf}, and \texttt{rt} are needed, as these factor into the cost function (\cref{sec:cost-function}).
+For learning a controller on the real robot, only \texttt{rw}, \texttt{rf}, and \texttt{rt} are needed, as these factor into the cost function (\cref{sec:cost-function}).
 The full set of properties is only need for complete robot simulation.
 

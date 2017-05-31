@@ -3,6 +3,30 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-\todo[inline]{Write this}
+
+This project continues from where a previous student left off, with a mostly working implementation of a complete system to perform machine learning experiments.
+Much care was given to reviewing all of the parts of that implementation, as a second pair of eyes can often find mistakes that the first pair cannot.
+Various problems were found and fixed, resulting in a more rigorously correct approach overall.
+
+Substantial work was put into developing a communication channel with the hardware -- which as a result, should make implementing new controller types and more powerful datalogging mechanisms much easier in future.
+In the interest of maximizing the usefulness of this work, a key part of the software for this was packaged into a self-contained library, and published to the Arduino community complete with documentation.
+Issues raised during this work resulted in fixes being submitted and accepted by the Arduino platform itself.
+
+Despite the electrical fixes made in the past work, further issues were found, some of which having significant safety concerns.
+These have all been fixed, resulting in a safer and more reliable platform for future experiments.
+
+With the aid of an improved simulation model, claims regarding a roll limit of \SI{17}{\degree} limiting learning progress were tested, and shown to hold some truth.
+However, a workaround is discussed and shown to mostly solve the problem, weakening the argument for a mechanical redesign.
+In proposing future work, we note that this is exactly that -- a workaround -- and outline a more rigorous approach.
+
+Discussions with Prof.\@ Carl Rasmussen about software structures in {\Pilco} have lead to exploration outside of this work into better representations of Gaussians and their derivatives in software -- something that should hopefully make wide-sweeping simplifications across the software, reducing the cognitive load of creating more powerful probabilistic models in future.
+Additionally, the benefits of applying Automatic Differentiation techniques are discussed, aiming for similar goals.
+
+Unfortunately, despite showing correct behaviour in a variety of previously failing verification tests, the real robot did not show any success in learning a controller through the application of {\Pilco}.
+It's possible this is due to a mistake introduced to the code in this work, or that a previous mistake is being relied upon.
+Either way, it is shown that despite simulation results, an affine controller should not be expected to perform well, and that a quadratic controller is likely to produce a better outcome.
+
+Despite this setback, this project made significant progress in improving \Pilco, in ways that affect all learning experiments, not just the unicycle, and in resolving lingering problems left from the previous work.
+
 
 \end{document}

@@ -5,7 +5,7 @@
 
 \section{Unit testing}
 	When writing software, and especially when refactoring software, it is very useful to have tests in place, to isolate and detect mistakes early.
-	The idea is that all the test can be run with one tool, making it easy to tell if old behaviour has been broken.
+	The idea is that all the tests can be run with one tool, making it easy to tell if old behaviour has been broken.
 
 	Over 500 lines\footnotemark of tests were written just for the packet framing code~\cite{packetio}, as when building a deep software stack, you really want to make sure the foundation is solid. These are intended to hit all the corner-cases.
 	Similar tests were written for the new \matlab{Frame} and \matlab{gaussian} classes, which caught some minor bugs whilst code was being written.
@@ -22,7 +22,7 @@
 
 	\subsection{Sensors}
 		The aim of these tests is to verify that the state measurements on the robot are representative of reality, and consistent with the interpretation of those measurements as used by the animation routine in the Matlab code\footnotemark.
-		\footnotetext{With the hope that the animation routine is consistent with the dynamics, as both have been used sufficiently much in the past. This turned out to be false, but not in a significant way.}
+		\footnotetext{With the hope that the animation routine is consistent with the dynamics, as both have been used sufficiently in the past. This turned out to be false, but not in a significant way.}
 
 		To perform them, a null controller was loaded onto the robot (equivalent to disconnecting the battery), the datalogger started, and then some motions performed by hand.
 		The verification step involved loading the log files into the animator, and checking that the animation resembled the true robot motion.
@@ -193,7 +193,7 @@
 
 		Further investigation revealed a suspicious method of integrating angular velocities, that did not match the literature~\cite{boyle2016integration}.
 		Following the theme of the software in this project, this took the form of a fully-expanded expression, without any remarks as to its derivation.
-		After contact with the author, it was found that the method was indeed incorrect, making the mistake of interpreting $\bm{\omega}$ as rates in Euler angles, yet going to the effor of using quaternions as an internal representation -- the worst of both worlds! A new approach was needed, as described in \cref{app:quat}.
+		After contact with the author, it was found that the method was indeed incorrect, making the mistake of interpreting $\bm{\omega}$ as rates in Euler angles, yet going to the effort of using quaternions as an internal representation -- the worst of both worlds! A new approach was needed, as described in \cref{app:quat}.
 
 		With both problems fixed, the performance of tracking angles was significantly improved.
 		Gyro drift would become noticeable after periods of around \SI{30}{\second}, but this is not important for us, as our rollouts are at most \SI{2.5}{\second} long.

@@ -12,7 +12,7 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 
 \section{Rotation matrices}
 
-	An easy way to represent rotations is with a orthonormal (rotation) matrix $R \mathbb{R}^{3\times3}$, which can be used to rotate a vector $\bm{x} \in \mathbb{R}^{3}$ with:
+	An easy way to represent rotations is with a orthonormal (rotation) matrix $R \in \mathbb{R}^{3\times3}$, which can be used to rotate a vector $\bm{x} \in \mathbb{R}^{3}$ with:
 	\begin{align}
 		\bm{x}' = R \bm{x}
 	\end{align}
@@ -36,7 +36,7 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 	\begin{description}
 		\item[$XYZ$ (or 123)]
 			Often\footnotemark referred to as \enquote{yaw, pitch, and roll}, corresponding to the angles $\psi$, $\theta$, and $\phi$.
-		\item[$YZX$ (or 213)]
+		\item[$YXZ$ (or 213)]
 			The convention used on the unicycle. Here, $\psi$ is the rotation of the wheel about the z axis, $\theta$ the angle the axle makes with the vertical (roll), and $\phi$ the angle of the chassis about the axle.
 	\end{description}
 	\footnotetext{These terms are also frequently used ambiguously to mean \enquote{some type of Euler angle}, such as in this and all previous unicycle reports -- so by no means should be taken of confirmation of $XYZ$ convention}
@@ -67,7 +67,7 @@ Angular velocity in 3d can be represented with a pseudovector\footnote{Like a ve
 	\Cref{eq:rot:complex} can be extended to quaternions as
 	\begin{align}
 		\bm{x}' = \bm{q} \bm{x} \bm{q}^* \quad \text{where} \quad
-		\bm{q} = \exp\left(\hat{\bm{\Omega}}\tfrac{\theta}{2}\right) = \cos \tfrac{\theta}{2} + \hat{\bm{\Omega}} \sin \tfrac{\theta}{2}
+		\bm{q} = \exp\left(\hat{\bm{\Omega}}\tfrac{\theta}{2}\right) = \cos \tfrac{\theta}{2} + \hat{\bm{\Omega}} \sin \tfrac{\theta}{2}\,,
 		\label{eq:quat:exp}
 	\end{align}
 	$\hat{\bm{\Omega}}$ is the unit psuedovector to rotate around, and $\theta$ the angle to rotate by.

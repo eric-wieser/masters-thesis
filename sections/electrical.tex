@@ -3,9 +3,9 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 
-In the process of setting up and running experiments, various electrical concerns were found -- some pre-emptively, and others post-hoc. The robot uses a Lithium Polymer battery, a type for which electrical mistakes can be catastrophic\footnote{An example being the newsworthy~\cite{bbc-samsung-explosion} issues with the Galaxy Note 7} -- making it important to avoid mistakes, and if they are made, preventing them being repeated. In line with the risk assessment, a fire-safe battery storage bag was purchased for the project.
+In the process of setting up and running experiments, various electrical concerns were found -- some pre-emptively, and others post-hoc. The robot uses a Lithium Polymer battery, a type for which electrical mistakes can be catastrophic\footnote{An example being the newsworthy issues~\cite{bbc-samsung-explosion} with the Galaxy Note 7} -- making it important to avoid mistakes, and if they are made, preventing them being repeated. In line with the risk assessment, a fire-safe battery storage bag was purchased for the project.
 
-The simplest of these was the connection of the battery to the robot, which was made using an unpolarized and uninsulated connector, show centrally in \cref{fig:connectors}. A similar connector was used to charge the robot. Misconnecting either of these would result in outcomes ranging from a destroyed microcontroller to an exploding battery. Having exposed connections on loose flexible wires entails similar risk. These were replaced with JST RCY connectors.
+The simplest of these concerns was the connection of the battery to the robot, which was made using an unpolarized and uninsulated connector, show centrally in \cref{fig:connectors}. A similar connector was used to charge the robot. Misconnecting either of these would result in outcomes ranging from a destroyed microcontroller to an exploding battery. Having exposed connections on loose flexible wires entails similar risk. These were replaced with JST RCY connectors.
 
 \begin{figure}
 	\begin{minipage}[t]{0.6\linewidth - 1em}
@@ -39,7 +39,7 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 
 	This was not a deliberate choice -- the design of the microcontroller board makes it impossible to reattach a USB cable without resetting the microchip, as the RS232 \texttt{DTR} line is connected to the microcontroller reset\footnotemark. The solution was to cut a jumper pad on the microcontroller to break this connection, preventing this restart. This allows the USB cable to be reconnected after a test, and data to be recovered.
 
-	\footnotetext{The RS232 protocol includes two flow control lines -- \texttt{DTR}, and \texttt{CTS}. The Arduino bootloader uses both of these to allow reprogramming over USB. Unfortunately, \texttt{DTR} is unconditionally asserted by the RS232 over serial operating system driver, causing the unwanted reset. Were \texttt{CTS} used instead, there would be no problem.}
+	\footnotetext{The RS232 protocol includes two flow control lines -- \texttt{DTR}, and \texttt{CTS}. The Arduino bootloader uses both of these to allow reprogramming over USB. Unfortunately, \texttt{DTR} is unconditionally asserted by the RS232 over serial operating system driver, causing the unwanted reset. Were \texttt{CTS} to be used instead, there would be no problem.}
 
 \subsection{Improving the release procedure}
 	\label{sec:switch}
@@ -60,7 +60,7 @@ Another issue with LiPo batteries, thankfully without safety ramifications, is o
 \subsection{Electrical failure}
 	\label{sec:electrical:failure}
 
-	During one test of the hardware, the robot began to emit smoke from a then-unidentifiable location. The priority of course was to disconnect the battery as soon as possible to prevent a fireball, but even this proved difficult, with the melting power cables (\cref{fig:short:wires}) giving minor burns to a finger.
+	During one test of the hardware, the robot began to emit smoke from a then-unidentifiable location. The priority was to disconnect the battery as soon as possible to prevent a fireball, but even this proved difficult, with the melting power cables (\cref{fig:short:wires}) giving minor burns to a finger.
 
 	\begin{figure}[b]
 		\centering

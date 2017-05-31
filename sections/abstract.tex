@@ -8,8 +8,8 @@ In this iteration of the work, the focus is on a smaller unicycle, and producing
 
 The small unicycle was the subject of a very similar project last year, in which some electrical and mechanical problems were identified and fixed, and many learning experiments were performed, with limited success.
 A number of outstanding issues were raised, from which this work addresses:
-automating the transfer of data to and from the robot;
-dealing with initial orientations by using data from the accelerometer;
+automating the transfer of data to and from the robot,
+dealing with initial orientations by using data from the accelerometer,
 and building a more representative unicycle model in simulation.
 
 Numerous new problems were found in the existing software and electronics during attempts to replicate previous experiments.
@@ -17,14 +17,14 @@ Since many of these corresponded to misunderstanding the representation of orien
 Rather than continuing to use these slow full-system experiments to expose problems, this work focussed more on an approach of critically reviewing source code, and performing simple hardware tests.
 Code review revealed many hard-to-decipher pieces of code, for which new abstractions were written to ease their readability, applying modern software engineering principles -- often exposing bugs in the process.
 Overall, large amounts of software was rewritten, which represented the bulk of the work on this project.
-Minor improvements were also made to the human interfaces to the software, both graphical and logical in nature -- greatly improving its usefulness for identifying problems.
+Minor improvements were also made to the human interfaces to the software, both graphical and logical in nature -- greatly improving its transparency, enabling problems to be more easily identified.
 
 Simulations were performed to evaluate a claim made that a \SI{17}{\degree} roll restriction was impairing learning progress. This was shown to be true, but a simple solution of adding a cost function term was proposed and tested that diminished this effect in simulation, without incurring a mechanical redesign.
 Despite this, learning efforts on the hardware were even less successful than before, and did not meet the expectations set by simulations.
 
 In outlining future work for this project, it is noted that the {\Pilco} framework would benefit from the application of Automatic Differentiation, possibly necessitating a programming language change.
-It is also discussed that an affine controller is unlike to ever be satisfactory, with a quadratic controller shown to be desirable by means of a thought experiment.
-Finally, observations are made that state constraints need to be integrated into the prediction process to avoid underestimating loss.
+It is also discussed that an affine controller is unlikely to ever be satisfactory, with a quadratic controller shown to be desirable by means of a thought experiment.
+Finally, observations are made that the state constraints need to be integrated into the prediction process to avoid underestimating loss.
 
 The full text of this report in PDF format (complete with hyperlinks), selected raw data used within, and links to all the source code used, will be made available online at \url{https://github.com/eric-wieser/masters-thesis/releases}.
 

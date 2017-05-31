@@ -26,7 +26,7 @@
 		&&
 			\bm{u}\tind{i} &= \pi(\bm{x}\tind{i})\, \nonumber
 	\end{alignat}
-	where $\pi(\bm{x})$ is a policy that computes the desired actions for a given state, and $c(\bm{x}, \bm{u})$ attributes a cost to a set of states and actions at a single timestep.
+	where $\pi(\bm{x})$ is a policy that computes the desired actions for a given state, and $c(\bm{x}, \bm{u})$ attributes a cost to a set of states and actions at a single timestep. $J$ is known as the overall cost function.
 
 \section{Gaussian Processes}
 
@@ -76,7 +76,7 @@
 	Gaussian processes are a generalization of multivariate Gaussians to infinitely many variables.
 	This is done by noting that the vector $\mathbf{x} \in \mathbb{R}^k$ can be re-expressed as a discrete function of the index $x\colon [1,d] \to \mathbb{R}$, where $x_i = x(i)$.
 	From there, the domain can be expanded to the reals to produce a continuous scalar function, such that $x\colon \mathbb{R} \to \mathbb{R}$.
-	Gaussian processes (\cref{fig:gaussian:proc}) are described by a mean \emph{function} $m(i)$ and a covariance \emph{function} $K(i, j)$, such that any finite number of samples $x(i)$ from the process are jointly gaussian. Algebraically,
+	Gaussian processes (\cref{fig:gaussian:proc}) are described by a mean \emph{function} $m(i)$ and a covariance \emph{function} $K(i, j)$, such that any finite number of samples $x(i)$ from the process are jointly Gaussian. Algebraically,
 	\begin{align}
 		x(\cdot) &\sim \mathrm{GP}(m(\cdot), K(\cdot,\cdot)) \\
 		\implies
@@ -186,7 +186,10 @@
 
 		In this report, we restrict our search for optimal controllers to affine controllers of the form
 		$\bm{u} = \pi(\bm{x}) = W\bm{x} + \bm{b}$, and choose cost functions of the form
-		$c(\bm{x}, \bm{u}) = 1 - \mathbb{E}_{\bm{x}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]$, where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
+		\begin{align}
+			c(\bm{x}, \bm{u}) = 1 - \mathbb{E}_{\bm{x}} \exp\left[-\frac{1}{2} f(\bm{x})^T Q f(\bm{x})\right]\,,
+		\end{align}
+		where $f$ is a function that appends trigonometric functions of $\phi, \theta, \psi$ to the end of the state vector, aiding in penalization of geometric properties.
 
 		Each GP in \cref{eq:transition-gp} modelling the dynamics of a single state is parametrized by $m$, $K$ of the form
 		\begin{align}

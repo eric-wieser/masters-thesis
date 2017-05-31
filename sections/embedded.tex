@@ -26,7 +26,7 @@
 	\end{itemize}
 	Worse yet, even if the dependency on \texttt{C} is removed, it is very difficult to distribute \texttt{A} alongside our application.
 
-	There is a open source project that acknowledges and provides a solution to these shortcomings, PlatformIO~\cite{platformio}.
+	There is an open source project that acknowledges and provides a solution to these shortcomings, PlatformIO~\cite{platformio}.
 	This keeps the excellent cross-platform support that the Arduino libraries provide, and pairs them with a package manager, and a command line tool.
 	One particularly useful feature is the ability to run unit tests on the Arduino, to verify the correctness of software.
 
@@ -43,7 +43,7 @@
 		\item Serialization (\enquote{structured}) -- converting an arbitrary data model into a series of bytes, and back again
 		\item Framing (\enquote{messages}) -- distinguishing where one message begins and another ends
 	\end{itemize}
-	Both of these can be hard problems to get right, and so reinventing the wheel should be avoided.
+	Both of these can be hard problems to get right, and so reinventing the wheel should be avoided -- instead of solving these problems from scratch, a w
 
 	\subsubsection{Serialization}
 
@@ -66,8 +66,7 @@
 			\caption{A snippet of the protobuf description (\texttt{.proto} file) used with the robot}
 			\label{lst:proto}
 		\end{listingfloat}
-
-		Google’s \enquote{Protocol Buffers}\cite{protobuf} (or simply \enquote{protobuf}) are a popular framework for implementing serialization, which are used extensively within Google, and have cross-language support.
+		Google’s \enquote{Protocol Buffers}\cite{protobuf} (or simply \enquote{protobuf}) is a popular framework for implementing serialization, which is used extensively within Google, and has cross-language support.
 		This framework requires a \texttt{.proto} file to be specified, like the one in \cref{lst:proto}.
 		From this file, C++ and Python code can be generated to serialize and deserialize these messages into native types.
 
@@ -76,13 +75,15 @@
 
 		\footnotetext{%
 			The API of protobuf has changed significantly in the 5 years since this package was last modified.
-			As such, were using protobuf from Matlab desired in future, the author would recommend starting the implementation from scratch as a protobuf python plugin, using the latest Google developer examples.
+			As such, should the use of protobuf from Matlab be desired in future, the author would recommend starting the implementation from scratch as a protobuf python plugin, using the latest Google developer examples.
 		}
 
 	\subsubsection{Framing}
 
-		It's worth recapping what level of abstraction the USB serial link exposes.
-		Serial links allow a sequence of bytes to be sent one after another down a transmit (\texttt{tx}) channel, while at the same time a sequence of bytes are appear on the receive (\texttt{rx}) channel. The users of such a channel do not need to concern themselves with raw bits. There are two important properties to note here:
+		It's worth recapping the level of abstraction that the USB serial link exposes.
+		Serial links allow a sequence of bytes to be sent one after another down a transmit (\texttt{tx}) channel, while at the same time a sequence of bytes appear on the receive (\texttt{rx}) channel.
+		The users of such a channel do not need to concern themselves with raw bits.
+		There are two important properties to note here:
 		\begin{itemize}[noitemsep]
 			\item
 				The receiver has to handle the byte as soon as it appears on the receive channel, as the channel has no memory.
@@ -93,7 +94,7 @@
 				Every byte is sent separately, and in practice, implementations do not record at what time each byte was received (ruling out using a time delay to indicate \enquote{end-of-group}).
 		\end{itemize}
 
-		The problem of \enquote{framing}, then is build on this abstraction to provide a mechanism to group bytes together into packets. Consider the sequence of packets
+		The problem of \enquote{framing}, then, is one of building on this abstraction to provide a mechanism to group bytes together into packets. Consider the sequence of packets
 		\enquote{\texttt{F1}\,\texttt{00}\,\texttt{D5}},
 		\enquote{\texttt{0F}},
 		\enquote{\texttt{C0}\,\texttt{FF}\,\texttt{EE}}, shown with each byte in hexadecimal notation.
@@ -158,10 +159,11 @@
 \subsection{Recovering and documenting pin assignments}
 	\label{sec:pins}
 
-	When adding the switch in \cref{sec:switch}, it was found to that no documentation was present on which pins were free and which ones were in use. It was decided that this would be easier to determine through reading the source code, rather than dismantling the electronics, and following traces.
+	When adding the switch in \cref{sec:switch}, it was found  that no documentation was present on which pins were free and which ones were in use.
+	It was decided that this would be easier to determine through reading the source code, rather than dismantling the electronics, and following traces.
 	Unfortunately, the source code alone was not enough to reconstruct this, as some pins were not referred to by number, but by the hardware peripherals (timers, PWM, etc) they belong to, so the data sheet was needed too.
 
-	The DRY principle (\cref{sec:dry}) stands against these mixed representations, so a novel system was invented to specify the pins numbers in the source code, but translate them into peripherals \emph{at compile time}.
+	The DRY principle (\cref{sec:dry}) stands against these mixed representations, so a novel system was invented to specify the pin numbers in the source code, but translate them into peripherals \emph{at compile time}.
 	This is powerful, because it means that code which tries to use a pin for a peripheral it does not support \emph{will not compile}! The trick in the implementation is to exploit the \cpp{constexpr} keyword, and is shown in \cref{lst:constexpr}.
 	Once this is done, the pins in use can be made directly readable from the source code, as in \cref{lst:pins}.
 

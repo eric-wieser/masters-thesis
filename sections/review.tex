@@ -11,8 +11,8 @@
 	Two MAXON motors~\cite{motor} are attached to the robot, each with a corresponding 14:1 gearbox~\cite{gearbox} and 512 count-per-revolution encoder~\cite{encoder}.
 	The first motor is connected via a timing belt with a 40:16 ratio to the drive wheel, while the second motor is directly attached to a steel flywheel (henceforth referred to as the \enquote{turntable}).
 
-	To prevent damage to the turntable motor shaft, the chassis of the robot shields the turntable from direct impact, reinforced with some metal bolts.
-	Atop this shielding, lies the control board on the front side of the robot, and the battery duct-taped to the rear.
+	To prevent damage to the turntable motor shaft, the chassis of the robot, reinforced with some metal bolts, shields the turntable from direct impact.
+	Above this shielding lies the control board on the front side of the robot and the battery, duct-taped to the rear.
 
 	Previous work concluded~\cite[p.~54]{aleksi} that a better simulation model of the unicycle was desirable, to help determine whether poor learning progress was due to implementation errors in software, or simply due to the small unicycle having a more challenging set of dynamics than the previously-simulated large unicycle.
 
@@ -27,7 +27,9 @@
 
 \section{Electrical}
 
-	Controlling the robot is a ChipKIT Max32 microcontroller board~\cite{max32}. This and has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board. Atop the controller board sits a hand-soldered protoboard. This provided places to connect the sensors and actuators, which are as follows:
+	Controlling the robot is a ChipKIT Max32 microcontroller board~\cite{max32}.
+	This has a dual-use USB connection -- for programming the flash memory with new code, and as a USB serial connection, which allows data to be sent to and from the board.
+	Atop the controller board sits a hand-soldered protoboard. This provides places to connect the sensors and actuators, which are as follows:
 	\begin{itemize}[noitemsep]
 		\item
 			A combined gyroscope and accelerometer board~\cite{imu}, connected via I\textsuperscript{2}C.
@@ -74,7 +76,7 @@
 		\label{fig:pilco-interface}
 		\medskip
 		\small
-		Shown at the end of the project, after the improvements described in \cref{sec:visualization}.
+		Taken at the end of the project, after the improvements described in \cref{sec:visualization}.
 		The center and lower-left panes show predicted (blue) and actual (red) state and loss plots.
 		The right pane shows an animation of the highlighted state plot.
 	\end{figure}
@@ -101,13 +103,13 @@
 		\item Read data from the sensors.
 		\item
 			Update the internal estimates of orientation from the gyro reading.
-			This is done using quaternions as the representation.
+			This is done using quaternions (\cref{app:quat}) as the representation.
 		\item Assemble the full state vector from the readings.
 		\item Apply the linear control policy.
 		\item Store the policy outputs and state data in memory, ready to send back when requested.
 	\end{enumerate}
 	When being used in conjunction with the Matlab toolbox, the control policy must be updated on each learning iteration, and the output and state data extracted from the robot.
-	The process to do this is manual, and consists of the following steps:
+	This process is manual, and consists of the following steps:
 	\begin{enumerate}[noitemsep]
 		\item Copying the controller parameters into the right place within the C++ code
 		\item Recompiling the C++ code
@@ -117,7 +119,8 @@
 		\item Saving the copied text into a csv file, which is read by Matlab
 	\end{enumerate}
 	Of these, steps 2 and 3 are slow, and 1, 5, and 6 are prone to human error.
-	Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark. This work therefore comes up with a better approach in \cref{sec:comms}.
+	Worse still, relying on plaintext in 5 leaves data vulnerable to undetectable corruption through serial line errors\footnotemark.
+	This work therefore comes up with a better approach in \cref{sec:comms}.
 
 	\footnotetext{For instance, if a byte is dropped due to a serial buffer overflow, the number \texttt{10.23} can be read as \texttt{0.23}}
 

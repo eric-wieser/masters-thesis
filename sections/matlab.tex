@@ -20,7 +20,7 @@
 
 	The {\Pilco} toolbox sensibly produces log files after each iteration, enabling easier debugging.
 	Unfortunately, each time learning is restarted, all the old log files are overwritten.
-	This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git commit hash identifying which version of {\Pilco} was used to run it. An example under the new scheme is \lstinline{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \lstinline{unicycle/uninlds_007_H050.mat}.
+	This was changed such that a unique folder was created for each run, containing an incrementing integer, and importantly, a reference to the git \enquote{commit hash}, identifying which version of {\Pilco} was used to run it. An example under the new scheme is \lstinline{unicycle/logs/nlds_45@159c2f4+/007_H050.mat}, which was previously \lstinline{unicycle/uninlds_007_H050.mat}.
 
 \subsection{Towards better data representations}
 
@@ -29,7 +29,7 @@
 	\begin{itemize}[noitemsep]
 		\item computation of dynamics, rendering, and loss for the unicycle contain their own copies of physical unicycle parameters.
 		\item mapping of state numbers to state names -- many files contain code along the lines of \matlab{theta = x(9)}, which causes problems if a new state is inserted
-		\item augmentation of gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
+		\item augmentation of Gaussian state vectors -- repeated separately in the cost and dynamics-training functions, with derivatives.
 		\item ordering of states -- while the user's scenario files specify exactly which states should participate in which part of the algorithm, not all of these specifications are respected.
 	\end{itemize}
 
@@ -75,17 +75,17 @@
 	A common concept that {\Pilco} needs to represent is a Gaussian distribution, consisting of a mean and variance.
 	These are sometime represented as two separate variables, \matlab{gm} and \matlab{gs}, and sometimes as a \matlab{struct}, \matlab{g.m} and \matlab{g.s}.
 	Again applying DRY, it would be better to unify these representations.
-	It was decided a class would be a better choice, as then methods such as \matlab{g.sample(N)} can be added, rather than the current approach of sampling from first principles in every location.
+	It was decided a class would be a better choice, as then methods such as \matlab{g.sample(N)} to draw samples from the distribution can be added, rather than the current approach of sampling from first principles in every location.
 
 \subsection{Interactive visualization}
 	\label{sec:visualization}
 
 	A great tool for checking the validity of data is human vision, if presented with data in the right form.
-	Armed with this principle, the following improvements were made to the visualizer (some of which are visible in \cref{fig:pilco-interface}):
+	Armed with this principle, improvements were made to the visualizer (some of which are visible in \cref{fig:pilco-interface}) such that:
 	\begin{multicols}{2}
 		\raggedcolumns
 		\noindent
-		The 3d animation of the rollout now
+		The 3d animation of the rollout now:
 		\begin{itemize}[nosep]
 			\item can have its camera rotated while it is playing
 			\item does not interpolate between frames, as this hid oscillatory behaviour
@@ -95,20 +95,20 @@
 		\end{itemize}
 		\columnbreak
 		\noindent
-		The state and loss plots now
+		The state and loss plots now:
 		\begin{itemize}[nosep]
 			\item show the time axis in real units
 			\item show the posterior prediction to complement the existing prior
 			\item show data for the initial rollouts before the controller is trained
 			\item plot data incrementally, showing data from each trial rollout as it is collected
 			\item are zoomed simultaneously on the time axis
-			\item upon mouseover, highlight lines on other subplots that correspond to the same dataset
+			\item highlight lines on other subplots that correspond to the same dataset, upon mouseover
 			\item have a context menu entry to restart the animation for a given rollout
 		\end{itemize}
 	\end{multicols}
 
-	A substantial amount of work was required before any of these changes could be made, to try and separate the concerns of plotting data and applying parts of the {\Pilco} method into separate files
-	One all the code to do a task is in one place, it becomes far easier to augment that task with new behaviour.
+	A substantial amount of work was required before any of these changes could be made, to try and separate the concerns of plotting data and applying parts of the {\Pilco} method into separate files.
+	Once all the code to do a task is in one place, it becomes far easier to augment that task with new behaviour.
 	Similarly, unifying the representations of probabilistic and recorded trajectories greatly simplified the plotting code.
 
 	The mouseover feature was simultaneously the most challenging to implement, and the most useful.
