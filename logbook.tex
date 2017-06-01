@@ -1,0 +1,34 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{subfiles}
+\usepackage{listings}
+\usepackage{lmodern}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\normalfont %to load T1lmr.fd 
+\DeclareFontShape{T1}{lmr}{bx}{sc} { <-> ssub * cmr/bx/sc }{}
+\newcommand{\Pilco}{\textsc{Pilco}}
+
+\usepackage[margin=25mm]{geometry}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{parskip}
+\usepackage{enumitem}
+
+
+\lstset{
+	basicstyle=\ttfamily\footnotesize}
+
+\begin{document}
+
+	% Title Page
+	\author{Eric Wieser -- CAI\\Supervised by Prof. Carl Rasmussen}
+	\title{LMachine learning for a\\miniature robotic unicycle\\Log book}
+	\maketitle
+
+	These logs are generated from the commit messages from the three main repositories used in this project.
+	The repositories themselves are linked to in the main report
+
+	\input{logs.tex}
+\end{document}

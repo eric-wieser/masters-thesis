@@ -1,0 +1,29 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{subfiles}
+\usepackage{lmodern}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\normalfont %to load T1lmr.fd 
+\DeclareFontShape{T1}{lmr}{bx}{sc} { <-> ssub * cmr/bx/sc }{}
+\newcommand{\Pilco}{\textsc{Pilco}}
+
+\usepackage[margin=25mm]{geometry}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{parskip}
+
+\begin{document}
+
+	% Title Page
+	\author{Eric Wieser -- CAI\\Supervised by Prof. Carl Rasmussen}
+	\title{Machine learning for a\\miniature robotic unicycle}
+	\maketitle
+
+	%TC:ignore
+	\begin{abstract}
+		\subfile{sections/abstract}
+	\end{abstract}
+
+\end{document}

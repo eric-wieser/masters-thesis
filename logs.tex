@@ -1,0 +1,2782 @@
+\begin{description}
+  \item[2016-11-13 -- Embedded] \hfill \
+\begin{lstlisting}
+Initial commit, as received from Aleksi
+\end{lstlisting}
+
+
+  \item[2016-11-13 -- Embedded] \hfill \
+\begin{lstlisting}
+Standardize indentation on 2 spaces because it's arduino, improve spacing
+
+Should be a whitespace-only change
+\end{lstlisting}
+
+
+  \item[2016-11-13 -- Embedded] \hfill \
+\begin{lstlisting}
+Rename pde to match folder name, making MPIDE and arduino happy
+\end{lstlisting}
+
+
+  \item[2016-11-13 -- Embedded] \hfill \
+\begin{lstlisting}
+Make variables more structured
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Simplify printing code, and add a debug option
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Switch to stdint types
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix extern variable
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Add missing consts
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Comments explaining magic numbers are not a subsitute for code deriving them
+
+Also use more of stdint
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Remove some more magic numbers
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Add comments, remove some dead code
+
+Also slowly try and eliminate plib
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+fixup! Remove some more magic numbers
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Don't pass a period to the motors.
+
+There's only one possible value that makes sense to pass as an argument, so just use that value instead
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix typo, add comments
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Add include guards.
+
+Could faff about with ifdef, but pragma is easier
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Rename pde files to cpp, and fix them accordingly
+
+It seems pde files get an implicit include <Arduino.h>, and do some magic on function prototypes
+\end{lstlisting}
+
+
+  \item[2016-11-15 -- Embedded] \hfill \
+\begin{lstlisting}
+Make I2Cfuncs static, and use size_t where appropriate
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Switch to the arduino-style interrupt clearing
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Configure all interrupts in the arduino style
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Set up timers in the p32_defs style
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Set up output comparators in the p32_defs style
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Set up change notifier in the p32_defs style
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Hide the address of the sensors inside a function
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Move I2C setup alongside all the other I2C things
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Copy low-level I2C functions.
+
+INTEnableSystemMultiVectoredInt is now part of init(), which runs before setup.
+
+This removes the need for plib.h, and thus mpide!
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Rename to an ino, which is the recommended arduino format
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Use p32_defs, eliminating the xc.h header
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Replace magic "13" with PIN_LED1
+\end{lstlisting}
+
+
+  \item[2016-11-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Remove magic numbers relating to the choice of pins for the timer sign
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Attach interrupt handlers at runtime where they are needed.
+
+This adds a few extra instructions to each interrupt - not many, and it removes confusion about duplicated priority levels.
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Move motor control code to its own file
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Add some debugging prints during startup
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Make a beep sequence on startup
+
+This helps with letting go at just the right time
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Move gyro setup into the sensors file
+
+Hide some more functions
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Move all the encoder code into its own file
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+fixup! Move gyro setup into the sensors file
+\end{lstlisting}
+
+
+  \item[2016-11-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix a regression where variables were made non-static
+
+Separate the chunks of variables to make the staticness obvious
+\end{lstlisting}
+
+
+  \item[2016-11-19 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Make setupFigures a function
+
+This prevents it polluting the global scope
+\end{lstlisting}
+
+
+  \item[2016-11-19 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Remove duplicated configuration information
+
+This ensures that rendering always matches the simulated dynamics. Having the
+same configuration data declared in more than one place is always a bad idea.
+\end{lstlisting}
+
+
+  \item[2016-11-19 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Use callbacks instead of special function names
+
+Relying on the local workspace overriding a function with the right name is
+fragile, and violates the principle of least astonishment. Library functions
+should not invoke user functions they weren't told about, especially ones with
+such generic names.
+\end{lstlisting}
+
+
+  \item[2016-11-19 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Move draw and dynamics inside the UnicyclePlant class,
+
+This ensures they act on the same object
+\end{lstlisting}
+
+
+  \item[2016-11-19 -- Pilco] \hfill \
+\begin{lstlisting}
+Make addpaths work on windows
+
+Work with filepaths using the file functions, not string manipulation that assumes path separators
+\end{lstlisting}
+
+
+  \item[2016-11-19 -- Pilco] \hfill \
+\begin{lstlisting}
+Don't pollute the global workspace.
+\end{lstlisting}
+
+
+  \item[2016-11-19 -- Pilco] \hfill \
+\begin{lstlisting}
+Remove try/catch
+
+Addpath doesn't error for a missing path, so there is nothing to catch here
+\end{lstlisting}
+
+
+  \item[2016-11-20 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Decompose the pre-multiplied matrix, for clarity.
+
+Verified to be equivalent to the previous version using sympy.
+It's not clear here why theta is negated but phi is not.
+\end{lstlisting}
+
+
+  \item[2016-11-20 -- Pilco] \hfill \
+\begin{lstlisting}
+STY: Break lines readably
+
+There are no prizes for cramming everything onto one line.
+\end{lstlisting}
+
+
+  \item[2016-12-21 -- Embedded] \hfill \
+\begin{lstlisting}
+Use an enum instead of an int
+\end{lstlisting}
+
+
+  \item[2016-12-21 -- Embedded] \hfill \
+\begin{lstlisting}
+Use platformio core
+
+    platformio init --board mega_pic32
+\end{lstlisting}
+
+
+  \item[2016-12-21 -- Embedded] \hfill \
+\begin{lstlisting}
+Now builds correctly with platformio
+
+Adds a readme to explain how to do this
+\end{lstlisting}
+
+
+  \item[2016-12-21 -- Embedded] \hfill \
+\begin{lstlisting}
+Replace LogEntry with protobuf internally
+\end{lstlisting}
+
+
+  \item[2016-12-22 -- PacketIO] \hfill \
+\begin{lstlisting}
+Implement and test streaming COBS encoding
+\end{lstlisting}
+
+
+  \item[2016-12-22 -- PacketIO] \hfill \
+\begin{lstlisting}
+Refactor mocking API
+\end{lstlisting}
+
+
+  \item[2016-12-22 -- PacketIO] \hfill \
+\begin{lstlisting}
+Move PacketIO types to new header
+\end{lstlisting}
+
+
+  \item[2016-12-22 -- PacketIO] \hfill \
+\begin{lstlisting}
+Infer string lengths for tests
+\end{lstlisting}
+
+
+  \item[2016-12-22 -- PacketIO] \hfill \
+\begin{lstlisting}
+Implement COBS decoder
+\end{lstlisting}
+
+
+  \item[2016-12-22 -- PacketIO] \hfill \
+\begin{lstlisting}
+Fix virtual functions and compilation errors
+\end{lstlisting}
+
+
+  \item[2016-12-22 -- PacketIO] \hfill \
+\begin{lstlisting}
+First release
+\end{lstlisting}
+
+
+  \item[2016-12-23 -- PacketIO] \hfill \
+\begin{lstlisting}
+Fix code formatting
+\end{lstlisting}
+
+
+  \item[2016-12-24 -- PacketIO] \hfill \
+\begin{lstlisting}
+Test longer messages
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Add roundtrip tests
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Rename variables
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Move everything to a namespace
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Implement the SLIP protocol
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Move all files into subdirectories, and add READMEs
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Release 0.1.0
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Update tags
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Add a PacketListener class with callbacks.
+
+Tests currently fail due to confusion about the meaning of available()
+\end{lstlisting}
+
+
+  \item[2016-12-29 -- PacketIO] \hfill \
+\begin{lstlisting}
+Make PacketStream::available() count the EOP marker. TODO
+\end{lstlisting}
+
+
+  \item[2016-12-31 -- PacketIO] \hfill \
+\begin{lstlisting}
+Make PacketStream::next return void
+
+Add documentation comments to packet_interfaces.h
+\end{lstlisting}
+
+
+  \item[2016-12-31 -- PacketIO] \hfill \
+\begin{lstlisting}
+Set up sphinx documentation with doxygen and breathe
+\end{lstlisting}
+
+
+  \item[2016-12-31 -- PacketIO] \hfill \
+\begin{lstlisting}
+Document everything. Tweak use of lambdas to better enforce stack allocation.
+\end{lstlisting}
+
+
+  \item[2017-01-02 -- Embedded] \hfill \
+\begin{lstlisting}
+Add scons protoc tool
+\end{lstlisting}
+
+
+  \item[2017-01-03 -- Embedded] \hfill \
+\begin{lstlisting}
+Add readonly terminal for protobuf over COBS over Serial
+
+Written with asyncio to make adding sending easier
+\end{lstlisting}
+
+
+  \item[2017-01-03 -- Embedded] \hfill \
+\begin{lstlisting}
+Tweak downloaded protoc for scons in order to support nanopb
+\end{lstlisting}
+
+
+  \item[2017-01-03 -- Embedded] \hfill \
+\begin{lstlisting}
+Use the new protobuf builder
+\end{lstlisting}
+
+
+  \item[2017-01-03 -- Embedded] \hfill \
+\begin{lstlisting}
+Fully-working protobuf messages from the robot
+\end{lstlisting}
+
+
+  \item[2017-01-03 -- PacketIO] \hfill \
+\begin{lstlisting}
+Improve documentation
+\end{lstlisting}
+
+
+  \item[2017-01-03 -- PacketIO] \hfill \
+\begin{lstlisting}
+Release 0.2.0
+\end{lstlisting}
+
+
+  \item[2017-01-04 -- PacketIO] \hfill \
+\begin{lstlisting}
+Fix error due to leftover test code
+\end{lstlisting}
+
+
+  \item[2017-01-04 -- Embedded] \hfill \
+\begin{lstlisting}
+Update format of SetController message
+\end{lstlisting}
+
+
+  \item[2017-01-04 -- Embedded] \hfill \
+\begin{lstlisting}
+Split messaging into header and implementation.
+
+Add read callbacks
+\end{lstlisting}
+
+
+  \item[2017-01-04 -- Embedded] \hfill \
+\begin{lstlisting}
+Refactor policy code to use new message type
+
+This paves the way for updating the policy at runtime
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Add error handling to messages
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Add working dummy handlers for messages on the robot
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Implement interactive console
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Remove dead code
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Bidirectional messaging now working correctly!
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Implement remote start and stops
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Tidy patching implementation
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Add missing volatile specifiers
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix index-beyond-array bug
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Reset the state when restarting
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Make sure to use the LED
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Move state out of intAngVel
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix confusion between IRQ and VECTOR.
+
+I really wish that everyone would stop using #define and move to enum, so the compiler would catch this...
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Cap the maximum output power
+\end{lstlisting}
+
+
+  \item[2017-01-05 -- Embedded] \hfill \
+\begin{lstlisting}
+Don't overspam logs
+\end{lstlisting}
+
+
+  \item[2017-01-06 -- PacketIO] \hfill \
+\begin{lstlisting}
+Correct handling of EOP
+\end{lstlisting}
+
+
+  \item[2017-01-06 -- PacketIO] \hfill \
+\begin{lstlisting}
+Add a default constructor for LambdaPointer
+\end{lstlisting}
+
+
+  \item[2017-01-07 -- Embedded] \hfill \
+\begin{lstlisting}
+Exit the console cleanly
+\end{lstlisting}
+
+
+  \item[2017-01-14 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Remove other duplications of unicycle parameters
+\end{lstlisting}
+
+
+  \item[2017-01-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add an approximate model of the miniature unicycle
+\end{lstlisting}
+
+
+  \item[2017-01-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Add disabled code to reset the encoder readings
+\end{lstlisting}
+
+
+  \item[2017-01-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Separate running and retrieving logs
+\end{lstlisting}
+
+
+  \item[2017-01-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Wrap exceptions in comms code
+\end{lstlisting}
+
+
+  \item[2017-01-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Big changes to the terminal implmentation.
+
+Lots more state to manage when doing a run
+\end{lstlisting}
+
+
+  \item[2017-01-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Ignore the log folder
+\end{lstlisting}
+
+
+  \item[2017-01-16 -- Embedded] \hfill \
+\begin{lstlisting}
+Split code across multiple files
+\end{lstlisting}
+
+
+  \item[2017-01-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Save the full output when in continuous mode
+\end{lstlisting}
+
+
+  \item[2017-01-17 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Show rollouts as a table to make columns clearer
+\end{lstlisting}
+
+
+  \item[2017-01-17 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Use setupFigures everywhere, deduplicating code
+\end{lstlisting}
+
+
+  \item[2017-01-17 -- Pilco] \hfill \
+\begin{lstlisting}
+API: Reference figures from struct members, not integer constants
+
+This makes it much clearer which figure is being drawn to.
+\end{lstlisting}
+
+
+  \item[2017-01-17 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Warn before early closing of figures
+\end{lstlisting}
+
+
+  \item[2017-01-17 -- Pilco] \hfill \
+\begin{lstlisting}
+Fix a bug where the animation would draw to the most-recently-clicked-on figure
+\end{lstlisting}
+
+
+  \item[2017-01-18 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix error message not showing
+
+Exceptions are not thrown when an async function call is not awaited
+\end{lstlisting}
+
+
+  \item[2017-01-18 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix regression
+\end{lstlisting}
+
+
+  \item[2017-01-18 -- Embedded] \hfill \
+\begin{lstlisting}
+Fix a nasty regression in the policy
+
+U = sum(k) + x makes a terrible controller!
+\end{lstlisting}
+
+
+  \item[2017-01-31 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Adjust the draw function to choose a base circle proportional to robot size
+\end{lstlisting}
+
+
+  \item[2017-02-01 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: fix a crash when animating a simulation that violates constraints in its first step
+\end{lstlisting}
+
+
+  \item[2017-02-01 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Divide draw into two rendering functions - one for world, and one for ui
+
+Also removes some clearly-duplicated dead code
+\end{lstlisting}
+
+
+  \item[2017-02-01 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Remove explicit use of the current axis in draw_world
+
+Now creates a new axis, and works on that. This removes a lot of worry about things that change the current axis
+\end{lstlisting}
+
+
+  \item[2017-02-01 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Draw the indicators and text in a separate 2D layer
+
+This means that the text does not rotate with the world, not does it depend
+on the axis scaling of the world. Previously, using a small unicycle would
+cause the text to be rendered off-screen
+\end{lstlisting}
+
+
+  \item[2017-02-01 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Reuse axes, to keep views and improve performance
+
+This speeds up plotting by almost a factor of 2
+
+This also allows the view to be rotated while it is being simulated.
+
+Previously, it would jump back to the starting orientation, as the axis
+was completely rebuilt.
+\end{lstlisting}
+
+
+  \item[2017-02-01 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: refactor rendering in terms of homogeneous coordinates
+\end{lstlisting}
+
+
+  \item[2017-02-02 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Combine spokes into one object
+\end{lstlisting}
+
+
+  \item[2017-02-02 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add top-down shadows, to help depth perception
+\end{lstlisting}
+
+
+  \item[2017-02-02 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Use the gaussian function where possible
+\end{lstlisting}
+
+
+  \item[2017-02-02 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Replace repeated warning suppression with workaround
+\end{lstlisting}
+
+
+  \item[2017-02-02 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Plot time rather than iteration number on plot x axes
+\end{lstlisting}
+
+
+  \item[2017-02-02 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Draw policy optimization plots in darkening shades of the same color, to indicate order
+\end{lstlisting}
+
+
+  \item[2017-02-02 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Link state time axes, so zooming and panning is synced
+\end{lstlisting}
+
+
+  \item[2017-02-03 -- Pilco] \hfill \
+\begin{lstlisting}
+STY: Use ends to close functions
+
+This allows nested function definitions.
+There are no changes to what executes in this file
+\end{lstlisting}
+
+
+  \item[2017-02-04 -- Pilco] \hfill \
+\begin{lstlisting}
+STY: Break up lines and add comments to rollout
+\end{lstlisting}
+
+
+  \item[2017-02-05 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #2 from eric-wieser/addpath-windows
+
+Make addpaths work on windows\end{lstlisting}
+
+
+  \item[2017-02-06 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #5 from eric-wieser/fix-animate-constraint
+
+BUG: fix a crash when animating a simulation that violates constraints in its first step\end{lstlisting}
+
+
+  \item[2017-02-06 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Use the correct wheel diameter in augment, even with the small unicycle
+
+Unlike the previous commits, this one was missed by aleksi when he changed
+the parameters in each place by hand.
+\end{lstlisting}
+
+
+  \item[2017-02-06 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Pass the unicycle object to cost directly. so it's clear which properties it uses
+
+I think we need to still store the data in .p, because the superclass expects data to be there?
+\end{lstlisting}
+
+
+  \item[2017-02-07 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add gitignore file, to ignore backup files and log files
+\end{lstlisting}
+
+
+  \item[2017-02-07 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #1 from eric-wieser/unicycleplant-class
+
+Package unicycle drawing and dynamics functions into a class to share dimensions\end{lstlisting}
+
+
+  \item[2017-02-07 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #12 from eric-wieser/better-unicycle-draw
+
+Improeve the unicycle draw routine\end{lstlisting}
+
+
+  \item[2017-02-07 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #3 from eric-wieser/setupFigures
+
+Improve setupFigures\end{lstlisting}
+
+
+  \item[2017-02-07 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Use ~isfinite instead of isnan || isinf, for brevity
+\end{lstlisting}
+
+
+  \item[2017-02-07 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Change all invocations of minimize to bind arguments with anonymous functions
+
+The old style was harder to read, as the options parameter was
+interspersed with the extra arguments.
+Some testing reveals that using anonymous functions is as much as 2x faster than
+passing argument packs through varargs. See #7 for the test case.
+\end{lstlisting}
+
+
+  \item[2017-02-07 -- Pilco] \hfill \
+\begin{lstlisting}
+API: Remove 'other' arguments from minimize
+
+These extra arguments were not necessary, since anonymous functions can be used
+to bind arguments instead. The previous commit removed all the invocations
+that used these arguments.
+\end{lstlisting}
+
+
+  \item[2017-02-08 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #9 from eric-wieser/minimize-no-varargin
+
+Remove the `other` argument from minimize\end{lstlisting}
+
+
+  \item[2017-02-08 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Delete the obsolete folder, since these files are available from the history
+
+Additionally, most of the files would no longer run correctly alongside changes
+to the rest of the APIs anyway.
+\end{lstlisting}
+
+
+  \item[2017-02-08 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix massive torques being used for the small unicycle model
+\end{lstlisting}
+
+
+  \item[2017-02-12 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Remove plotting from minimize for the unicycle, for speed
+\end{lstlisting}
+
+
+  \item[2017-02-12 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Improve readability of CostSuper.cov
+\end{lstlisting}
+
+
+  \item[2017-02-12 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Remove index duplication in cost function
+\end{lstlisting}
+
+
+  \item[2017-02-12 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix scaling of cost function for size-invariance
+
+This tries to be as close as possible to the previous values
+\end{lstlisting}
+
+
+  \item[2017-02-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: refactor cost function to remove explicit indices
+\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Correct dy term of unicycle cost function
+
+Also, produce a more thorough derivation, and various typos in the pdf
+\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #13 from eric-wieser/use-gaussian
+
+MAINT: Use the gaussian function where possible\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #17 from eric-wieser/small-fixes
+
+Small fixes\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Fix typos, format as block matrix
+\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #18 from eric-wieser/small-unicycle
+
+Switch to a small unicycle model\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #19 from eric-wieser/fix-unicycle-cost
+
+Fix unicycle cost\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: fix regression where yaw-scaling term was dropped
+\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add a different type for each type of Frame
+
+This means that subframes now know which parts of their parent frames they
+belong to, so the indices that the code was previously using can just be asked for.
+\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Replace all manual indices and ordering in doit with the result of the Frame API
+
+This hopefully makes it clearer what is happening, but more importantly, less error prone
+
+This changes also fiddles with the variances a little to make them make more intuitive sense
+\end{lstlisting}
+
+
+  \item[2017-02-15 -- Pilco] \hfill \
+\begin{lstlisting}
+TST: add unit tests for frames
+\end{lstlisting}
+
+
+  \item[2017-02-26 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #21 from eric-wieser/frames-in-doit
+
+Enhance the frames api\end{lstlisting}
+
+
+  \item[2017-02-26 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #20 from eric-wieser/tidy-CostSuper.cov
+
+MAINT: Improve readability of CostSuper.cov\end{lstlisting}
+
+
+  \item[2017-02-26 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix incorrect unaugmented states in first iteration
+\end{lstlisting}
+
+
+  \item[2017-02-27 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Use covariances that are proportionate to the robot size
+
+This adds a length scale parameter to the unicycle, to get ballpark figures right.
+\end{lstlisting}
+
+
+  \item[2017-02-27 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Switch to use the small unicycle by default
+\end{lstlisting}
+
+
+  \item[2017-02-27 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #22 from eric-wieser/length-scale
+
+Use a length scale in covariance initialization\end{lstlisting}
+
+
+  \item[2017-02-27 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Make gaussian a class, not a function
+
+This makes it easier to bundle mean and covariance into one variable, and do
+operations on the combination.
+\end{lstlisting}
+
+
+  \item[2017-02-27 -- Pilco] \hfill \
+\begin{lstlisting}
+DEP: rollout now expects to be only passed the ode start data
+\end{lstlisting}
+
+
+  \item[2017-02-27 -- Pilco] \hfill \
+\begin{lstlisting}
+DEP: applyController now expects the start distribution to be in one variable
+\end{lstlisting}
+
+
+  \item[2017-02-27 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add a method to fit gaussians to data
+\end{lstlisting}
+
+
+  \item[2017-03-01 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #24 from eric-wieser/initial-state-augmentation
+
+Augment the state in the first iteration of rollout\end{lstlisting}
+
+
+  \item[2017-03-01 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #23 from eric-wieser/gaussian-object
+
+Promote `gaussian` into a function, allowing `mu0` and `S0` to be combined into one variable\end{lstlisting}
+
+
+  \item[2017-03-01 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Combine s0 and mu0 into s0_ode
+\end{lstlisting}
+
+
+  \item[2017-03-02 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Better error message when minimize gets non-finite result
+\end{lstlisting}
+
+
+  \item[2017-03-02 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Warn when simulate result is non-finite
+\end{lstlisting}
+
+
+  \item[2017-03-02 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Error out if cost is non-finite
+\end{lstlisting}
+
+
+  \item[2017-03-03 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Use new APIs where possible
+\end{lstlisting}
+
+
+  \item[2017-03-03 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Change rng seed to avoid numerically unstable initialization
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+DOC: Add comments to scripts describing inputs and outputs
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Rely on two fewer global variables in applyController
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+STY: Linewrapping in animate.m
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Improve labeling of controlled trial plot
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Make unwrap and rewrap work properly on gaussians
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Give a better explanation of why the state diverged
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix bad tests for covariance which fail on gaussian objects
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+BUILD: Add a tool to build the mex files
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Use solve_chol everywhere
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix error checking of lapack function
+\end{lstlisting}
+
+
+  \item[2017-03-08 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: General cleanup, removing all warnings
+
+This includes:
+* Using the correct type for lapack ints
+* Using the correct arguments for LDA and LDB, avoiding the 0 check
+* Fixing the build tool to make warnings errors
+* Renaming variables for clarity
+\end{lstlisting}
+
+
+  \item[2017-03-09 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Prevent crash in headless mode
+\end{lstlisting}
+
+
+  \item[2017-03-09 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Make rollout return a struct instead of 3 values
+\end{lstlisting}
+
+
+  \item[2017-03-10 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add utility function for converting to the old format
+
+Realistically, we're going to need to support both formats in order to keep all
+the scenarios working.
+\end{lstlisting}
+
+
+  \item[2017-03-10 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Update unicycle doitnlds with new trajectory structs
+\end{lstlisting}
+
+
+  \item[2017-03-10 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Update applyController to use the new rollout format
+
+This is backwards compatible, so long as other scripts weren't relying on
+intermediate results (the danger in using scripts over functions...)
+\end{lstlisting}
+
+
+  \item[2017-03-10 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add a function to animate trajectory structs
+
+This addresses #11 at the same time
+\end{lstlisting}
+
+
+  \item[2017-03-10 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Move applyController to a function to avoid pollution of globals
+
+It's probably best to keep the script to avoid having to remember argument order.
+
+In principle, these two files could be combined, but this would require
+matlab 2016
+\end{lstlisting}
+
+
+  \item[2017-03-10 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #33 from eric-wieser/rollout-struct
+
+ENH: Return all the rollout results in a single struct\end{lstlisting}
+
+
+  \item[2017-03-10 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #31 from eric-wieser/solve_chol
+
+MAINT: Use solve_chol in more places\end{lstlisting}
+
+
+  \item[2017-03-12 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Expose make_times publically, so it can be used elsewhere
+\end{lstlisting}
+
+
+  \item[2017-03-12 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Move graphical parts of learnPolicy to local functions
+
+This further reduces pollution of the global namespace
+\end{lstlisting}
+
+
+  \item[2017-03-12 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #36 from eric-wieser/delete-obsolete
+
+MAINT: Delete the obsolete folder, since these files are in git history\end{lstlisting}
+
+
+  \item[2017-03-13 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add marginalize method to gaussians
+\end{lstlisting}
+
+
+  \item[2017-03-13 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Prevent accidental print out of pol_frame
+\end{lstlisting}
+
+
+  \item[2017-03-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add some mixin classes to pave the way for custom array types
+\end{lstlisting}
+
+
+  \item[2017-03-15 -- Pilco] \hfill \
+\begin{lstlisting}
+STY: Convert tabs to spaces
+\end{lstlisting}
+
+
+  \item[2017-03-15 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #35 from eric-wieser/cut-down-scripts
+
+MAINT: Cut down scripts\end{lstlisting}
+
+
+  \item[2017-03-15 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix regression in #34 causing crash on plants without delay
+\end{lstlisting}
+
+
+  \item[2017-03-15 -- Pilco] \hfill \
+\begin{lstlisting}
+STY: Fix comments, whitespace, and unused variables
+
+Previous-line comments are easier to read, trailing whitespace is garbage, and
+function comments should be in the matlab style.
+\end{lstlisting}
+
+
+  \item[2017-03-15 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Add some comments emphasizing a hack
+
+There's a good chance this will trip someone up in future.
+\end{lstlisting}
+
+
+  \item[2017-03-16 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #38 from eric-wieser/fix-odestep-delay
+
+BUG: Fix regression in #34\end{lstlisting}
+
+
+  \item[2017-03-17 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Fix unicode console output on windows
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Tidy up log printing
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Fix some screwy async/not behaviour
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Correct color of error message
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Embedded] \hfill \
+\begin{lstlisting}
+Add comments
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Augment plant and ctrl with frame information
+
+We need this to convert from robot messages to the right indices
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add a rollout override to use the hardware
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Implement policy setting, and start the policy at 0 to ensure it works
+\end{lstlisting}
+
+
+  \item[2017-03-17 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #39 from eric-wieser/tidy-odestep
+
+MAINT: Improve comments and code-style in odestep\end{lstlisting}
+
+
+  \item[2017-03-23 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: remove duplicate superclass
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Pilco] \hfill \
+\begin{lstlisting}
+API: Remove random policy from Ctrl to CtrlRandom
+
+This also makes Ctrl abstract, requiring a subclass to implement fcn
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge branch 'master' of github.com:eric-wieser/pilco-fork into origin-master
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Pilco] \hfill \
+\begin{lstlisting}
+FIXUP: remove accidentally-committed change
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add frame.zeros for easily producing the right number of zeros
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Always save the controller in the same place
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Smooth over awkward matlab API
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: load the data in correctly
+\end{lstlisting}
+
+
+  \item[2017-03-23 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add support for replacing a random controller with a sample linear one
+\end{lstlisting}
+
+
+  \item[2017-03-28 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Rescale controller outputs from [-1 1] to valid range
+\end{lstlisting}
+
+
+  \item[2017-03-28 -- Embedded] \hfill \
+\begin{lstlisting}
+Revert "Add missing volatile specifiers"
+
+This reverts commit 9a7abba03d316d3ab85e18bd0ec2249caa597f3c.
+
+This was not needed - all the fields are declared as volatile already.
+\end{lstlisting}
+
+
+  \item[2017-03-28 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Move all the io defs into a single file
+
+This means we can now use more descriptive variable names in the subfiles.
+\end{lstlisting}
+
+
+  \item[2017-03-28 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Replace IRQ and VECTOR constants with lookup function
+
+Tiny performance cost exchanged for better maintainability
+\end{lstlisting}
+
+
+  \item[2017-03-29 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add a list of all the pins, and configure the switch.
+\end{lstlisting}
+
+
+  \item[2017-03-29 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Wrap encoders and motors in classes
+\end{lstlisting}
+
+
+  \item[2017-03-29 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Add doxygen/sphinx monstrosity
+\end{lstlisting}
+
+
+  \item[2017-03-31 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Begin to add documentation with sphinx and doxygen
+\end{lstlisting}
+
+
+  \item[2017-03-31 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Use a less weird syntax to instantiate templates
+\end{lstlisting}
+
+
+  \item[2017-04-04 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Prevent terminal running on import
+\end{lstlisting}
+
+
+  \item[2017-04-04 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: allow conversion from pin back to integer
+\end{lstlisting}
+
+
+  \item[2017-04-04 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Remove __attribute__ markers from documentation
+\end{lstlisting}
+
+
+  \item[2017-04-04 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Flesh out the documentation.
+
+Now ready to test with readthedocs
+\end{lstlisting}
+
+
+  \item[2017-04-04 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Use the RTD theme
+\end{lstlisting}
+
+
+  \item[2017-04-12 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Don't overwrite the CN registers in encoder
+\end{lstlisting}
+
+
+  \item[2017-04-12 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Move the switch to a CN-enabled pin, and use it
+\end{lstlisting}
+
+
+  \item[2017-04-12 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Add documentation of pin assignments
+\end{lstlisting}
+
+
+  \item[2017-04-12 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Remove hard-coding of peripheral selection
+
+Now derives these from the pin numbers, at compile time.
+Documentation is included in this commit.
+\end{lstlisting}
+
+
+  \item[2017-04-12 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Add some missing qualifiers
+\end{lstlisting}
+
+
+  \item[2017-04-12 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: move pins to new page
+\end{lstlisting}
+
+
+  \item[2017-04-12 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Rename SetController to Controller
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Add patched sphinx to requirements
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: fix comment
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: remove broken dependency description
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Fix sphinx version
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: fix hidden TOC
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: try to actually use new sphinx
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: terminal tips
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Correct sign of turntable
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Better debug messages
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Fix typo that caused the encoder timer to overwrite the motor one
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Enable warnings as errors
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Make the timer start asap after the button press, rather than on the next cycle
+
+Also moves everything into a class, to keep timer code together
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Move button setup to its own file
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Enable use of the button as an e-stop
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Play a noise upon stopping
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Move io.h with other hardware helpers
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add i2c support to compile-time hardware lookup
+\end{lstlisting}
+
+
+  \item[2017-04-13 -- Embedded] \hfill \
+\begin{lstlisting}
+DOC: Update docstrings of terminal to make them work with sphinx
+\end{lstlisting}
+
+
+  \item[2017-05-11 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Move logs to subfolders, to make archiving easier
+\end{lstlisting}
+
+
+  \item[2017-05-11 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Create a new log folder on each run (unicycle only)
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Include the git commit sha in the log folder name
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #42 from eric-wieser/log-folders
+
+Improve location of saved logs\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Automatically add paths on startup
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Rename pred.cost to pred.loss
+
+This makes it match traj.loss
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Allow implicit conversion from struct to gaussian
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: add static constructors for gaussians
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: fix gaussian for ndim = 0
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: better error for bad arguments
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+TST: Add tests for basic gaussian functionality
+
+This allows us to answer the question "does the new implementation break the old one" later
+\end{lstlisting}
+
+
+  \item[2017-05-12 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Make marginalize work on arrays of gaussians
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Preallocate the predicted actions and state
+
+It turns out this is slower - running the included benchmark pegs preallocating
+as taking 30% more time than augmenting a fixed array.
+
+However, this comes at the benefit of self-documenting code, and is likely insignificant compared to other operations.
+
+gaussian.zeros is pretty cheap, because the same chunk of memory of zeros is shared between all the instances.
+
+While not strictly necessary, we add the extra colons here to make the shape of s obvious throughout.
+This also upgrades gracefully if we implement g(i,...) as marginalization.
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: return gaussian objects from propagate.
+
+Should be a little more efficient, as it avoid converting structs to gaussians
+elsewhere.
+
+Also adds a benchmark, showing that constructing is a little slower (4us difference on my machine)
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Wrap plotting into a single plot_traj (local) function
+
+This works on both gaussians and measured data
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Always put the frame axis first, and the time axis second
+
+This means the that state column vectors line up with the `gaussian` class'
+column vectors, removing a lot of intermediary transposes.
+
+Once again, this only affects the new-style trajectory api, consumers of to_data_struct are unaffected.
+
+Note that as a result, augment and dynamics now see column vectors, not row vectors.
+Some implementations already contain a hack to workaround not knowing what orientation of vector to expect.
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Further homogenize the plotting code
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Squash accidental disp
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add state names to plots, if present
+
+To keep things fitting, the font size is drastically reduced.
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Overhaul state plotting
+
+This makes the following changes:
+
+* Plotting code largely removed from applyController, to aid reuse
+* Extra rollouts are plotted one at a time
+* Predictions for loss function and states are plotted simultaneously
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Use R2014b colors in plots
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Allow Frame to have missing names
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Pass frames, rather than names
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Remove unnecessary setting of currT
+
+This is already set inside rollout, so there is no need to set it beforehand
+\end{lstlisting}
+
+
+  \item[2017-05-13 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Remove unused global
+\end{lstlisting}
+
+
+  \item[2017-05-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Highlight lines across plots on hover
+
+The mouseover event names are modelled off HTML mouse event api.
+
+This now works flawlessly, but the amount of different hacks tried to get here was nightmarish
+\end{lstlisting}
+
+
+  \item[2017-05-14 -- Pilco] \hfill \
+\begin{lstlisting}
+Merge pull request #43 from eric-wieser/startup-script
+
+ENH: Automatically add paths on startup\end{lstlisting}
+
+
+  \item[2017-05-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Allow animation of rollouts from the UI
+
+Fixes gh-29
+\end{lstlisting}
+
+
+  \item[2017-05-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Show the traced path on the ground plane of the animation
+\end{lstlisting}
+
+
+  \item[2017-05-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Improve plot colors
+\end{lstlisting}
+
+
+  \item[2017-05-14 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add a function for plotting error bounds
+
+Like error bars, but visually less noisy
+\end{lstlisting}
+
+
+  \item[2017-05-14 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix crash when the robot doesn't crash
+
+Fixes a regression made by me in 56d416ebefa897b724bf73616bf9b7dc2831a880
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Limit digits of max torque in UI
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Correct loss function to be uniform in space
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Incorrect function name
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Transpose outputs, to match a change in pilco
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: more aggressive initial controller
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Allow the number of trial rollouts to be changed (eg, for robot operation)
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Move plot_traj to StateVisualizer
+
+Turns out this is useful in other places
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix globalness of figures
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Plot and save the initial trajectories too
+\end{lstlisting}
+
+
+  \item[2017-05-15 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: reorder file to put all setup code together
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Rewrite using python_prompt_toolkit
+
+Removes dependency on:
+ * pyreadline (abandonware)
+ * colorama (messes with sphinx on windows)
+
+This is a little buggier than before, but still usable
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Don't make the directory until we've converted format successfully
+
+Would previously try to create it twice
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: split out chunk of file
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add debug levels to protobuf messages
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Fix hang on disconnect
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Wrong euler angle used
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Fix bug in distance integration
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add command to clear the policy
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Remove incorrect comment
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Throw an error if the file is not chosen
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Greatly increase maximum number of steps
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Warn when too many steps are requested
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Remove duplicated checking for axis handles
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Clean up gyro-reading code to separate concerns
+\end{lstlisting}
+
+
+  \item[2017-05-16 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add a cost term for roll, and fix the angle limits
+
+This should help fix the unicycle not learning under roll
+The angle limits now match the small unicycle
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Separate mean calculation from integration
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Reindent to emphasize symmetry
+
+Value should not change here
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Introduce a vector class, and put all geometry code together
+
+This makes reading the accelerometer and gyro a little clearer
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: remove misleading minus
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Correct sign of roll in draw.m
+
+This is now in sync with the cost function, but not necessarily with the dynamics (gh-48)
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Wheel angle is measured relative to the vertical axis, not the frame
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Teach quat basic arithmetic
+\end{lstlisting}
+
+
+  \item[2017-05-17 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Make it obvious where the quaternion integration is happening
+
+Clearly we have two methods, and it's not clear when each is appropriate
+\end{lstlisting}
+
+
+  \item[2017-05-18 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Implement quaternion exponentiation
+\end{lstlisting}
+
+
+  \item[2017-05-18 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Use the correct type of euler angles
+
+Explicit is better than implicit, and the type of euler angle we were using was
+both implicit and wrong.
+
+This adds a template type that enforces that the convention is always explicit.
+
+We previously used XYZ, now we use YXZ. See the comment in the diff for why. This demonstrably fixed a bug, visible by turning the robot upsidedown.
+\end{lstlisting}
+
+
+  \item[2017-05-18 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Use a more accurate quaternion integration scheme
+\end{lstlisting}
+
+
+  \item[2017-05-18 -- Embedded] \hfill \
+\begin{lstlisting}
+BUILD: attempt to enable code-size optimizations, to speed up upload time
+
+I think this fails, because we have the free version of the compiler, which ignores these
+flags.
+\end{lstlisting}
+
+
+  \item[2017-05-18 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Prevent discontinuities in yaw
+\end{lstlisting}
+
+
+  \item[2017-05-18 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Add the handlers after every plot
+
+This makes manual operation possible to abort early, but still give interactive plots
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Show standard deviation of gyro calibration
+
+Should give some hint about correctness
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Prevent overflow in encoder angle and speed
+
+This fixes a regression in the encoder angle, and a long-term bug in the speed.
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Add missing saturation to controller
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Don't invoke a null pointer!
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add a gyro calibration command
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Truncate bad trajectories
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Start immediately on button release
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add an overload to simulate to return a single struct
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix regression in c2e174d5fc36fd768c48bc0519637e71649d95d8
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Directly store the frames in the visualizer
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Add a utility function to StateVisualizer to plot predictions
+
+Also adds a comment explaining the source of the mystery indices
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Don't save the log file in applyController
+
+Do it in its own script, as it's useful elsewhere
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Show the state posterior as well as the prior
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+STY: Split lines
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+fixup! MAINT: Truncate bad trajectories
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Move static functions to make nanopb easier to a new file
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Add some template-metaprogramming wizardry
+
+This make adding new message types less error prone.
+
+It also removes those pesky template instantiation declarations.
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Fix regression in dea3edebb5d1599e9e2f9f7fb48ec1c1d3f3eac0
+
+Endianness was wrong
+\end{lstlisting}
+
+
+  \item[2017-05-19 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Fix broken debug messages
+
+This was displaying as a lone R before
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Missing include in vector3
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Make lots of geometry constexpr
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add dot, cross, and quat::between
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add function to get orientation from the accelerometer
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add command to get accelerometer feedback over serial
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add euler to quaternion conversion
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add function to remove the yaw from a quaternion
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Remove the yaw from the initial quaternion, else it would be spuriously correlelated with the pitch and roll
+
+Also fixes the down acceleration
+\end{lstlisting}
+
+
+  \item[2017-05-20 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Use the accelerometer to set the initial orientation
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: better display of log messages containing newlines
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Make default argument more obvious
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Always animate the last state, passing nan as the control input.
+
+Also change the interpolation to use a zoh for the input, since that's all we seem to use elsewhere
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Do not interpolate frame rate unless making a movie
+
+Interpolating a discrete system hides information - especially resampling a 20hz video at 24hz.
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix typo in state constraints
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Enqueue multiple files in rollout, to make loading the initial rollouts easier
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Improve button debounce, and play a tone when primed
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Don't crash when given trajectories that are too short
+
+These happen when the robot is aborted, often due to falling on its own stop button!
+\end{lstlisting}
+
+
+  \item[2017-05-21 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Ctrl-D once to disconnect, twice to exit the terminal
+\end{lstlisting}
+
+
+  \item[2017-05-22 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Allow unicycle animation with no cost function
+\end{lstlisting}
+
+
+  \item[2017-05-22 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Prevent crash when N_trial_rollouts == 0
+\end{lstlisting}
+
+
+  \item[2017-05-22 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Initial logfile is saved as 010, not 000. This fixes a regression.
+\end{lstlisting}
+
+
+  \item[2017-05-23 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Using chi2inv, rather than rolling our own
+\end{lstlisting}
+
+
+  \item[2017-05-23 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add a `motors <w> <t>` command
+
+This gives a quick sign check for motors.
+\end{lstlisting}
+
+
+  \item[2017-05-23 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Correct sign of turntable motor
+\end{lstlisting}
+
+
+  \item[2017-05-23 -- Embedded] \hfill \
+\begin{lstlisting}
+fixup! ENH: Enqueue multiple files in rollout, to make loading the initial rollouts easier
+\end{lstlisting}
+
+
+  \item[2017-05-23 -- Embedded] \hfill \
+\begin{lstlisting}
+fixup! BUG: Don't crash when given trajectories that are too short
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: split rollout into multiple files
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Fix auto-building of proto files
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Use a while loop, to make resuming easier
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Implement fitting a gaussian with diagonal covariance
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: put the limits in one place
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Remove invalid sample from end of rollout
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Constraints are not checked against initial state
+\end{lstlisting}
+
+
+  \item[2017-05-25 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Do not try extreme input values during initial rollouts
+\end{lstlisting}
+
+
+  \item[2017-05-26 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Tool to scale unicycle state axes
+\end{lstlisting}
+
+
+  \item[2017-05-27 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: add inverse of to_data_struct, in case working with old data
+\end{lstlisting}
+
+
+  \item[2017-05-27 -- Pilco] \hfill \
+\begin{lstlisting}
+STY: Convert stray tabs to spaces
+\end{lstlisting}
+
+
+  \item[2017-05-27 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: marginalize generated the square of the number of colons necessary
+
+I will never be persuaded that `zeros(N) == zeros(N,N)` was a good design choice by Matlab
+\end{lstlisting}
+
+
+  \item[2017-05-27 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: Add git .mailmap file
+
+I should have dealt with this properly when importing the SVN repo
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Embedded] \hfill \
+\begin{lstlisting}
+MAINT: Ignore the generated controller
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Embedded] \hfill \
+\begin{lstlisting}
+ENH: Add support for quadratic policies to the hardware
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Embedded] \hfill \
+\begin{lstlisting}
+BUG: Missed semicolon causing print
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Embedded] \hfill \
+\begin{lstlisting}
+fixup! ENH: Add support for quadratic policies to the hardware
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Initial state is lost
+
+Fixes a regression made by me in 56d416ebefa897b724bf73616bf9b7dc2831a880
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Fix off-by-one error on state truncation
+
+Previously:
+ * rollout would discard the last state if no constraints were violated
+ * simulate would keep the last state, even if it is the initial zero
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Pilco] \hfill \
+\begin{lstlisting}
+MAINT: if ... continue is confusing here
+
+This can lead to traps if things are added to the end of the loop
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Fit s over initial states on the hardware
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: give much better divergence messages
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: minimize does not always do that
+
+If seeded with a correct guess, then minimize would return NaN.
+
+This fixes gh-51
+\end{lstlisting}
+
+
+  \item[2017-05-29 -- Pilco] \hfill \
+\begin{lstlisting}
+BUG: Plotting an empty trajectory causes an error
+
+Thanks Matlab
+\end{lstlisting}
+
+
+  \item[2017-05-30 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Add gaussian.disp
+\end{lstlisting}
+
+
+  \item[2017-05-30 -- Pilco] \hfill \
+\begin{lstlisting}
+ENH: Allow frame.units to produce units along a different axis
+\end{lstlisting}
+
+
+\end{description}
