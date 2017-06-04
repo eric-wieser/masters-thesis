@@ -29,3 +29,5 @@ sections/*.pdf
 *-blx.bib
 *.run.xml
 
+*.tdo
+/*.pdf
